@@ -1,0 +1,19 @@
+<component name="libraryTable">
+  <library name="jquery" type="javaScript">
+    <properties>
+      <option name="frameworkName" value="jQuery" />
+      <option name="frameworkVersion" value="3.6.1" />
+      <sourceFilesUrls>
+        <item url="file://$PROJECT_DIR$/merch/src/main/resources/static/main.js" />
+      </sourceFilesUrls>
+    </properties>
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/merch/src/main/resources/static/main.js" />
+    </CLASSES>
+    <DOCUMENTATION>
+      <root url="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js" />
+    </DOCUMENTATION>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

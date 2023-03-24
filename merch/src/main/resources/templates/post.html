@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <style>
+        body {
+            background-color: #FFFFFF;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Nosifer&family=Pacifico&display=swap');
+
+        header {
+            display: block;
+        }
+
+        .merch-container {
+            text-align: center;
+            margin-top: -8px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .shopping-cart {
+            width: 750px;
+            height: 423px;
+            margin: 80px auto;
+            background: #FFFFFF;
+            box-shadow: 1px 2px 3px 0px rgba(0,0,0,0.10);
+            border-radius: 6px;
+            overflow: scroll;
+            overflow-x:hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .title {
+            height: 60px;
+            border-bottom: 1px solid #E1E8EE;
+            padding: 20px 30px;
+            color: #5E6977;
+            font-size: 18px;
+            font-weight: 400;
+        }
+
+        .item {
+            padding: 20px 30px;
+            height: 120px;
+            display: flex;
+        }
+
+        .item:nth-child(3) {
+            border-top:  1px solid #E1E8EE;
+            border-bottom:  1px solid #E1E8EE;
+        }
+
+        .buttons {
+            position: absolute;
+            padding-top: 30px;
+            margin-left: 650px;
+        }
+        .delete-btn{
+            display: inline-block;
+            Cursor: pointer;
+            border: none;
+        }
+        .delete-btn {
+            width: 18px;
+            height: 17px;
+            background: url("delete-icn.svg") no-repeat center;
+        }
+
+        .description span {
+            margin-left: 40px;
+            display: block;
+            color: #43484D;
+            font-weight: 400;
+        }
+
+        .description span:first-child {
+            margin-bottom: 5px;
+            margin-left: 40px;
+        }
+        .description span:last-child {
+            font-weight: 300;
+            margin-top: 8px;
+            color: #86939E;
+        }
+
+
+        is-active {
+            animation-name: animate;
+            animation-duration: .8s;
+            animation-iteration-count: 1;
+            animation-timing-function: steps(28);
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes animate {
+            0%   { background-position: left;  }
+            50%  { background-position: right; }
+            100% { background-position: right; }
+        }
+
+        .quantity {
+            padding-top: 20px;
+            margin-left: 400px;
+            position: absolute;
+        }
+        .quantity input {
+            -webkit-appearance: none;
+            border: none;
+            text-align: center;
+            width: 32px;
+            font-size: 16px;
+            color: #43484D;
+            font-weight: 300;
+        }
+
+        #minus-btn,
+        #minus-btn1{
+            margin-bottom: 3px;
+            margin-top: 2px;
+            width: 30px;
+            height: 30px;
+            background-color: #E1E8EE;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+        }
+        #plus-btn,
+        #plus-btn1{
+            margin-top: 2px;
+            width: 30px;
+            height: 30px;
+            background-color: #E1E8EE;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:focus,
+        input:focus {
+            outline:0;
+        }
+
+        #price,
+        #price1 {
+            position: absolute;
+            margin-left: 600px;
+            width: 83px;
+            text-align: center;
+            font-size: 16px;
+            color: #43484D;
+            font-weight: 300;
+            border: none;
+            padding-top: 30px;
+        }
+
+
+        .item-total {
+            position: absolute;
+            margin-top: 305px;
+            padding: 20px 30px;
+            height: 120px;
+            display: flex;
+            border-bottom:  1px solid #E1E8EE;
+        }
+
+        .total {
+            font-size: 200%;
+        }
+
+        .status {
+            position: absolute;
+            margin-top: 40px;
+            font-size: 200%;
+        }
+
+
+        @media (max-width: 800px) {
+            .shopping-cart {
+                width: 100%;
+                height: auto;
+                overflow: hidden;
+            }
+            .item {
+                height: auto;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .image img {
+                width: 50%;
+            }
+            .image,
+            .quantity,
+            .description {
+                width: 100%;
+                text-align: center;
+                margin: 6px 0;
+            }
+            .buttons {
+                margin-right: 20px;
+            }
+        }
+
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="merch-container">
+        <div class="merch">
+            <img src="/mrch1.png"  alt="">
+        </div>
+    </div>
+</header>
+
+<div class="shopping-cart-container">
+    <div class="shopping-cart">
+        <!-- Title -->
+        <div class="title">
+            Ваш заказ
+        </div>
+
+
+        <div class="item" th:each="el : ${session.cart}">
+            <div class="image">
+                <img th:src="${session.cart['img']}" alt=""/>
+            </div>
+            <div class="description">
+                <span th:text="${session.cart['name']}"></span>
+                <span th:text="${session.cart['item_size'] != null} ? ${session.cart['item_size']}"></span>
+                <span th:text="${session.cart['color']}"></span>
+            </div>
+            <div class="quantity">
+                <input id="cart_quantity" name="quantity" th:value="${session.cart['quantity']}" readonly/>
+            </div>
+            <input type="number" id="price" th:value="${session.cart['price']}" readonly/>
+        </div>
+
+        <div class="item-total">
+            <div class="total">Итого: <span id="total-price" name="total_price"></span>pуб.</div>
+            <div class="status">Статус: <span id="status"></span></div>
+        </div>
+
+
+    </div>
+</div>
+
+
+</body>
+</html>
