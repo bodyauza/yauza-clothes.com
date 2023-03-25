@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <title th:text="${title}"/>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgb(130, 106, 251);
+    }
+    .container {
+      position: relative;
+      max-width: 700px;
+      width: 100%;
+      background: #fff;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+    .container header {
+      font-size: 1.5rem;
+      color: #333;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    .back {
+      position: absolute;
+      margin-left: 300px;
+      border: none;
+      width: 38px;
+      height: 37px;
+      background: url(delete-icn.svg) no-repeat center;
+      margin-top: -35px;
+      cursor: pointer;
+    }
+
+    .container .form {
+      margin-top: 30px;
+    }
+    .form .input-box {
+      width: 100%;
+      margin-top: 20px;
+    }
+    .input-box label {
+      color: #333;
+    }
+    .form :where(.input-box input, .select-box) {
+      position: relative;
+      height: 50px;
+      width: 100%;
+      outline: none;
+      font-size: 1rem;
+      color: #707070;
+      margin-top: 8px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 0 15px;
+    }
+    .input-box input:focus {
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+    }
+    .form .column {
+      display: flex;
+      column-gap: 15px;
+    }
+    .form .post-box {
+      margin-top: 30px;
+      margin-bottom: 30px;
+    }
+    .post-box h3 {
+      color: #333;
+      font-size: 1rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .form :where(.post-option, .post) {
+      display: flex;
+      align-items: center;
+      column-gap: 50px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .form .post {
+      column-gap: 5px;
+    }
+    .post input {
+      accent-color: rgb(130, 106, 251);
+    }
+
+    #check-post1 {
+      margin-left: 20px;
+    }
+
+    .form :where(.gender input, .gender label) {
+      cursor: pointer;
+    }
+    .post label {
+      color: #707070;
+    }
+    .address :where(input, .select-box) {
+      margin-top: 15px;
+    }
+    .select-box select {
+      height: 100%;
+      width: 100%;
+      outline: none;
+      border: none;
+      color: #707070;
+      font-size: 1rem;
+    }
+    .form button {
+      height: 55px;
+      width: 100%;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 400;
+      margin-top: 30px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: rgb(130, 106, 251);
+    }
+    .form button:hover {
+      background: rgb(88, 56, 250);
+    }
+    /*Responsive*/
+    @media screen and (max-width: 500px) {
+      .form .column {
+        flex-wrap: wrap;
+      }
+      .form :where(.post-option, .post) {
+        row-gap: 15px;
+      }
+    }
+
+  </style>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+  <script>
+
+    const EMAIL_REGEXP = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu;
+    const NUMBER_REGEXP =  /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/;
+
+    function isEmailValid(value) {
+      return EMAIL_REGEXP.test(value);
+    }
+
+    function isTelValid(value) {
+      return NUMBER_REGEXP.test(value);
+    }
+
+
+    $(document).ready(function(){
+      $("#email").change(function () {
+
+        let input = document.getElementById('email');
+
+        if (isEmailValid(input.value)) {
+          input.style.borderColor = 'green';
+        } else {
+          input.style.borderColor = 'red';
+        }
+
+      });
+
+      $("#tel").change(function () {
+
+        let input1 = document.getElementById('tel');
+
+        if (isTelValid(input1.value)) {
+          input1.style.borderColor = 'green';
+        } else {
+          input1.style.borderColor = 'red';
+        }
+
+      });
+
+    });
+
+
+    $(document).ready(function() {
+      const form = document.querySelector('form');
+      let input = document.getElementById('email');
+      let input1 = document.getElementById('tel');
+
+      form.addEventListener('submit', e => {
+        e.preventDefault()
+        if (isEmailValid(input.value) &&  isTelValid(input1.value)) {
+          form.submit()
+        }
+
+      })
+
+    });
+
+
+  </script>
+
+</head>
+
+<body>
+
+  <section class="container">
+    <header>Оформление заказа</header>
+    <button class="back" onclick="history.back();"></button>
+    <form th:action="'/new-order'" class="form" method="post">
+      <input type="hidden" name="name" th:value="${session.cart['name']}"/>
+      <input type="hidden" name="item_size" th:value="${session.cart['item_size']}"/>
+      <input type="hidden" name="color" th:value="${session.cart['color']}"/>
+      <input type="hidden" name="quantity" th:value="${session.cart['quantity']}"/>
+      <input type="hidden" name="total_price" th:value="${session.of_price}"/>
+      <div class="input-box">
+        <label>ФИО</label>
+        <input type="text" name="FIO" placeholder="Иванов Иван Иванович" required />
+      </div>
+
+      <div class="input-box">
+        <label>Email</label>
+        <input type="text" name="email" id="email" placeholder="ivanov@mail.ru" required />
+      </div>
+
+      <div class="column">
+        <div class="input-box">
+          <label>Телефон</label>
+          <input type="number" name="tel" id="tel" placeholder="+7" required />
+        </div>
+      </div>
+      <div class="post-box">
+        <h3>Доставка</h3>
+        <div class="post-option">
+          <div class="post">
+            <input type="radio" id="check-post" name="post" value="Почта России 300 руб." checked />
+            <label for="check-post">Почта России 300 руб.</label>
+            <input type="radio" id="check-post1" name="post" value="Самовывоз" checked />
+            <label for="check-post1">Самовывоз</label>
+          </div>
+        </div>
+      </div>
+      <div class="input-box address">
+        <label>Адрес</label>
+        <input type="text" name="street" placeholder="Улица" required />
+        <input type="text" name="home" placeholder="Дом" required />
+        <div class="column">
+          <div class="select-box">
+            <select name="country">
+              <option hidden>Страна</option>
+              <option>Российская Федерация</option>
+              <option>Беларусь</option>
+              <option>Казахстан</option>
+            </select>
+          </div>
+          <input type="text" name="city" placeholder="Город" required />
+        </div>
+        <div class="column">
+          <input type="text" name="region" placeholder="Регион, область" required />
+          <input type="number" name="index" placeholder="Почтовый индекс" required />
+        </div>
+      </div>
+      <button type="submit" id="form_submit">Подтверждение заказа</button>
+    </form>
+  </section>
+</div>
+
+
+</body>
+
+</html>
