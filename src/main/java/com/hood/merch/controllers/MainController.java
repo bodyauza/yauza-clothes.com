@@ -54,16 +54,19 @@ public class MainController {
         Product product1 = (Product) session1.getAttribute("cart1");
         session1.setMaxInactiveInterval(-1);
 
-        if (product == null) {
+        if (product == null && product1 == null) {
             product = new Product(name, price, item_size, quantity, img, color);
             session.setAttribute("cart", product);
         } else if (product1 == null) {
             product1 = new Product(name, price, item_size, quantity, img, color);
             if (!Objects.equals(product1.getName(), product.getName()))
             session1.setAttribute("cart1", product1);
+        } else if (product == null)
+            product = new Product(name, price, item_size, quantity, img, color);
+            if (!Objects.equals(product1.getName(), product.getName()))
+            session.setAttribute("cart", product); 
         }
         return "redirect:/basket";
-    }
 
     //Изменение количества
 
@@ -108,17 +111,6 @@ public class MainController {
         System.out.println(total);
         return "redirect:/offer_test";
     }
-
-    //
-    //// сразу удалить все нецифровые символы
-    //String cleanedInput = number.replaceAll("\\D+", "");
-    //if (cleanedInput.matches("(7|8)?90(5|9)\\d{7}")) {
-    //    System.out.print("Valid phone number: " + email + " -> " + cleanedInput);
-    //    cleanedInput = cleanedInput.replaceFirst("^(8?)(90)", "7$2");
-    //    System.out.println(" -> " + cleanedInput);
-    //} else {
-    //    System.out.print("Invalid phone number: " + email);
-    //
 
     @PostMapping("/new-order")
     public String newOrder(@RequestParam String FIO, @RequestParam String email, @RequestParam String tel, @RequestParam String post, @RequestParam String street, @RequestParam String home, @RequestParam String country, @RequestParam String city, @RequestParam String region, @RequestParam String index, @RequestParam String name, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer total_price) {
