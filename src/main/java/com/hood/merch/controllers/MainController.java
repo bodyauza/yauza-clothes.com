@@ -54,13 +54,17 @@ public class MainController {
         Product product1 = (Product) session1.getAttribute("cart1");
         session1.setMaxInactiveInterval(-1);
 
-        if (product == null) {
+        if (product == null && product1 == null) {
             product = new Product(name, price, item_size, quantity, img, color);
             session.setAttribute("cart", product);
         } else if (product1 == null) {
             product1 = new Product(name, price, item_size, quantity, img, color);
             if (!Objects.equals(product1.getName(), product.getName()))
-            session1.setAttribute("cart1", product1);
+                session1.setAttribute("cart1", product1);
+        } else if (product == null) {
+            product = new Product(name, price, item_size, quantity, img, color);
+            if (!Objects.equals(product1.getName(), product.getName()))
+                session.setAttribute("cart", product);
         }
         return "redirect:/basket";
     }
