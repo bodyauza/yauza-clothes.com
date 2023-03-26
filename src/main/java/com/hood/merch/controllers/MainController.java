@@ -113,17 +113,6 @@ public class MainController {
         return "redirect:/offer_test";
     }
 
-    //
-    //// сразу удалить все нецифровые символы
-    //String cleanedInput = number.replaceAll("\\D+", "");
-    //if (cleanedInput.matches("(7|8)?90(5|9)\\d{7}")) {
-    //    System.out.print("Valid phone number: " + email + " -> " + cleanedInput);
-    //    cleanedInput = cleanedInput.replaceFirst("^(8?)(90)", "7$2");
-    //    System.out.println(" -> " + cleanedInput);
-    //} else {
-    //    System.out.print("Invalid phone number: " + email);
-    //
-
     @PostMapping("/new-order")
     public String newOrder(@RequestParam String FIO, @RequestParam String email, @RequestParam String tel, @RequestParam String post, @RequestParam String street, @RequestParam String home, @RequestParam String country, @RequestParam String city, @RequestParam String region, @RequestParam String index, @RequestParam String name, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer total_price) {
         String address = country + ", " + region + ", " + city + ", " + street + ", " + home + ", " + index;
