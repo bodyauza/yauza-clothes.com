@@ -33,20 +33,40 @@
             text-align: center;
         }
 
-        .merch_mobile-container{
+        .circle1 {
+            margin-top: 48px;
+            margin-left: 120px;
+            z-index: 9;
+            position: absolute;
             display: none;
+            width: 0.5em;
+            height: 0.5em;
+            border: 4px solid red;
+            border-radius: 50%;
+            shape-inside: circle(50% at center center);
+            background: #ff1a00;
+            box-sizing: border-box;
         }
 
-        .sakura_mobile-container{
+        .circle {
+            margin-top: -70px;
+            margin-left: 160px;
+            z-index: 9;
+            position: absolute;
             display: none;
+            width: 1em;
+            height: 1em;
+            border: 2px solid red;
+            border-radius: 50%;
+            shape-inside: circle(50% at center center);
+            background: mistyrose;
+            box-sizing: border-box;
         }
 
         .buttonblue  {
             margin-top: -50px;
             top: 50%;
             left: 50%;
-            width: 160;
-            height: 64;
             border: none;
             transform: translate(-50%, -50%);
             padding: 10px 40px;
@@ -309,6 +329,16 @@
                 }
             }
         }
+
+        $(document).ready(function () {
+            var input = $('#total_header');
+            var value = parseInt(input.val());
+            if (value == 1) {
+                $('.circle').css('display', 'block');
+                $('.circle1').css('display', 'block');
+            }
+        });
+
     </script>
 
 </head>
@@ -331,6 +361,9 @@
 
 <header th:insert="~{/header :: header}"></header>
 
+<div class="item" th:each="el : ${session.cart}">
+    <input type="hidden" id="total_header"  th:value="${session.cart['quantity'] != null} ? ${session.cart['quantity']}">
+</div>
 
 <form action="/add-name" method="post">
     <div th:each="el : ${products1}">

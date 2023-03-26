@@ -380,23 +380,20 @@
 
   </style>
 
-  <script>
-    window.console = window.console || function(t) {};
-  </script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
   <script>
-    if (document.location.search.match(/type=embed/gi)) {
-      window.parent.postMessage("resize", "*");
-    }
-  </script>
-
-  <script>
-
     $(document).ready(function () {
       var input = $('#total_header');
       var value = parseInt(input.val());
-      alert(value)
+      if (value == 1) {
+        $('.circle').css('display', 'block');
+        $('.circle1').css('display', 'block');
+      }
     });
+  </script>
+
+  <script>
     /* When the user clicks on the button,
 toggle between hiding and showing the dropdown content */
     function myFunction() {

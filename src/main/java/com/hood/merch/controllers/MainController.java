@@ -134,7 +134,7 @@ public class MainController {
         offerRepository.save(offer);
         System.out.println(products);
         System.out.println(address);
-        return "redirect:/";
+        return "redirect:/pay";
     }
 
     //Удаление из корзины
