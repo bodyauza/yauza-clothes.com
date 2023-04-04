@@ -60,13 +60,14 @@ public class MainController {
         } else if (product1 == null) {
             product1 = new Product(name, price, item_size, quantity, img, color);
             if (!Objects.equals(product1.getName(), product.getName()))
-            session1.setAttribute("cart1", product1);
-        } else if (product == null)
+                session1.setAttribute("cart1", product1);
+        } else if (product == null) {
             product = new Product(name, price, item_size, quantity, img, color);
             if (!Objects.equals(product1.getName(), product.getName()))
-            session.setAttribute("cart", product); 
+                session.setAttribute("cart", product);
         }
         return "redirect:/basket";
+    }
 
     //Изменение количества
 
@@ -122,7 +123,7 @@ public class MainController {
         offerRepository.save(offer);
         System.out.println(products);
         System.out.println(address);
-        return "redirect:/";
+        return "redirect:/pay";
     }
 
     //Удаление из корзины

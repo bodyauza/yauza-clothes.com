@@ -68,8 +68,6 @@
           margin-top: -50px;
           top: 50%;
           left: 50%;
-          width: 160;
-          height: 64;
           border: none;
           transform: translate(-50%, -50%);
           padding: 10px 40px;
@@ -350,24 +348,11 @@
 
 <body>
 
-<div class="item" th:each="el : ${session.cart}">
-<input type="hidden" id="total_header"  th:value="${session.cart['quantity'] != null} ? ${session.cart['quantity']}">
-</div>
-<!--
-  <form action="/change-name" method="post">
-    <div th:each="el : ${products}">
-      <input type="hidden" name="name" th:value="${el.name}" class="hid_name" readonly/>
-      <input type="number" name="price"  class="total-price" th:value="${el.price}"/>
-      <input type="text" name="item_size" class="item" th:value="${el.item_size}"/>
-      <input type="hidden" name="color" th:value="${el.color}"/>
-      <input class="quantity_range" name="quantity" type="number" min="1" max="5" th:value="${el.quantity}">
-      <input type="hidden" name="img" th:value="${el.img}"/>
-    </div>
-  </form>
-  -->
-
 <header th:insert="~{/header :: header}"></header>
 
+<div class="item" th:each="el : ${session.cart}">
+    <input type="hidden" id="total_header"  th:value="${session.cart['quantity'] != null} ? ${session.cart['quantity']}">
+</div>
 
   <form action="/add-name" method="post">
       <div th:each="el : ${products}">

@@ -522,8 +522,7 @@
 
 
     <script>
-        /* When the user clicks on the button,
-toggle between hiding and showing the dropdown content */
+        /* Анимация открытия меню */
         function myFunction() {
             document.getElementById("myDropdown").classList.toggle("show");
         }
@@ -548,6 +547,8 @@ toggle between hiding and showing the dropdown content */
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
     <script>
+
+        // Изменение статуса корзины
 
             $(document).ready(function() {
 
@@ -586,6 +587,7 @@ toggle between hiding and showing the dropdown content */
                     var pr1 = $('#price1');
                     var prv1 = parseInt(pr1.val());
 
+                // первичный расчет общей стоимости
 
                     $("#total-price").html(value * prv);
 
@@ -593,6 +595,8 @@ toggle between hiding and showing the dropdown content */
                 if (value1 > 0) {
                     $("#total-price").html(value * prv + value1 * prv1);
                 }
+
+                //алгоритм для кнопок "+" и "-"
                     $('#plus-btn').click(function () {
                         var $this = $(this);
                         if (value < 5) {
@@ -659,6 +663,7 @@ toggle between hiding and showing the dropdown content */
                     });
 
 
+                //маркер наличия товаров в корзине
                 if (value == 1) {
                     $('.circle').css('display', 'block');
                     $('.circle1').css('display', 'block');
@@ -666,6 +671,7 @@ toggle between hiding and showing the dropdown content */
 
             });
 
+            //запись в сессию общей стоимости
             $(document).ready(function () {
                 var span = $('#total-price').text();
                 var input = $('#of_total_price');
@@ -769,24 +775,6 @@ toggle between hiding and showing the dropdown content */
 
 </div>
 </div>
-
-<!--
- <form id="item-total" th:if="${session.cart != null or session.cart1 != null}">
-    <div class="total">Итого: <span id="total-price" name="total_price"></span>pуб.</div>
-        <div class="b-cart__action__col-code">
-            <input type="text" class="input_code" name="coupon_code" placeholder="Промо-код (если есть)" value="">
-        </div>
-
-        <input type="hidden" name="name" th:value="${session.cart['name']}"/>
-        <input type="hidden" name="item_size" th:value="${session.cart['item_size']}"/>
-        <input type="hidden" name="color" th:value="${session.cart['color']}"/>
-        <input type="hidden" id="of_quantity" name="quantity" th:value="${session.cart['quantity']}"/>
-        <input type="hidden" id="of_total_price" name="total" value=""/>
-
-        <a class="payment-btn" onclick="document.getElementById('item-total').submit();" href="#offer">Оформить заказ</a>
-
-    </form>
--->
 
 </body>
 </html>
