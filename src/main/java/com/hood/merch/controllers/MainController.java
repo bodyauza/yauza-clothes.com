@@ -32,7 +32,7 @@ public class MainController {
     @GetMapping("/pay")
     public String pay(Model model) {
         model.addAttribute("title", "Pay");
-        return "payment";
+        return "pay";
     }
 
     @GetMapping("/")
@@ -159,13 +159,13 @@ public class MainController {
         return "scarf";
     }
 
-    @GetMapping("/scarf/black")
+    @GetMapping("/oversize")
     public String black_scarf(Model model) {
         Optional<Product> products1 = productRepository.findById(2);
         ArrayList<Product> res = new ArrayList<>();
         products1.ifPresent(res::add);
         model.addAttribute("products1", res);
-        return "scarf-black";
+        return "oversize";
     }
 
 

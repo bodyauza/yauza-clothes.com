@@ -380,23 +380,9 @@
 
   </style>
 
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-
   <script>
-
-    //наличие товаров в корзине
-    $(document).ready(function () {
-      var input = $('#total_header');
-      var value = parseInt(input.val());
-      if (value == 1) {
-        $('.circle').css('display', 'block');
-        $('.circle1').css('display', 'block');
-      }
-    });
-  </script>
-
-  <script>
-    //Выпадающее меню
+    /* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
     function myFunction() {
       document.getElementById("myDropdown").classList.toggle("show");
     }
@@ -415,6 +401,15 @@
         }
       }
     }
+
+    $(document).ready(function () {
+      var input = $('#total_header');
+      var value = parseInt(input.val());
+      if (value == 1) {
+        $('.circle').css('display', 'block');
+        $('.circle1').css('display', 'block');
+      }
+    });
 
   </script>
 </head>
@@ -441,14 +436,13 @@
     <div class="cards__wrapper">
       <div class="card current--card" style="--card-translateY-offset:0%; --current-card-rotation-offset:0;">
         <div class="card__image">
-          <a href="/scarf"><img src="/суприм%20худи.jpg" alt=""></a>
+          <a href="/scarf"><img src="/home_scarf.jpg" alt=""></a>
         </div>
       </div>
 
-
       <div class="card next--card" style="--card-translateY-offset:0%;">
         <div class="card__image">
-          <a href="/tshirt"><img src="/Футболка1.jpg" alt=""></a>
+          <a href="/oversize"><img src="/home_oversize.jpg" alt=""></a>
         </div>
       </div>
 
@@ -767,7 +761,7 @@
   };
 
   waitForImages();
-
+  //# sourceURL=pen.js
 </script>
 
 </body>
