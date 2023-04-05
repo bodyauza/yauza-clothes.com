@@ -134,10 +134,6 @@
           display: block;
       }
 
-    .price {
-      display: none;
-    }
-
     .btn-to_cart{
       width: 67%;
       background: #deaca5;
@@ -215,40 +211,10 @@
       color: #a2a2a2;
     }
 
-      .sizes {
-          display: grid;
-          color: #D9AAB7;
-          grid-template-columns: repeat(auto-fill, 30px);
-          width: 100%;
-          grid-gap: 40px;
-          margin-top: 40px;
-      }
-
-      .size {
-          width: 60px;
-          height: 60px;
-          cursor: pointer;
-          padding: 9px;
-          border: 1px solid #E0C9CB;
-          font-size: 1em;
-          text-align: center;
-      }
-
-      size:active {
-          color: green;
-      }
-
-
     /* responsive */
     @media (max-width: 1000px) {
         .details-container {
             height: auto;
-        }
-
-        #emoji,
-        #emoji1 {
-            height: 70px;
-            width: 70px;
         }
 
         .btn-to_cart {
@@ -310,6 +276,7 @@
             font-size: 50px;
         }
     }
+
 
         .cardList__btn {
             border: none;
@@ -715,7 +682,7 @@
             <input type="hidden" name="item_size" id="item_size" th:value="${el.item_size}"/>
 
             <h3 th:text="${el.price}"></h3>
-            <input type="number" name="price" class="price" th:value="${el.price}"/>
+            <input type="hidden" name="price" class="price" th:value="${el.price}"/>
             <button type="submit" class="btn-to_cart">В корзину</button>
           </div>
         </div>
