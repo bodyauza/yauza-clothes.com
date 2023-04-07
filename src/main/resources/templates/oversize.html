@@ -233,8 +233,9 @@
             text-align: center;
         }
 
-        size:active {
-            color: green;
+        .focus{
+            background: #BA7E7E;
+            color: white;
         }
 
 
@@ -548,6 +549,7 @@
             //добавление размера
             $('.size').click(function () {
                 $('#item_size').val($(this).data('value'));
+                $(this).toggleClass('focus').siblings().removeClass('focus');
             });
         });
 

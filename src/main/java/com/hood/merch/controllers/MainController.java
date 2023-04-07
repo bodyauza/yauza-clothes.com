@@ -32,7 +32,13 @@ public class MainController {
     @GetMapping("/pay")
     public String pay(Model model) {
         model.addAttribute("title", "Pay");
-        return "pay";
+        return "payment";
+    }
+
+    @GetMapping("/form")
+    public String form(Model model) {
+        model.addAttribute("", "Оформить заказ");
+        return "offer";
     }
 
     @GetMapping("/")
@@ -110,13 +116,18 @@ public class MainController {
             session.setAttribute("of_price", total);
         }
         System.out.println(total);
-        return "redirect:/offer_test";
+        return "redirect:/form";
     }
 
     @PostMapping("/new-order")
-    public String newOrder(@RequestParam String FIO, @RequestParam String email, @RequestParam String tel, @RequestParam String post, @RequestParam String street, @RequestParam String home, @RequestParam String country, @RequestParam String city, @RequestParam String region, @RequestParam String index, @RequestParam String name, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer total_price) {
+    public String newOrder(@RequestParam String FIO, @RequestParam String email, @RequestParam String tel, @RequestParam String post, @RequestParam String street, @RequestParam String home, @RequestParam String country, @RequestParam String city, @RequestParam String region, @RequestParam String index, @RequestParam String name, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer total_price, @RequestParam(value = "name1", required=false) String name1, @RequestParam(value = "item_size1", required=false) String item_size1, @RequestParam(value = "quantity1", required=false) Integer quantity1, @RequestParam(value = "color1", required=false) String color1) {
         String address = country + ", " + region + ", " + city + ", " + street + ", " + home + ", " + index;
         String products = name + ", " + item_size + ", " + quantity.toString() + ", " + color + ";" + "\n" + "Сумма заказа:" + total_price.toString() + "руб.;";
+
+        if (quantity1 != null) {
+            products = name + ", " + item_size + ", " + quantity.toString() + ", " + color + ";" + "\n" + name1 + ", " + item_size1 + ", " + quantity1.toString() + ", " + color1 + ";" + "\n" + "Сумма заказа:" + total_price.toString() + "руб.;";
+        }
+
         Date date = new Date();
         String status = "не оплачено";
         Offer offer = new Offer(products, FIO, email, tel, post, address, status, total_price, date);
