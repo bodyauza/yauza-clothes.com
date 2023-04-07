@@ -589,10 +589,11 @@
 
                 // первичный расчет общей стоимости
 
-                    $("#total-price").html(value * prv);
-
-
+                $("#total-price").html(value * prv);
                 if (value1 > 0) {
+                    $("#total-price").html(value1 * prv1);
+                }
+                if (value1 > 0 && value > 0) {
                     $("#total-price").html(value * prv + value1 * prv1);
                 }
 
