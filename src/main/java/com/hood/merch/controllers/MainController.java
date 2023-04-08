@@ -6,13 +6,17 @@ import com.hood.merch.models.Product;
 import com.hood.merch.models.repo.OfferRepository;
 import com.hood.merch.models.repo.ProductRepository;
 import com.hood.merch.service.DefaultEmailService;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,6 +32,9 @@ public class MainController {
 
     @Autowired
     private OfferRepository offerRepository;
+
+    @Autowired
+    DefaultEmailService emailService;
 
     @GetMapping("/pay")
     public String pay(Model model) {
@@ -134,6 +141,14 @@ public class MainController {
         offerRepository.save(offer);
         System.out.println(products);
         System.out.println(address);
+
+        try {
+            emailService.sendEmailWithAttachment(email, "Оформление заказа", "Спасибо, что выбрали нас \uD83E\uDD70 \nСкоро вам поступит звонок от менеджера",
+                    "classpath:templates/post.html");
+        } catch (MessagingException | FileNotFoundException mailException) {
+            System.out.println("Unable to send email");
+        }
+
         return "redirect:/pay";
     }
 
