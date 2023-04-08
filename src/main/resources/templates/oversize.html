@@ -582,7 +582,9 @@
         $(document).ready(function () {
             var input = $('#total_header');
             var value = parseInt(input.val());
-            if (value == 1) {
+            var input1 = $('#total_header1');
+            var value1 = parseInt(input.val());
+            if (value > 0 || value1 > 0) {
                 $('.circle').css('display', 'block');
                 $('.circle1').css('display', 'block');
             }
@@ -598,6 +600,9 @@
 
 <div class="item" th:each="el : ${session.cart}">
     <input type="hidden" id="total_header"  th:value="${session.cart['quantity'] != null} ? ${session.cart['quantity']}">
+</div>
+<div class="item" th:each="el : ${session.cart1}">
+    <input type="hidden" id="total_header1"  th:value="${session.cart1['quantity'] != null} ? ${session.cart1['quantity']}">
 </div>
 
 <div class="img-container">

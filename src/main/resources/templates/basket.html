@@ -663,7 +663,7 @@
 
 
                 //маркер наличия товаров в корзине
-                if (value == 1) {
+                if (value > 0 || value1 > 0) {
                     $('.circle').css('display', 'block');
                     $('.circle1').css('display', 'block');
                 }
@@ -762,15 +762,15 @@
             </div>
         </div>
 
-    <form th:action="'to-offer'" method="post" id="to-offer" class="item-total" th:if="${session.cart != null or session.cart1 != null}">
+    <div class="item-total" th:if="${session.cart != null or session.cart1 != null}">
     <div class="total">Итого: <span id="total-price" name="total_price"></span>pуб.</div>
 
             <input type="text" class="input_code" name="coupon_code" placeholder="Промо-код (если есть)" value="">
         <input type="hidden" id="of_total_price" name="of_price"/>
 
-        <a class="payment-btn" onclick="document.getElementById('to-offer').submit();">Оформить заказ</a>
+        <a class="payment-btn" onclick="window.location.href = '/form';">Оформить заказ</a>
 
-    </form>
+    </div>
 
 </div>
 </div>

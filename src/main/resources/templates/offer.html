@@ -231,15 +231,17 @@
       <input type="hidden" name="item_size" th:value="${session.cart['item_size']}"/>
       <input type="hidden" name="color" th:value="${session.cart['color']}"/>
       <input type="hidden" name="quantity" th:value="${session.cart['quantity']}"/>
+      <input type="hidden" name="quantity" th:value="${session.cart['quantity']}"/>
+      <input type="hidden" name="price" th:value="${session.cart['price']}"/>
 
       <div th:each="el : ${session.cart1}">
       <input type="hidden" name="name1" th:value="${session.cart1['name']}"/>
       <input type="hidden" name="item_size1" th:value="${session.cart1['item_size']}"/>
       <input type="hidden" name="color1" th:value="${session.cart1['color']}"/>
       <input type="hidden" name="quantity1" th:value="${session.cart1['quantity']}"/>
+        <input type="hidden" name="price1" th:value="${session.cart1['price']}"/>
       </div>
 
-      <input type="hidden" name="total_price" th:value="${session.of_price}"/>
       <div class="input-box">
         <label>ФИО</label>
         <input type="text" name="FIO" placeholder="Иванов Иван Иванович" required />

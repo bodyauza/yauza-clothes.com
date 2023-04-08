@@ -110,28 +110,16 @@ public class MainController {
         return "redirect:/basket";
     }
 
-
-    @PostMapping("/to-offer")
-    protected String toOffer(HttpServletRequest request, HttpServletResponse response, @RequestParam String of_price)
-            throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        String total = (String) session.getAttribute("of_price");
-        session.setMaxInactiveInterval(-1);
-
-        if (total == null) {
-            total = new String(of_price);
-            session.setAttribute("of_price", total);
-        }
-        System.out.println(total);
-        return "redirect:/form";
-    }
-
     @PostMapping("/new-order")
-    public String newOrder(@RequestParam String FIO, @RequestParam String email, @RequestParam String tel, @RequestParam String post, @RequestParam String street, @RequestParam String home, @RequestParam String country, @RequestParam String city, @RequestParam String region, @RequestParam String index, @RequestParam String name, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer total_price, @RequestParam(value = "name1", required=false) String name1, @RequestParam(value = "item_size1", required=false) String item_size1, @RequestParam(value = "quantity1", required=false) Integer quantity1, @RequestParam(value = "color1", required=false) String color1) {
+    public String newOrder(@RequestParam String FIO, @RequestParam String email, @RequestParam String tel, @RequestParam String post, @RequestParam String street, @RequestParam String home, @RequestParam String country, @RequestParam String city, @RequestParam String region, @RequestParam String index, @RequestParam String name, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer price, @RequestParam(value = "name1", required=false) String name1, @RequestParam(value = "item_size1", required=false) String item_size1, @RequestParam(value = "quantity1", required=false) Integer quantity1, @RequestParam(value = "color1", required=false) String color1, @RequestParam(value = "price1", required=false) Integer price1) {
         String address = country + ", " + region + ", " + city + ", " + street + ", " + home + ", " + index;
+
+        Integer total_price = (quantity * price);
+
         String products = name + ", " + item_size + ", " + quantity.toString() + ", " + color + ";" + "\n" + "Сумма заказа:" + total_price.toString() + "руб.;";
 
         if (quantity1 != null) {
+            total_price = (quantity * price) + (quantity1 * price1);
             products = name + ", " + item_size + ", " + quantity.toString() + ", " + color + ";" + "\n" + name1 + ", " + item_size1 + ", " + quantity1.toString() + ", " + color1 + ";" + "\n" + "Сумма заказа:" + total_price.toString() + "руб.;";
         }
 
