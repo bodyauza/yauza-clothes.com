@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.util.Objects;
+
 @Entity
 public class Product {
 
@@ -86,5 +88,18 @@ public class Product {
         this.quantity = quantity;
         this.img = img;
         this.color = color;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return name.equals(product.name) && item_size.equals(product.item_size);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, item_size);
     }
 }

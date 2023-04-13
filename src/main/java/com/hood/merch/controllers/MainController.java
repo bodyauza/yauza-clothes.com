@@ -18,10 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 
 @Controller
@@ -60,29 +57,31 @@ public class MainController {
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
-        Product product = (Product) session.getAttribute("cart");
         session.setMaxInactiveInterval(-1);
 
-        HttpSession session1 = request.getSession();
-        Product product1 = (Product) session1.getAttribute("cart1");
-        session1.setMaxInactiveInterval(-1);
+        Set<Product> cart = new LinkedHashSet<>();
+        List<String> attribs = Arrays.asList("cart", "cart1"); // и т.д.
+        Set<String> missingAttrs = new LinkedHashSet<>();
 
-        if (product == null && product1 == null) {
-            product = new Product(name, price, item_size, quantity, img, color);
-            session.setAttribute("cart", product);
-        } else if (product1 == null) {
-            product1 = new Product(name, price, item_size, quantity, img, color);
-            if (Objects.equals(product1.getName(), product.getName()) && !Objects.equals(product1.getItem_size(), product.getItem_size()))
-                session1.setAttribute("cart1", product1);
-            if(!Objects.equals(product1.getName(), product.getName()))
-                session1.setAttribute("cart1", product1);
-        } else if (product == null) {
-            product = new Product(name, price, item_size, quantity, img, color);
-            if (Objects.equals(product1.getName(), product.getName()) && !Objects.equals(product1.getItem_size(), product.getItem_size()))
-                session.setAttribute("cart", product);
-            if(!Objects.equals(product1.getName(), product.getName()))
-                session.setAttribute("cart", product);
+        for (String attr : attribs) {
+            Product product = (Product) session.getAttribute(attr);
+            if (null == product) {
+                missingAttrs.add(attr);
+            } else if (cart.add(product)) { // товар успешно добавлен в сет
+                System.out.println("Товар " + product.getName() + " в сессии и сете");
+            }
         }
+
+        for (String attr : missingAttrs) {
+            Product product = new Product(name, price, item_size, quantity, img, color);
+            if (cart.add(product)) { // товар успешно добавлен в сет
+                System.out.println("Товар " + product.getName() + " добавлен в сессию и сет");
+                session.setAttribute(attr, product);
+            } else {
+                System.out.println("Найден товар-дубликат " + product.getName());
+            }
+        }
+
         return "redirect:/basket";
     }
 
