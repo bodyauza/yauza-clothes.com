@@ -7,6 +7,7 @@ import com.hood.merch.models.repo.OfferRepository;
 import com.hood.merch.models.repo.ProductRepository;
 import com.hood.merch.service.DefaultEmailService;
 import jakarta.mail.MessagingException;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +61,7 @@ public class MainController {
         session.setMaxInactiveInterval(-1);
 
         Set<Product> cart = new LinkedHashSet<>();
-        List<String> attribs = Arrays.asList("cart", "cart1"); // и т.д.
+        List<String> attribs = Arrays.asList("cart", "cart1", "cart2", "cart3", "cart4", "cart5"); // и т.д.
         Set<String> missingAttrs = new LinkedHashSet<>();
 
         for (String attr : attribs) {
@@ -82,6 +83,49 @@ public class MainController {
             }
         }
 
+        return "redirect:/basket";
+    }
+
+    //Удаление из корзины
+    @PostMapping("/cart/remove")
+    public String Cart_remove(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        session.removeAttribute("cart");
+        return "redirect:/basket";
+    }
+
+    @PostMapping("/cart1/remove")
+    public String Cart1_remove(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        session.removeAttribute("cart1");
+        return "redirect:/basket";
+    }
+
+    @PostMapping("/cart2/remove")
+    public String Cart2_remove(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        session.removeAttribute("cart2");
+        return "redirect:/basket";
+    }
+
+    @PostMapping("/cart3/remove")
+    public String Cart3_remove(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        session.removeAttribute("cart3");
+        return "redirect:/basket";
+    }
+
+    @PostMapping("/cart4/remove")
+    public String Cart4_remove(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        session.removeAttribute("cart4");
+        return "redirect:/basket";
+    }
+
+    @PostMapping("/cart5/remove")
+    public String Cart5_remove(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        session.removeAttribute("cart5");
         return "redirect:/basket";
     }
 
@@ -113,6 +157,58 @@ public class MainController {
         return "redirect:/basket";
     }
 
+    @PostMapping("/in-cart2")
+    protected String inCart2(HttpServletRequest request, HttpServletResponse response, @RequestParam String img, @RequestParam String name, @RequestParam Integer price, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color)
+            throws ServletException, IOException {
+
+        HttpSession session = request.getSession();
+        session.removeAttribute("cart2");
+        Product product = (Product) session.getAttribute("cart2");
+        session.setMaxInactiveInterval(-1);
+        product = new Product(name, price, item_size, quantity, img, color);
+        session.setAttribute("cart2", product);
+        return "redirect:/basket";
+    }
+
+    @PostMapping("/in-cart3")
+    protected String inCart3(HttpServletRequest request, HttpServletResponse response, @RequestParam String img, @RequestParam String name, @RequestParam Integer price, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color)
+            throws ServletException, IOException {
+
+        HttpSession session = request.getSession();
+        session.removeAttribute("cart3");
+        Product product = (Product) session.getAttribute("cart3");
+        session.setMaxInactiveInterval(-1);
+        product = new Product(name, price, item_size, quantity, img, color);
+        session.setAttribute("cart3", product);
+        return "redirect:/basket";
+    }
+
+    @PostMapping("/in-cart4")
+    protected String inCart4(HttpServletRequest request, HttpServletResponse response, @RequestParam String img, @RequestParam String name, @RequestParam Integer price, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color)
+            throws ServletException, IOException {
+
+        HttpSession session = request.getSession();
+        session.removeAttribute("cart4");
+        Product product = (Product) session.getAttribute("cart4");
+        session.setMaxInactiveInterval(-1);
+        product = new Product(name, price, item_size, quantity, img, color);
+        session.setAttribute("cart4", product);
+        return "redirect:/basket";
+    }
+
+    @PostMapping("/in-cart5")
+    protected String inCart5(HttpServletRequest request, HttpServletResponse response, @RequestParam String img, @RequestParam String name, @RequestParam Integer price, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color)
+            throws ServletException, IOException {
+
+        HttpSession session = request.getSession();
+        session.removeAttribute("cart5");
+        Product product = (Product) session.getAttribute("cart5");
+        session.setMaxInactiveInterval(-1);
+        product = new Product(name, price, item_size, quantity, img, color);
+        session.setAttribute("cart5", product);
+        return "redirect:/basket";
+    }
+
     @PostMapping("/new-order")
     public String newOrder(@RequestParam String FIO, @RequestParam String email, @RequestParam String tel, @RequestParam String post, @RequestParam String street, @RequestParam String home, @RequestParam String country, @RequestParam String city, @RequestParam String region, @RequestParam String index, @RequestParam String name, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer price, @RequestParam(value = "name1", required=false) String name1, @RequestParam(value = "item_size1", required=false) String item_size1, @RequestParam(value = "quantity1", required=false) Integer quantity1, @RequestParam(value = "color1", required=false) String color1, @RequestParam(value = "price1", required=false) Integer price1) {
         String address = country + ", " + region + ", " + city + ", " + street + ", " + home + ", " + index;
@@ -141,21 +237,6 @@ public class MainController {
         }
 
         return "redirect:/pay";
-    }
-
-    //Удаление из корзины
-    @PostMapping("/cart/remove")
-    public String Cart_remove(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession();
-        session.removeAttribute("cart");
-        return "redirect:/basket";
-    }
-
-    @PostMapping("/cart1/remove")
-    public String Cart1_remove(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession();
-        session.removeAttribute("cart1");
-        return "redirect:/basket";
     }
 
 

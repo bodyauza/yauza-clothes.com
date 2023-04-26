@@ -137,7 +137,7 @@
         }
         .shopping-cart {
             width: 750px;
-            height: 423px;
+            height: 310px;
             margin: 80px auto;
             background: #FFFFFF;
             box-shadow: 1px 2px 3px 0px rgba(0,0,0,0.10);
@@ -169,20 +169,15 @@
         }
 
         .item {
+            border-bottom:  1px solid #E1E8EE;
             padding: 20px 30px;
             height: 120px;
             display: flex;
         }
 
-        .item:nth-child(3) {
-            border-top:  1px solid #E1E8EE;
-            border-bottom:  1px solid #E1E8EE;
-        }
-
         .buttons {
-            position: absolute;
             padding-top: 30px;
-            margin-left: 650px;
+            margin-left: 40px;
         }
         .delete-btn{
             display: inline-block;
@@ -230,8 +225,7 @@
 
         .quantity {
             padding-top: 20px;
-            margin-left: 320px;
-            position: absolute;
+            margin-left: 50px;
         }
         .quantity input {
             -webkit-appearance: none;
@@ -244,7 +238,11 @@
         }
 
         #minus-btn,
-        #minus-btn1{
+        #minus-btn1,
+        #minus-btn2,
+        #minus-btn3,
+        #minus-btn4,
+        #minus-btn5 {
             margin-bottom: 3px;
             margin-top: 2px;
             width: 30px;
@@ -255,7 +253,11 @@
             cursor: pointer;
         }
         #plus-btn,
-        #plus-btn1{
+        #plus-btn1,
+        #plus-btn2,
+        #plus-btn3,
+        #plus-btn4,
+        #plus-btn5 {
             margin-top: 2px;
             width: 30px;
             height: 30px;
@@ -271,16 +273,14 @@
         }
 
         #price,
-        #price1 {
-            position: absolute;
-            margin-left: 500px;
+        #price1, #price2, #price3, #price4, #price5 {
+            margin-left: 80px;
             width: 83px;
             text-align: center;
             font-size: 16px;
             color: #43484D;
             font-weight: 300;
             border: none;
-            padding-top: 30px;
         }
 
         .payment-btn{
@@ -309,12 +309,14 @@
         }
 
         .item-total {
+            background: white;
             position: absolute;
-            margin-top: 305px;
+            margin-top: 295px;
             padding: 20px 30px;
             height: 120px;
             display: flex;
-            border-bottom:  1px solid #E1E8EE;
+            border-bottom: 1px solid #E1E8EE;
+            width: 750px;
         }
 
 
@@ -328,6 +330,12 @@
                 width: 38px;
                 height: 37px;
                 background: url("delete-icn1.svg") no-repeat center;
+            }
+
+            .buttons{
+                position: absolute;
+                padding-top: 30px;
+                margin-left: 650px;
             }
 
             .title {
@@ -383,6 +391,7 @@
 
 
             .item-total {
+                background: none;
                 margin-left: 100px;
                 position: absolute;
                 margin-top: 705px;
@@ -420,6 +429,90 @@
                 margin-left: 50px;
                 font-size: 45px;
                 margin-top: 700px;
+            }
+
+            #plus-btn5 {
+                background: no-repeat #E1E8EE url(/plus-mobile.svg) center;
+                margin-top: 2px;
+                width: 80px;
+                height: 80px;
+                border-radius: 6px;
+                border: none;
+                cursor: pointer;
+            }
+
+            #minus-btn5 {
+                background: no-repeat #E1E8EE url(/minus-mobile.svg) center;
+                margin-bottom: 3px;
+                margin-top: 2px;
+                width: 80px;
+                height: 80px;
+                border-radius: 6px;
+                border: none;
+                cursor: pointer;
+            }
+
+            #plus-btn4 {
+                background: no-repeat #E1E8EE url(/plus-mobile.svg) center;
+                margin-top: 2px;
+                width: 80px;
+                height: 80px;
+                border-radius: 6px;
+                border: none;
+                cursor: pointer;
+            }
+
+            #minus-btn4 {
+                background: no-repeat #E1E8EE url(/minus-mobile.svg) center;
+                margin-bottom: 3px;
+                margin-top: 2px;
+                width: 80px;
+                height: 80px;
+                border-radius: 6px;
+                border: none;
+                cursor: pointer;
+            }
+
+            #plus-btn3 {
+                background: no-repeat #E1E8EE url(/plus-mobile.svg) center;
+                margin-top: 2px;
+                width: 80px;
+                height: 80px;
+                border-radius: 6px;
+                border: none;
+                cursor: pointer;
+            }
+
+            #minus-btn3 {
+                background: no-repeat #E1E8EE url(/minus-mobile.svg) center;
+                margin-bottom: 3px;
+                margin-top: 2px;
+                width: 80px;
+                height: 80px;
+                border-radius: 6px;
+                border: none;
+                cursor: pointer;
+            }
+
+            #plus-btn2 {
+                background: no-repeat #E1E8EE url(/plus-mobile.svg) center;
+                margin-top: 2px;
+                width: 80px;
+                height: 80px;
+                border-radius: 6px;
+                border: none;
+                cursor: pointer;
+            }
+
+            #minus-btn2 {
+                background: no-repeat #E1E8EE url(/minus-mobile.svg) center;
+                margin-bottom: 3px;
+                margin-top: 2px;
+                width: 80px;
+                height: 80px;
+                border-radius: 6px;
+                border: none;
+                cursor: pointer;
             }
 
             #plus-btn1 {
@@ -478,7 +571,9 @@
                 font-weight: 300;
             }
 
-            #price, #price1 {
+            #price, #price1,
+            #price2, #price3,
+            #price4, #price5 {
                 position: relative;
                 margin-left: 0px;
                 width: 100px;
@@ -576,24 +671,99 @@
                     })
                 });
 
+                $("#in-cart2").on("submit", function(e){
+                    e.preventDefault();
+                    $.ajax({
+                        url: '/in-cart2',
+                        type: 'post',
+                        data: $(this).serialize()
+                    })
+                });
+
+                $("#in-cart3").on("submit", function(e){
+                    e.preventDefault();
+                    $.ajax({
+                        url: '/in-cart3',
+                        type: 'post',
+                        data: $(this).serialize()
+                    })
+                });
+
+                $("#in-cart4").on("submit", function(e){
+                    e.preventDefault();
+                    $.ajax({
+                        url: '/in-cart4',
+                        type: 'post',
+                        data: $(this).serialize()
+                    })
+                });
+
+                $("#in-cart5").on("submit", function(e){
+                    e.preventDefault();
+                    $.ajax({
+                        url: '/in-cart5',
+                        type: 'post',
+                        data: $(this).serialize()
+                    })
+                });
+
                     var input = $('#cart_quantity');
                     var value = parseInt(input.val());
                     var pr = $('#price');
                     var prv = parseInt(pr.val());
+
                     var input1 = $('#cart_quantity1');
                     var value1 = parseInt(input1.val());
                     var pr1 = $('#price1');
                     var prv1 = parseInt(pr1.val());
 
-                // первичный расчет общей стоимости
+                    var input2 = $('#cart_quantity2');
+                    var value2 = parseInt(input2.val());
+                    var pr2 = $('#price2');
+                    var prv2 = parseInt(pr2.val());
 
-                $("#total-price").html(value * prv);
-                if (value1 > 0) {
-                    $("#total-price").html(value1 * prv1);
-                }
-                if (value1 > 0 && value > 0) {
-                    $("#total-price").html(value * prv + value1 * prv1);
-                }
+                    var input3 = $('#cart_quantity3');
+                    var value3 = parseInt(input3.val());
+                    var pr3 = $('#price3');
+                    var prv3 = parseInt(pr3.val());
+
+                    var input4 = $('#cart_quantity4');
+                    var value4 = parseInt(input4.val());
+                    var pr4 = $('#price4');
+                    var prv4 = parseInt(pr4.val());
+
+                    var input5 = $('#cart_quantity5');
+                    var value5 = parseInt(input5.val());
+                    var pr5 = $('#price5');
+                    var prv5 = parseInt(pr5.val());
+
+                    function total_cart() {
+
+                        var total = [value * prv,
+                            value1 * prv1,
+                            value2 * prv2,
+                            value3 * prv3,
+                            value4 * prv4,
+                            value5 * prv5];
+
+                        var totalDue = 0;
+
+                        for (var j = 0; j < total.length; j++) {
+                            if (isNaN(total[j]) == false) {
+                                totalDue += total[j];
+                            }
+                        }
+                        document.getElementById('total-price').innerHTML = totalDue.toFixed(2);
+
+                        //маркер наличия товаров в корзине
+                        if (totalDue != null) {
+                            $('.circle').css('display', 'block');
+                            $('.circle1').css('display', 'block');
+                        }
+
+                    }
+
+                    total_cart();
 
                 //алгоритм для кнопок "+" и "-"
                     $('#plus-btn').click(function () {
@@ -604,11 +774,7 @@
                             value = 5;
                         }
                         input.val(value);
-                        $("#total-price").html(value * prv);
-
-                        if (value1 > 0) {
-                            $("#total-price").html(value * prv + value1 * prv1);
-                        }
+                        total_cart();
                     });
 
                     $('#minus-btn').click(function () {
@@ -619,11 +785,7 @@
                             value = 1;
                         }
                         input.val(value);
-                        $("#total-price").html(value * prv);
-
-                        if (value1 > 0) {
-                            $("#total-price").html(value * prv + value1 * prv1);
-                        }
+                        total_cart();
                     });
 
 
@@ -635,13 +797,7 @@
                             value1 = 5;
                         }
                         input1.val(value1);
-
-                        $("#total-price").html(value1 * prv1);
-
-                        if (value > 0) {
-                            $("#total-price").html(value * prv + value1 * prv1);
-                        }
-
+                        total_cart();
                     });
 
                     $('#minus-btn1').click(function () {
@@ -652,26 +808,96 @@
                             value1 = 1;
                         }
                         input1.val(value1);
-
-                        $("#total-price").html(value1 * prv1);
-
-                        if (value > 0) {
-                            $("#total-price").html(value * prv + value1 * prv1);
-                        }
-
+                        total_cart();
                     });
 
+                $('#plus-btn2').click(function () {
+                    var $this = $(this);
+                    if (value2 < 5) {
+                        value2 = value2 + 1;
+                    } else {
+                        value2 = 5;
+                    }
+                    input2.val(value2);
+                    total_cart();
+                });
 
-                //маркер наличия товаров в корзине
-                if (value > 0 || value1 > 0) {
-                    $('.circle').css('display', 'block');
-                    $('.circle1').css('display', 'block');
-                }
+                $('#minus-btn2').click(function () {
+                    var $this = $(this);
+                    if (value2 > 1) {
+                        value2 = value2 - 1;
+                    } else {
+                        value2 = 1;
+                    }
+                    input2.val(value2);
+                    total_cart();
+                });
 
-            });
+                $('#plus-btn3').click(function () {
+                    var $this = $(this);
+                    if (value3 < 5) {
+                        value3 = value3 + 1;
+                    } else {
+                        value3 = 5;
+                    }
+                    input3.val(value3);
+                    total_cart();
+                });
 
-            //запись в сессию общей стоимости
-            $(document).ready(function () {
+                $('#minus-btn3').click(function () {
+                    var $this = $(this);
+                    if (value3 > 1) {
+                        value3 = value3 - 1;
+                    } else {
+                        value3 = 1;
+                    }
+                    input3.val(value3);
+                    total_cart();
+                });
+
+                $('#plus-btn4').click(function () {
+                    var $this = $(this);
+                    if (value4 < 5) {
+                        value4 = value4 + 1;
+                    } else {
+                        value4 = 5;
+                    }
+                    input4.val(value4);
+                    total_cart();
+                });
+
+                $('#minus-btn4').click(function () {
+                    var $this = $(this);
+                    if (value4 > 1) {
+                        value4 = value4 - 1;
+                    } else {
+                        value4 = 1;
+                    }
+                    input4.val(value4);
+                    total_cart();
+                });
+
+                $('#plus-btn5').click(function () {
+                    var $this = $(this);
+                    if (value5 < 5) {
+                        value5 = value5 + 1;
+                    } else {
+                        value5 = 5;
+                    }
+                    input5.val(value5);
+                    total_cart();
+                });
+
+                $('#minus-btn4').click(function () {
+                    var $this = $(this);
+                    if (value5 > 1) {
+                        value5 = value5 - 1;
+                    } else {
+                        value5 = 1;
+                    }
+                    input5.val(value5);
+                    total_cart();
+                });
 
             });
 
@@ -692,7 +918,7 @@
     </div>
 
 
-    <div class="previous" th:if="${session.cart == null and session.cart1 == null}">
+    <div class="previous" th:if="${session.cart == null and session.cart1 == null and session.cart2 == null and session.cart3 == null and session.cart4 == null and session.cart5 == null}">
         Ничего не добавлено
     </div>
 
@@ -759,7 +985,134 @@
             </div>
         </div>
 
-    <div class="item-total" th:if="${session.cart != null or session.cart1 != null}">
+    <div class="item" th:each="el : ${session.cart2}">
+        <div class="image">
+            <img th:src="${session.cart2['img']}" alt=""/>
+        </div>
+        <div class="description">
+            <span th:text="${session.cart2['name']}"></span>
+            <span th:text="${session.cart2['item_size'] != null} ? ${session.cart2['item_size']}"></span>
+            <span th:text="${session.cart2['color']}"></span>
+        </div>
+        <form class="quantity" id="in-cart2">
+            <input type="hidden" name="img" th:value="${session.cart2['img']}"/>
+            <input type="hidden" name="name" th:value="${session.cart2['name']}"/>
+            <input type="hidden" name="item_size" th:value="${session.cart2['item_size'] != null} ? ${session.cart2['item_size']}"/>
+            <input type="hidden" name="color" th:value="${session.cart2['color']}"/>
+            <input type="hidden" name="price" th:value="${session.cart2['price']}"/>
+            <button id="plus-btn2" type="submit">
+                <img class="plus" src="plus.svg" alt=""/>
+            </button>
+            <input id="cart_quantity2" name="quantity" th:value="${session.cart2['quantity']}"/>
+            <button id="minus-btn2" type="submit">
+                <img class="minus" src="minus.svg" alt=""/>
+            </button>
+        </form>
+        <input type="number" id="price2" th:value="${session.cart2['price']}" readonly/>
+        <div class="buttons">
+            <form th:action="'/cart2/remove'" method="post">
+                <button class="delete-btn" type="submit"></button>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="item" th:each="el : ${session.cart3}">
+        <div class="image">
+            <img th:src="${session.cart3['img']}" alt=""/>
+        </div>
+        <div class="description">
+            <span th:text="${session.cart3['name']}"></span>
+            <span th:text="${session.cart3['item_size'] != null} ? ${session.cart3['item_size']}"></span>
+            <span th:text="${session.cart3['color']}"></span>
+        </div>
+        <form class="quantity" id="in-cart3">
+            <input type="hidden" name="img" th:value="${session.cart3['img']}"/>
+            <input type="hidden" name="name" th:value="${session.cart3['name']}"/>
+            <input type="hidden" name="item_size" th:value="${session.cart3['item_size'] != null} ? ${session.cart3['item_size']}"/>
+            <input type="hidden" name="color" th:value="${session.cart3['color']}"/>
+            <input type="hidden" name="price" th:value="${session.cart3['price']}"/>
+            <button id="plus-btn3" type="submit">
+                <img class="plus" src="plus.svg" alt="" />
+            </button>
+            <input id="cart_quantity3" name="quantity" th:value="${session.cart3['quantity']}" />
+            <button id="minus-btn3" type="submit">
+                <img class="minus" src="minus.svg" alt="" />
+            </button>
+        </form>
+        <input type="number" id="price3" th:value="${session.cart3['price']}" readonly/>
+        <div class="buttons">
+            <form th:action="'/cart3/remove'" method="post">
+                <button class="delete-btn" type="submit"></button>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="item" th:each="el : ${session.cart4}">
+        <div class="image">
+            <img th:src="${session.cart4['img']}" alt=""/>
+        </div>
+        <div class="description">
+            <span th:text="${session.cart4['name']}"></span>
+            <span th:text="${session.cart4['item_size'] != null} ? ${session.cart4['item_size']}"></span>
+            <span th:text="${session.cart4['color']}"></span>
+        </div>
+        <form class="quantity" id="in-cart4">
+            <input type="hidden" name="img" th:value="${session.cart4['img']}"/>
+            <input type="hidden" name="name" th:value="${session.cart4['name']}"/>
+            <input type="hidden" name="item_size" th:value="${session.cart4['item_size'] != null} ? ${session.cart4['item_size']}"/>
+            <input type="hidden" name="color" th:value="${session.cart4['color']}"/>
+            <input type="hidden" name="price" th:value="${session.cart4['price']}"/>
+            <button id="plus-btn4" type="submit">
+                <img class="plus" src="plus.svg" alt="" />
+            </button>
+            <input id="cart_quantity4" name="quantity" th:value="${session.cart4['quantity']}" />
+            <button id="minus-btn4" type="submit">
+                <img class="minus" src="minus.svg" alt="" />
+            </button>
+        </form>
+        <input type="number" id="price4" th:value="${session.cart4['price']}" readonly/>
+        <div class="buttons">
+            <form th:action="'/cart4/remove'" method="post">
+                <button class="delete-btn" type="submit"></button>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="item" th:each="el : ${session.cart5}">
+        <div class="image">
+            <img th:src="${session.cart5['img']}" alt=""/>
+        </div>
+        <div class="description">
+            <span th:text="${session.cart5['name']}"></span>
+            <span th:text="${session.cart5['item_size'] != null} ? ${session.cart5['item_size']}"></span>
+            <span th:text="${session.cart5['color']}"></span>
+        </div>
+        <form class="quantity" id="in-cart5">
+            <input type="hidden" name="img" th:value="${session.cart5['img']}"/>
+            <input type="hidden" name="name" th:value="${session.cart5['name']}"/>
+            <input type="hidden" name="item_size" th:value="${session.cart5['item_size'] != null} ? ${session.cart5['item_size']}"/>
+            <input type="hidden" name="color" th:value="${session.cart5['color']}"/>
+            <input type="hidden" name="price" th:value="${session.cart5['price']}"/>
+            <button id="plus-btn5" type="submit">
+                <img class="plus" src="plus.svg" alt="" />
+            </button>
+            <input id="cart_quantity5" name="quantity" th:value="${session.cart5['quantity']}" />
+            <button id="minus-btn5" type="submit">
+                <img class="minus" src="minus.svg" alt="" />
+            </button>
+        </form>
+        <input type="number" id="price5" th:value="${session.cart5['price']}" readonly/>
+        <div class="buttons">
+            <form th:action="'/cart5/remove'" method="post">
+                <button class="delete-btn" type="submit"></button>
+            </form>
+        </div>
+    </div>
+
+    <div class="item-total" th:if="${session.cart != null or session.cart1 != null or session.cart2 != null or session.cart3 != null or session.cart4 != null or session.cart5 != null}">
     <div class="total">Итого: <span id="total-price" name="total_price"></span>pуб.</div>
 
             <input type="text" class="input_code" name="coupon_code" placeholder="Промо-код (если есть)" value="">
