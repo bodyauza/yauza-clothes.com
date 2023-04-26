@@ -9,15 +9,5 @@
  <li>Оформление заказа</li>
 </ul>
 
-css */
-
-       ul {
-            list-style-image: url(stars.svg);
-            margin-left: 30px;
-        }
-
-        ul li::marker {
-            font-size: 4em;
-        } */
 
 
