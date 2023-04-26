@@ -9,7 +9,7 @@
  <li>Оформление заказа</li>
 </ul>
 
-```css */
+css */
 
        ul {
             list-style-image: url(stars.svg);
@@ -20,4 +20,4 @@
             font-size: 4em;
         } */
 
-```
+
