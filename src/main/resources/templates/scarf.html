@@ -572,7 +572,7 @@
         <div class="cards__wrapper">
             <div class="card current--card" style="--card-translateY-offset:0%; --current-card-rotation-offset:0;">
                 <div class="card__image">
-                    <img src="/scarf_blue.png" alt="">
+                    <img src="/scarf.png" alt="">
                 </div>
             </div>
 
@@ -617,13 +617,10 @@
 
         <div class="app__bg">
             <div class="app__bg__image current--image">
-                <img src="https://source.unsplash.com/Z8dtTatMVMw" alt="">
             </div>
             <div class="app__bg__image next--image">
-                <img src="https://source.unsplash.com/9dmycbFE7mQ" alt="">
             </div>
             <div class="app__bg__image previous--image">
-                <img src="https://source.unsplash.com/m7K4KzL5aQ8" alt="">
             </div>
         </div>
 </div>
@@ -867,84 +864,6 @@
         card.removeEventListener("pointermove", updateCard);
     }
 
-    function init() {
-
-        let tl = gsap.timeline();
-
-        tl.to(cardsContainerEl.children, {
-            delay: 0.15,
-            duration: 0.5,
-            stagger: {
-                ease: "power4.inOut",
-                from: "right",
-                amount: 0.1 },
-
-            "--card-translateY-offset": "0%" }).
-
-        to(cardInfosContainerEl.querySelector(".current--info").querySelectorAll(".text"), {
-            delay: 0.5,
-            duration: 0.4,
-            stagger: 0.1,
-            opacity: 1,
-            translateY: 0 }).
-
-        to(
-            [buttons.prev, buttons.next],
-            {
-                duration: 0.4,
-                opacity: 1,
-                pointerEvents: "all" },
-
-            "-=0.4");
-
-    }
-
-    const waitForImages = () => {
-        const images = [...document.querySelectorAll("img")];
-        const totalImages = images.length;
-        let loadedImages = 0;
-        const loaderEl = document.querySelector(".loader span");
-
-        gsap.set(cardsContainerEl.children, {
-            "--card-translateY-offset": "0%" });
-
-        gsap.set(cardInfosContainerEl.querySelector(".current--info").querySelectorAll(".text"), {
-            translateY: "40px",
-            opacity: 0 });
-
-        gsap.set([buttons.prev, buttons.next], {
-            pointerEvents: "none",
-            opacity: "0" });
-
-
-        images.forEach(image => {
-            imagesLoaded(image, instance => {
-                if (instance.isComplete) {
-                    loadedImages++;
-                    let loadProgress = loadedImages / totalImages;
-
-                    gsap.to(loaderEl, {
-                        duration: 1,
-                        scaleX: loadProgress,
-                        backgroundColor: `hsl(${loadProgress * 120}, 100%, 50%` });
-
-
-                    if (totalImages == loadedImages) {
-                        gsap.timeline().
-                        to(".loading__wrapper", {
-                            duration: 0.8,
-                            opacity: 0,
-                            pointerEvents: "none" }).
-
-                        call(() => init());
-                    }
-                }
-            });
-        });
-    };
-
-    waitForImages();
-    //# sourceURL=pen.js
 </script>
 
 </body>
