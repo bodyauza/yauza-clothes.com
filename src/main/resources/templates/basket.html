@@ -319,8 +319,17 @@
             width: 750px;
         }
 
+        .img_cart {
+            height: 90px;
+            width: 90px;
+        }
 
         @media (max-width: 1000px) {
+
+            .img_cart {
+                width: 460px;
+                height: 460px;
+            }
 
             .previous {
                 font-size: 48px;
@@ -359,9 +368,6 @@
                 justify-content: center;
             }
 
-            .image img {
-                width: 50%;
-            }
             .image,
             .quantity,
             .description {
@@ -609,7 +615,6 @@
                 row-gap: 15px;
             }
         }
-
 
     </style>
 
@@ -924,7 +929,7 @@
 
     <div class="item" th:each="el : ${session.cart}">
         <div class="image">
-            <img th:src="${session.cart['img']}" alt=""/>
+            <img class="img_cart" th:src="${session.cart['img']}" alt=""/>
         </div>
             <div class="description">
                 <span th:text="${session.cart['name']}"></span>
@@ -956,7 +961,7 @@
 
         <div class="item" th:each="el : ${session.cart1}">
             <div class="image">
-                <img th:src="${session.cart1['img']}" alt=""/>
+                <img class="img_cart" th:src="${session.cart1['img']}" alt=""/>
             </div>
             <div class="description">
                 <span th:text="${session.cart1['name']}"></span>
@@ -987,7 +992,7 @@
 
     <div class="item" th:each="el : ${session.cart2}">
         <div class="image">
-            <img th:src="${session.cart2['img']}" alt=""/>
+            <img class="img_cart" th:src="${session.cart2['img']}" alt=""/>
         </div>
         <div class="description">
             <span th:text="${session.cart2['name']}"></span>
@@ -1019,7 +1024,7 @@
 
     <div class="item" th:each="el : ${session.cart3}">
         <div class="image">
-            <img th:src="${session.cart3['img']}" alt=""/>
+            <img class="img_cart" th:src="${session.cart3['img']}" alt=""/>
         </div>
         <div class="description">
             <span th:text="${session.cart3['name']}"></span>
@@ -1051,7 +1056,7 @@
 
     <div class="item" th:each="el : ${session.cart4}">
         <div class="image">
-            <img th:src="${session.cart4['img']}" alt=""/>
+            <img class="img_cart" th:src="${session.cart4['img']}" alt=""/>
         </div>
         <div class="description">
             <span th:text="${session.cart4['name']}"></span>
@@ -1083,7 +1088,7 @@
 
     <div class="item" th:each="el : ${session.cart5}">
         <div class="image">
-            <img th:src="${session.cart5['img']}" alt=""/>
+            <img class="img_cart" th:src="${session.cart5['img']}" alt=""/>
         </div>
         <div class="description">
             <span th:text="${session.cart5['name']}"></span>
