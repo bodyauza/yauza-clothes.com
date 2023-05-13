@@ -6,6 +6,7 @@ import com.hood.merch.models.Product;
 import com.hood.merch.models.repo.OfferRepository;
 import com.hood.merch.models.repo.ProductRepository;
 import com.hood.merch.service.DefaultEmailService;
+import com.hood.merch.service.ProductService;
 import jakarta.mail.MessagingException;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.servlet.ServletException;
@@ -27,6 +28,9 @@ public class MainController {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private ProductService productService;
 
     @Autowired
     private OfferRepository offerRepository;
@@ -54,7 +58,7 @@ public class MainController {
 
     //Добавление товара
     @PostMapping("/add-name")
-    protected String doSet(HttpServletRequest request, HttpServletResponse response, @RequestParam String img, @RequestParam String name, @RequestParam Integer price, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color)
+    protected String doSet(HttpServletRequest request, HttpServletResponse response, @RequestParam String img, @RequestParam Integer id, @RequestParam String name, @RequestParam Integer price, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color)
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
@@ -74,12 +78,13 @@ public class MainController {
         }
 
         for (String attr : missingAttrs) {
-            Product product = new Product(name, price, item_size, quantity, img, color);
+            Product product = new Product(id, name, price, item_size, quantity, img, color);
             if (cart.add(product)) { // товар успешно добавлен в сет
                 System.out.println("Товар " + product.getName() + " добавлен в сессию и сет");
                 session.setAttribute(attr, product);
+                productService.purchaseProduct(product.getId(), 1);
             } else {
-                System.out.println("Найден товар-дубликат " + product.getName());
+                System.out.println("Найден товар-дубликат " + product.getName() + " или добавлен другой размер");
             }
         }
 
@@ -88,132 +93,141 @@ public class MainController {
 
     //Удаление из корзины
     @PostMapping("/cart/remove")
-    public String Cart_remove(HttpServletRequest request, HttpServletResponse response) {
+    public String Cart_remove(HttpServletRequest request, HttpServletResponse response, @RequestParam Integer id) {
         HttpSession session = request.getSession();
         session.removeAttribute("cart");
+        productService.deleteProduct(id);
         return "redirect:/basket";
     }
 
     @PostMapping("/cart1/remove")
-    public String Cart1_remove(HttpServletRequest request, HttpServletResponse response) {
+    public String Cart1_remove(HttpServletRequest request, HttpServletResponse response, @RequestParam Integer id) {
         HttpSession session = request.getSession();
         session.removeAttribute("cart1");
+        productService.deleteProduct(id);
         return "redirect:/basket";
     }
 
     @PostMapping("/cart2/remove")
-    public String Cart2_remove(HttpServletRequest request, HttpServletResponse response) {
+    public String Cart2_remove(HttpServletRequest request, HttpServletResponse response, @RequestParam Integer id) {
         HttpSession session = request.getSession();
         session.removeAttribute("cart2");
+        productService.deleteProduct(id);
         return "redirect:/basket";
     }
 
     @PostMapping("/cart3/remove")
-    public String Cart3_remove(HttpServletRequest request, HttpServletResponse response) {
+    public String Cart3_remove(HttpServletRequest request, HttpServletResponse response, @RequestParam Integer id) {
         HttpSession session = request.getSession();
         session.removeAttribute("cart3");
+        productService.deleteProduct(id);
         return "redirect:/basket";
     }
 
     @PostMapping("/cart4/remove")
-    public String Cart4_remove(HttpServletRequest request, HttpServletResponse response) {
+    public String Cart4_remove(HttpServletRequest request, HttpServletResponse response, @RequestParam Integer id) {
         HttpSession session = request.getSession();
         session.removeAttribute("cart4");
+        productService.deleteProduct(id);
         return "redirect:/basket";
     }
 
     @PostMapping("/cart5/remove")
-    public String Cart5_remove(HttpServletRequest request, HttpServletResponse response) {
+    public String Cart5_remove(HttpServletRequest request, HttpServletResponse response, @RequestParam Integer id) {
         HttpSession session = request.getSession();
         session.removeAttribute("cart5");
+        productService.deleteProduct(id);
         return "redirect:/basket";
     }
 
     //Изменение количества
 
     @PostMapping("/in-cart")
-   protected String inCart(HttpServletRequest request, HttpServletResponse response, @RequestParam String img, @RequestParam String name, @RequestParam Integer price, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color)
+   protected String inCart(HttpServletRequest request, HttpServletResponse response, @RequestParam String img, @RequestParam Integer id, @RequestParam String name, @RequestParam Integer price, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color)
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
         session.removeAttribute("cart");
         Product product = (Product) session.getAttribute("cart");
         session.setMaxInactiveInterval(-1);
-        product = new Product(name, price, item_size, quantity, img, color);
+        product = new Product(id, name, price, item_size, quantity, img, color);
         session.setAttribute("cart", product);
         return "redirect:/basket";
 }
 
     @PostMapping("/in-cart1")
-    protected String inCart1(HttpServletRequest request, HttpServletResponse response, @RequestParam String img, @RequestParam String name, @RequestParam Integer price, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color)
+    protected String inCart1(HttpServletRequest request, HttpServletResponse response, @RequestParam String img, @RequestParam Integer id, @RequestParam String name, @RequestParam Integer price, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color)
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
         session.removeAttribute("cart1");
         Product product = (Product) session.getAttribute("cart1");
         session.setMaxInactiveInterval(-1);
-        product = new Product(name, price, item_size, quantity, img, color);
+        product = new Product(id, name, price, item_size, quantity, img, color);
         session.setAttribute("cart1", product);
         return "redirect:/basket";
     }
 
     @PostMapping("/in-cart2")
-    protected String inCart2(HttpServletRequest request, HttpServletResponse response, @RequestParam String img, @RequestParam String name, @RequestParam Integer price, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color)
+    protected String inCart2(HttpServletRequest request, HttpServletResponse response, @RequestParam String img, @RequestParam Integer id, @RequestParam String name, @RequestParam Integer price, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color)
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
         session.removeAttribute("cart2");
         Product product = (Product) session.getAttribute("cart2");
         session.setMaxInactiveInterval(-1);
-        product = new Product(name, price, item_size, quantity, img, color);
+        product = new Product(id, name, price, item_size, quantity, img, color);
         session.setAttribute("cart2", product);
         return "redirect:/basket";
     }
 
     @PostMapping("/in-cart3")
-    protected String inCart3(HttpServletRequest request, HttpServletResponse response, @RequestParam String img, @RequestParam String name, @RequestParam Integer price, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color)
+    protected String inCart3(HttpServletRequest request, HttpServletResponse response, @RequestParam String img, @RequestParam Integer id, @RequestParam String name, @RequestParam Integer price, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color)
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
         session.removeAttribute("cart3");
         Product product = (Product) session.getAttribute("cart3");
         session.setMaxInactiveInterval(-1);
-        product = new Product(name, price, item_size, quantity, img, color);
+        product = new Product(id, name, price, item_size, quantity, img, color);
         session.setAttribute("cart3", product);
         return "redirect:/basket";
     }
 
     @PostMapping("/in-cart4")
-    protected String inCart4(HttpServletRequest request, HttpServletResponse response, @RequestParam String img, @RequestParam String name, @RequestParam Integer price, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color)
+    protected String inCart4(HttpServletRequest request, HttpServletResponse response, @RequestParam String img, @RequestParam Integer id, @RequestParam String name, @RequestParam Integer price, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color)
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
         session.removeAttribute("cart4");
         Product product = (Product) session.getAttribute("cart4");
         session.setMaxInactiveInterval(-1);
-        product = new Product(name, price, item_size, quantity, img, color);
+        product = new Product(id, name, price, item_size, quantity, img, color);
         session.setAttribute("cart4", product);
         return "redirect:/basket";
     }
 
     @PostMapping("/in-cart5")
-    protected String inCart5(HttpServletRequest request, HttpServletResponse response, @RequestParam String img, @RequestParam String name, @RequestParam Integer price, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color)
+    protected String inCart5(HttpServletRequest request, HttpServletResponse response, @RequestParam String img, @RequestParam Integer id, @RequestParam String name, @RequestParam Integer price, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color)
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
         session.removeAttribute("cart5");
         Product product = (Product) session.getAttribute("cart5");
         session.setMaxInactiveInterval(-1);
-        product = new Product(name, price, item_size, quantity, img, color);
+        product = new Product(id, name, price, item_size, quantity, img, color);
         session.setAttribute("cart5", product);
         return "redirect:/basket";
     }
 
     @PostMapping("/new-order")
-    public String newOrder(@RequestParam String FIO, @RequestParam String email, @RequestParam String tel, @RequestParam String post, @RequestParam String street, @RequestParam String home, @RequestParam String country, @RequestParam String city, @RequestParam String region, @RequestParam String index, @RequestParam String name, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer price, @RequestParam(value = "name1", required=false) String name1, @RequestParam(value = "item_size1", required=false) String item_size1, @RequestParam(value = "quantity1", required=false) Integer quantity1, @RequestParam(value = "color1", required=false) String color1, @RequestParam(value = "price1", required=false) Integer price1) {
+    public String newOrder(@RequestParam String FIO, @RequestParam String email, @RequestParam String tel, @RequestParam String post, @RequestParam String street, @RequestParam String home, @RequestParam String country, @RequestParam String city, @RequestParam String region, @RequestParam String index, @RequestParam Integer id, @RequestParam String name, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer price, @RequestParam(value = "id1", required=false) Integer id1, @RequestParam(value = "name1", required=false) String name1, @RequestParam(value = "item_size1", required=false) String item_size1, @RequestParam(value = "quantity1", required=false) Integer quantity1, @RequestParam(value = "color1", required=false) String color1, @RequestParam(value = "price1", required=false) Integer price1) {
         String address = country + ", " + region + ", " + city + ", " + street + ", " + home + ", " + index;
 
         Integer total_price = (quantity * price);
+
+        productService.purchaseProduct(id, quantity);
+        productService.purchaseProduct(id1, quantity1);
 
         String products = name + ", " + item_size + ", " + quantity.toString() + ", " + color + ";" + "\n" + "Сумма заказа:" + total_price.toString() + "руб.;";
 

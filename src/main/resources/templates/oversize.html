@@ -633,7 +633,7 @@
 
                 <div class="card previous--card" style="--card-translateY-offset:0%;">
                     <div class="card__image">
-                        <img src="/ecd470807be1918e5843ef6a305a71e4.jpg" alt="">
+                        <img src="/scarf.png" alt="">
                     </div>
                 </div>
             </div>
@@ -676,6 +676,8 @@
 
 <form action="/add-name" method="post">
     <div th:each="el : ${products1}">
+        <input type="hidden" name="id" th:value="${el.id}"/>
+
         <input type="hidden" name="img" th:value="${el.img}"/>
 
         <div class="details-container">

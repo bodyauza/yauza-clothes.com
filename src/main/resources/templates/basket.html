@@ -336,21 +336,24 @@
             }
 
             .delete-btn {
+                margin-left: -120px;
                 width: 38px;
                 height: 37px;
                 background: url("delete-icn1.svg") no-repeat center;
             }
 
             .buttons{
-                position: absolute;
-                padding-top: 30px;
-                margin-left: 650px;
+                margin-left: 400px;
+                margin-top: -750px;
+                width: 20px;
+                height: 20px;
+                position: relative;
             }
 
             .title {
-                border-top: 1px solid #E1E8EE;
+                border-top: 2px solid #E1E8EE;
                 height: 90px;
-                border-bottom: 1px solid #E1E8EE;
+                border-bottom: 2px solid #E1E8EE;
                 padding: 20px 30px;
                 color: #5E6977;
                 font-size: 48px;
@@ -581,7 +584,7 @@
             #price2, #price3,
             #price4, #price5 {
                 position: relative;
-                margin-left: 0px;
+                margin-left: 400px;
                 width: 100px;
                 text-align: center;
                 font-size: 46px;
@@ -937,6 +940,7 @@
                 <span th:text="${session.cart['color']}"></span>
             </div>
         <form class="quantity" id="in-cart">
+            <input type="hidden" name="id" th:value="${session.cart['id']}"/>
             <input type="hidden" name="img" th:value="${session.cart['img']}"/>
             <input type="hidden" name="name" th:value="${session.cart['name']}"/>
             <input type="hidden" name="item_size" th:value="${session.cart['item_size'] != null} ? ${session.cart['item_size']}"/>
@@ -953,6 +957,7 @@
         <input type="number" id="price" th:value="${session.cart['price']}" readonly/>
         <div class="buttons">
             <form th:action="'/cart/remove'" method="post">
+                <input type="hidden" name="id" th:value="${session.cart['id']}"/>
                 <button class="delete-btn" type="submit"></button>
             </form>
         </div>
@@ -969,6 +974,7 @@
                 <span th:text="${session.cart1['color']}"></span>
             </div>
             <form class="quantity" id="in-cart1">
+                <input type="hidden" name="id1" th:value="${session.cart1['id']}"/>
                 <input type="hidden" name="img" th:value="${session.cart1['img']}"/>
                 <input type="hidden" name="name" th:value="${session.cart1['name']}"/>
                 <input type="hidden" name="item_size" th:value="${session.cart1['item_size'] != null} ? ${session.cart1['item_size']}"/>
@@ -985,6 +991,7 @@
             <input type="number" id="price1" th:value="${session.cart1['price']}" readonly/>
             <div class="buttons">
                 <form th:action="'/cart1/remove'" method="post">
+                    <input type="hidden" name="id" th:value="${session.cart1['id']}"/>
                     <button class="delete-btn" type="submit"></button>
                 </form>
             </div>
@@ -1000,6 +1007,7 @@
             <span th:text="${session.cart2['color']}"></span>
         </div>
         <form class="quantity" id="in-cart2">
+            <input type="hidden" name="id2" th:value="${session.cart2['id']}"/>
             <input type="hidden" name="img" th:value="${session.cart2['img']}"/>
             <input type="hidden" name="name" th:value="${session.cart2['name']}"/>
             <input type="hidden" name="item_size" th:value="${session.cart2['item_size'] != null} ? ${session.cart2['item_size']}"/>
@@ -1016,6 +1024,7 @@
         <input type="number" id="price2" th:value="${session.cart2['price']}" readonly/>
         <div class="buttons">
             <form th:action="'/cart2/remove'" method="post">
+                <input type="hidden" name="id" th:value="${session.cart2['id']}"/>
                 <button class="delete-btn" type="submit"></button>
             </form>
         </div>
@@ -1032,6 +1041,7 @@
             <span th:text="${session.cart3['color']}"></span>
         </div>
         <form class="quantity" id="in-cart3">
+            <input type="hidden" name="id3" th:value="${session.cart3['id']}"/>
             <input type="hidden" name="img" th:value="${session.cart3['img']}"/>
             <input type="hidden" name="name" th:value="${session.cart3['name']}"/>
             <input type="hidden" name="item_size" th:value="${session.cart3['item_size'] != null} ? ${session.cart3['item_size']}"/>
@@ -1048,6 +1058,7 @@
         <input type="number" id="price3" th:value="${session.cart3['price']}" readonly/>
         <div class="buttons">
             <form th:action="'/cart3/remove'" method="post">
+                <input type="hidden" name="id" th:value="${session.cart3['id']}"/>
                 <button class="delete-btn" type="submit"></button>
             </form>
         </div>
@@ -1064,6 +1075,7 @@
             <span th:text="${session.cart4['color']}"></span>
         </div>
         <form class="quantity" id="in-cart4">
+            <input type="hidden" name="id4" th:value="${session.cart4['id']}"/>
             <input type="hidden" name="img" th:value="${session.cart4['img']}"/>
             <input type="hidden" name="name" th:value="${session.cart4['name']}"/>
             <input type="hidden" name="item_size" th:value="${session.cart4['item_size'] != null} ? ${session.cart4['item_size']}"/>
@@ -1080,6 +1092,7 @@
         <input type="number" id="price4" th:value="${session.cart4['price']}" readonly/>
         <div class="buttons">
             <form th:action="'/cart4/remove'" method="post">
+                <input type="hidden" name="id" th:value="${session.cart4['id']}"/>
                 <button class="delete-btn" type="submit"></button>
             </form>
         </div>
@@ -1096,6 +1109,7 @@
             <span th:text="${session.cart5['color']}"></span>
         </div>
         <form class="quantity" id="in-cart5">
+            <input type="hidden" name="id5" th:value="${session.cart5['id']}"/>
             <input type="hidden" name="img" th:value="${session.cart5['img']}"/>
             <input type="hidden" name="name" th:value="${session.cart5['name']}"/>
             <input type="hidden" name="item_size" th:value="${session.cart5['item_size'] != null} ? ${session.cart5['item_size']}"/>
@@ -1112,6 +1126,7 @@
         <input type="number" id="price5" th:value="${session.cart5['price']}" readonly/>
         <div class="buttons">
             <form th:action="'/cart5/remove'" method="post">
+                <input type="hidden" name="id" th:value="${session.cart5['id']}"/>
                 <button class="delete-btn" type="submit"></button>
             </form>
         </div>

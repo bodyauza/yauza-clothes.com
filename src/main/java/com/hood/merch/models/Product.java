@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import org.springframework.data.annotation.Version;
 
 import java.util.Objects;
 
@@ -12,13 +13,16 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private int id;
 
     private String name;
     private String item_size;
     private String img;
     private String color;
     private int price, quantity;
+
+    @Version
+    private int in_stock;
 
     public String getColor() {
         return color;
@@ -36,11 +40,19 @@ public class Product {
         this.img = img;
     }
 
-    public void setId(Long id) {
+    public int getIn_stock() {
+        return in_stock;
+    }
+
+    public void setIn_stock(int in_stock) {
+        this.in_stock = in_stock;
+    }
+
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
@@ -81,7 +93,8 @@ public class Product {
     public Product() {
     }
 
-    public Product(String name, int price, String item_size, int quantity, String img, String color) {
+    public Product(int id, String name, int price, String item_size, int quantity, String img, String color) {
+        this.id = id;
         this.name = name;
         this.price = price;
         this.item_size = item_size;
