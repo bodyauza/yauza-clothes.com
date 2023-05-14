@@ -221,17 +221,24 @@ public class MainController {
     }
 
     @PostMapping("/new-order")
-    public String newOrder(@RequestParam String FIO, @RequestParam String email, @RequestParam String tel, @RequestParam String post, @RequestParam String street, @RequestParam String home, @RequestParam String country, @RequestParam String city, @RequestParam String region, @RequestParam String index, @RequestParam Integer id, @RequestParam String name, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer price, @RequestParam(value = "id1", required=false) Integer id1, @RequestParam(value = "name1", required=false) String name1, @RequestParam(value = "item_size1", required=false) String item_size1, @RequestParam(value = "quantity1", required=false) Integer quantity1, @RequestParam(value = "color1", required=false) String color1, @RequestParam(value = "price1", required=false) Integer price1) {
+    public String newOrder(HttpServletRequest request, HttpServletResponse response, @RequestParam String FIO, @RequestParam String email, @RequestParam String tel, @RequestParam String post, @RequestParam String street, @RequestParam String home, @RequestParam String country, @RequestParam String city, @RequestParam String region, @RequestParam String index, @RequestParam Integer id, @RequestParam String name, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer price, @RequestParam(value = "id1", required=false) Integer id1, @RequestParam(value = "name1", required=false) String name1, @RequestParam(value = "item_size1", required=false) String item_size1, @RequestParam(value = "quantity1", required=false) Integer quantity1, @RequestParam(value = "color1", required=false) String color1, @RequestParam(value = "price1", required=false) Integer price1) {
         String address = country + ", " + region + ", " + city + ", " + street + ", " + home + ", " + index;
 
         Integer total_price = (quantity * price);
 
-        productService.purchaseProduct(id, quantity);
-        productService.purchaseProduct(id1, quantity1);
+        Integer in_stock = quantity - 1;
+
+        if(in_stock != 0) {
+            productService.purchaseProduct(id, in_stock);
+        }
 
         String products = name + ", " + item_size + ", " + quantity.toString() + ", " + color + ";" + "\n" + "Сумма заказа:" + total_price.toString() + "руб.;";
 
         if (quantity1 != null) {
+            Integer in_stock1 = quantity1 - 1;
+            if(in_stock1 != 0) {
+                productService.purchaseProduct(id1, in_stock1);
+            }
             total_price = (quantity * price) + (quantity1 * price1);
             products = name + ", " + item_size + ", " + quantity.toString() + ", " + color + ";" + "\n" + name1 + ", " + item_size1 + ", " + quantity1.toString() + ", " + color1 + ";" + "\n" + "Сумма заказа:" + total_price.toString() + "руб.;";
         }
@@ -249,6 +256,10 @@ public class MainController {
         } catch (MessagingException | FileNotFoundException mailException) {
             System.out.println("Unable to send email");
         }
+
+        HttpSession session = request.getSession();
+        session.removeAttribute("cart");
+        session.removeAttribute("cart1");
 
         return "redirect:/pay";
     }

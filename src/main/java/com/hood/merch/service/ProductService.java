@@ -19,7 +19,11 @@ public class ProductService {
         }
 
         product.setIn_stock(product.getIn_stock() - quantity);
-        productRepository.save(product);
+        if(product.getIn_stock() >= 0) {
+            productRepository.save(product);
+        } else {
+            throw new RuntimeException("Товар закончился");
+        }
     }
 
     public void deleteProduct(int productId) {
