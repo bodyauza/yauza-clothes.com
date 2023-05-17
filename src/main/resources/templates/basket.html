@@ -661,52 +661,7 @@
 
             $(document).ready(function () {
 
-                $("#in-cart").on("submit", function(e){
-                    e.preventDefault();
-                    $.ajax({
-                        url: '/in-cart',
-                        type: 'post',
-                        data: $(this).serialize()
-                    })
-                });
-
-                $("#in-cart1").on("submit", function(e){
-                    e.preventDefault();
-                    $.ajax({
-                        url: '/in-cart',
-                        type: 'post',
-                        data: $(this).serialize()
-                    })
-                });
-
-                $("#in-cart2").on("submit", function(e){
-                    e.preventDefault();
-                    $.ajax({
-                        url: '/in-cart',
-                        type: 'post',
-                        data: $(this).serialize()
-                    })
-                });
-
-                $("#in-cart3").on("submit", function(e){
-                    e.preventDefault();
-                    $.ajax({
-                        url: '/in-cart',
-                        type: 'post',
-                        data: $(this).serialize()
-                    })
-                });
-
-                $("#in-cart4").on("submit", function(e){
-                    e.preventDefault();
-                    $.ajax({
-                        url: '/in-cart',
-                        type: 'post',
-                        data: $(this).serialize()
-                    })
-                });
-
-                $("#in-cart5").on("submit", function(e){
+                $(".quantity").on("submit", function(e){
                     e.preventDefault();
                     $.ajax({
                         url: '/in-cart',
@@ -939,7 +894,7 @@
                 <span th:text="${session.cart['item_size'] != null} ? ${session.cart['item_size']}"></span>
                 <span th:text="${session.cart['color']}"></span>
             </div>
-        <form class="quantity" id="in-cart">
+        <form class="quantity">
             <input type="hidden" name="attr_name" value="cart"/>
             <input type="hidden" name="id" th:value="${session.cart['id']}"/>
             <input type="hidden" name="img" th:value="${session.cart['img']}"/>
@@ -975,7 +930,7 @@
                 <span th:text="${session.cart1['item_size'] != null} ? ${session.cart1['item_size']}"></span>
                 <span th:text="${session.cart1['color']}"></span>
             </div>
-            <form class="quantity" id="in-cart1">
+            <form class="quantity">
                 <input type="hidden" name="attr_name" value="cart1"/>
                 <input type="hidden" name="id" th:value="${session.cart1['id']}"/>
                 <input type="hidden" name="img" th:value="${session.cart1['img']}"/>
@@ -1010,7 +965,7 @@
             <span th:text="${session.cart2['item_size'] != null} ? ${session.cart2['item_size']}"></span>
             <span th:text="${session.cart2['color']}"></span>
         </div>
-        <form class="quantity" id="in-cart2">
+        <form class="quantity">
             <input type="hidden" name="attr_name" value="cart2"/>
             <input type="hidden" name="id" th:value="${session.cart2['id']}"/>
             <input type="hidden" name="img" th:value="${session.cart2['img']}"/>
@@ -1046,7 +1001,7 @@
             <span th:text="${session.cart3['item_size'] != null} ? ${session.cart3['item_size']}"></span>
             <span th:text="${session.cart3['color']}"></span>
         </div>
-        <form class="quantity" id="in-cart3">
+        <form class="quantity">
             <input type="hidden" name="attr_name" value="cart3"/>
             <input type="hidden" name="id" th:value="${session.cart3['id']}"/>
             <input type="hidden" name="img" th:value="${session.cart3['img']}"/>
@@ -1082,7 +1037,7 @@
             <span th:text="${session.cart4['item_size'] != null} ? ${session.cart4['item_size']}"></span>
             <span th:text="${session.cart4['color']}"></span>
         </div>
-        <form class="quantity" id="in-cart4">
+        <form class="quantity">
             <input type="hidden" name="attr_name" value="cart4"/>
             <input type="hidden" name="id" th:value="${session.cart4['id']}"/>
             <input type="hidden" name="img" th:value="${session.cart4['img']}"/>
@@ -1118,7 +1073,7 @@
             <span th:text="${session.cart5['item_size'] != null} ? ${session.cart5['item_size']}"></span>
             <span th:text="${session.cart5['color']}"></span>
         </div>
-        <form class="quantity" id="in-cart5">
+        <form class="quantity">
             <input type="hidden" name="attr_name" value="cart5"/>
             <input type="hidden" name="id" th:value="${session.cart5['id']}"/>
             <input type="hidden" name="img" th:value="${session.cart5['img']}"/>
