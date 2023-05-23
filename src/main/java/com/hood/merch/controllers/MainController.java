@@ -9,12 +9,9 @@ import com.hood.merch.service.DefaultEmailService;
 import com.hood.merch.service.ProductService;
 import com.hood.merch.service.SessionService;
 import jakarta.mail.MessagingException;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -86,7 +83,6 @@ public class MainController {
             if (cart.add(product)) { // товар успешно добавлен в сет
                 System.out.println("Товар " + product.getName() + " добавлен в сессию и сет");
                 session.setAttribute(attr, product);
-                productService.purchaseProduct(product.getId(), 1);
             } else {
                 System.out.println("Найден товар-дубликат " + product.getName() + " или добавлен другой размер");
             }
@@ -100,7 +96,6 @@ public class MainController {
     public String Cart_remove(HttpServletRequest request, HttpServletResponse response, @RequestParam String attr_name, @RequestParam Integer id) {
         HttpSession session = request.getSession();
         session.removeAttribute(attr_name);
-        productService.deleteProduct(id);
         return "redirect:/basket";
     }
 
@@ -125,19 +120,14 @@ public class MainController {
 
         Integer total_price = (quantity * price);
 
-        Integer in_stock = quantity - 1;
-
-        if(in_stock != 0) {
-            productService.purchaseProduct(id, in_stock);
-        }
+        productService.purchaseProduct(id, quantity);
 
         String products = name + ", " + item_size + ", " + quantity.toString() + ", " + color + ";" + "\n" + "Сумма заказа:" + total_price.toString() + "руб.;";
 
         if (quantity1 != null) {
-            Integer in_stock1 = quantity1 - 1;
-            if(in_stock1 != 0) {
-                productService.purchaseProduct(id1, in_stock1);
-            }
+
+            productService.purchaseProduct(id1, quantity1);
+
             total_price = (quantity * price) + (quantity1 * price1);
             products = name + ", " + item_size + ", " + quantity.toString() + ", " + color + ";" + "\n" + name1 + ", " + item_size1 + ", " + quantity1.toString() + ", " + color1 + ";" + "\n" + "Сумма заказа:" + total_price.toString() + "руб.;";
         }
@@ -199,5 +189,4 @@ public class MainController {
         model.addAttribute("title", "Email");
         return "sender";
     }
-
 }

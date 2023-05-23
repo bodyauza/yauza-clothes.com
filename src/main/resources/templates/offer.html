@@ -235,7 +235,7 @@
       <input type="hidden" name="price" th:value="${session.cart['price']}"/>
 
       <div th:each="el : ${session.cart1}">
-        <input type="hidden" name="id1" th:value="${session.cart['id']}"/>
+        <input type="hidden" name="id1" th:value="${session.cart1['id']}"/>
         <input type="hidden" name="name1" th:value="${session.cart1['name']}"/>
         <input type="hidden" name="item_size1" th:value="${session.cart1['item_size']}"/>
         <input type="hidden" name="color1" th:value="${session.cart1['color']}"/>

@@ -25,11 +25,4 @@ public class ProductService {
             throw new RuntimeException("Товар закончился");
         }
     }
-
-    public void deleteProduct(int productId) {
-        Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Товар не найден"));
-
-        product.setIn_stock(product.getIn_stock() + 1);
-        productRepository.save(product);
-    }
 }
