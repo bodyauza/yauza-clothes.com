@@ -700,6 +700,24 @@
                     var pr5 = $('#price5');
                     var prv5 = parseInt(pr5.val());
 
+                    var in_stock = $('#in_stock');
+                    var in_stock_value = parseInt(in_stock.val());
+
+                    var in_stock1 = $('#in_stock1');
+                    var in_stock_value1 = parseInt(in_stock1.val());
+
+                    var in_stock2 = $('#in_stock2');
+                    var in_stock_value2 = parseInt(in_stock2.val());
+
+                    var in_stock3 = $('#in_stock3');
+                    var in_stock_value3 = parseInt(in_stock3.val());
+
+                    var in_stock4 = $('#in_stock4');
+                    var in_stock_value4 = parseInt(in_stock4.val());
+
+                    var in_stock5 = $('#in_stock5');
+                    var in_stock_value5 = parseInt(in_stock5.val());
+
                     function total_cart() {
 
                         var total = [value * prv,
@@ -731,10 +749,8 @@
                 //алгоритм для кнопок "+" и "-"
                     $('#plus-btn').click(function () {
                         var $this = $(this);
-                        if (value < 5) {
+                        if (value < 6 && value < in_stock_value) {
                             value = value + 1;
-                        } else {
-                            value = 5;
                         }
                         input.val(value);
                         total_cart();
@@ -754,10 +770,8 @@
 
                     $('#plus-btn1').click(function () {
                         var $this = $(this);
-                        if (value1 < 5) {
+                        if (value1 < 6 && value1 < in_stock_value1) {
                             value1 = value1 + 1;
-                        } else {
-                            value1 = 5;
                         }
                         input1.val(value1);
                         total_cart();
@@ -774,16 +788,14 @@
                         total_cart();
                     });
 
-                    $('#plus-btn2').click(function () {
-                        var $this = $(this);
-                        if (value2 < 5) {
-                            value2 = value2 + 1;
-                        } else {
-                            value2 = 5;
-                        }
-                        input2.val(value2);
-                        total_cart();
-                    });
+                $('#plus-btn2').click(function () {
+                    var $this = $(this);
+                    if (value2 < 6 && value2 < in_stock_value2) {
+                        value2 = value2 + 1;
+                    }
+                    input2.val(value2);
+                    total_cart();
+                });
 
                     $('#minus-btn2').click(function () {
                         var $this = $(this);
@@ -796,16 +808,14 @@
                         total_cart();
                     });
 
-                    $('#plus-btn3').click(function () {
-                        var $this = $(this);
-                        if (value3 < 5) {
-                            value3 = value3 + 1;
-                        } else {
-                            value3 = 5;
-                        }
-                        input3.val(value3);
-                        total_cart();
-                    });
+                $('#plus-btn3').click(function () {
+                    var $this = $(this);
+                    if (value3 < 6 && value3 < in_stock_value3) {
+                        value3 = value3 + 1;
+                    }
+                    input3.val(value3);
+                    total_cart();
+                });
 
                     $('#minus-btn3').click(function () {
                         var $this = $(this);
@@ -818,16 +828,14 @@
                         total_cart();
                     });
 
-                    $('#plus-btn4').click(function () {
-                        var $this = $(this);
-                        if (value4 < 5) {
-                            value4 = value4 + 1;
-                        } else {
-                            value4 = 5;
-                        }
-                        input4.val(value4);
-                        total_cart();
-                    });
+                $('#plus-btn4').click(function () {
+                    var $this = $(this);
+                    if (value4 < 6 && value4 < in_stock_value4) {
+                        value4 = value4 + 1;
+                    }
+                    input4.val(value4);
+                    total_cart();
+                });
 
                     $('#minus-btn4').click(function () {
                         var $this = $(this);
@@ -840,18 +848,16 @@
                         total_cart();
                     });
 
-                    $('#plus-btn5').click(function () {
-                        var $this = $(this);
-                        if (value5 < 5) {
-                            value5 = value5 + 1;
-                        } else {
-                            value5 = 5;
-                        }
-                        input5.val(value5);
-                        total_cart();
-                    });
+                $('#plus-btn5').click(function () {
+                    var $this = $(this);
+                    if (value5 < 6 && value5 < in_stock_value5) {
+                        value5 = value5 + 1;
+                    }
+                    input5.val(value5);
+                    total_cart();
+                });
 
-                    $('#minus-btn4').click(function () {
+                    $('#minus-btn5').click(function () {
                         var $this = $(this);
                         if (value5 > 1) {
                             value5 = value5 - 1;
@@ -902,6 +908,7 @@
             <input type="hidden" name="item_size" th:value="${session.cart['item_size'] != null} ? ${session.cart['item_size']}"/>
             <input type="hidden" name="color" th:value="${session.cart['color']}"/>
             <input type="hidden" name="price" th:value="${session.cart['price']}"/>
+            <input type="hidden" name="in_stock" id="in_stock" th:value="${session.cart['in_stock']}"/>
             <button id="plus-btn" type="submit">
                     <img class="plus" src="plus.svg" alt=""/>
                 </button>
@@ -938,6 +945,7 @@
                 <input type="hidden" name="item_size" th:value="${session.cart1['item_size'] != null} ? ${session.cart1['item_size']}"/>
                 <input type="hidden" name="color" th:value="${session.cart1['color']}"/>
                 <input type="hidden" name="price" th:value="${session.cart1['price']}"/>
+                <input type="hidden" name="in_stock" id="in_stock1" th:value="${session.cart1['in_stock']}"/>
                 <button id="plus-btn1" type="submit">
                     <img class="plus" src="plus.svg" alt="" />
                 </button>
@@ -973,6 +981,7 @@
             <input type="hidden" name="item_size" th:value="${session.cart2['item_size'] != null} ? ${session.cart2['item_size']}"/>
             <input type="hidden" name="color" th:value="${session.cart2['color']}"/>
             <input type="hidden" name="price" th:value="${session.cart2['price']}"/>
+            <input type="hidden" name="in_stock" id="in_stock2" th:value="${session.cart2['in_stock']}"/>
             <button id="plus-btn2" type="submit">
                 <img class="plus" src="plus.svg" alt=""/>
             </button>
@@ -1009,6 +1018,7 @@
             <input type="hidden" name="item_size" th:value="${session.cart3['item_size'] != null} ? ${session.cart3['item_size']}"/>
             <input type="hidden" name="color" th:value="${session.cart3['color']}"/>
             <input type="hidden" name="price" th:value="${session.cart3['price']}"/>
+            <input type="hidden" name="in_stock" id="in_stock3" th:value="${session.cart3['in_stock']}"/>
             <button id="plus-btn3" type="submit">
                 <img class="plus" src="plus.svg" alt="" />
             </button>
@@ -1045,6 +1055,7 @@
             <input type="hidden" name="item_size" th:value="${session.cart4['item_size'] != null} ? ${session.cart4['item_size']}"/>
             <input type="hidden" name="color" th:value="${session.cart4['color']}"/>
             <input type="hidden" name="price" th:value="${session.cart4['price']}"/>
+            <input type="hidden" name="in_stock" id="in_stock4" th:value="${session.cart4['in_stock']}"/>
             <button id="plus-btn4" type="submit">
                 <img class="plus" src="plus.svg" alt="" />
             </button>
@@ -1081,6 +1092,7 @@
             <input type="hidden" name="item_size" th:value="${session.cart5['item_size'] != null} ? ${session.cart5['item_size']}"/>
             <input type="hidden" name="color" th:value="${session.cart5['color']}"/>
             <input type="hidden" name="price" th:value="${session.cart5['price']}"/>
+            <input type="hidden" name="in_stock" id="in_stock5" th:value="${session.cart5['in_stock']}"/>
             <button id="plus-btn5" type="submit">
                 <img class="plus" src="plus.svg" alt="" />
             </button>

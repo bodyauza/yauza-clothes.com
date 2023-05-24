@@ -715,6 +715,7 @@
                 <h3 th:text="${el.price}"></h3>
                 <input type="hidden" name="price"  class="total-price" th:value="${el.price}"/>
                 <button type="submit" class="btn-to_cart">В корзину</button>
+                <input type="hidden" name="in_stock" id="in_stock" th:value="${el.in_stock}"/>
             </div>
         </div>
     </div>

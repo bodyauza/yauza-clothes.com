@@ -93,7 +93,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(int id, String name, int price, String item_size, int quantity, String img, String color) {
+    public Product(int id, String name, int price, String item_size, int quantity, String img, String color, int in_stock) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -101,6 +101,7 @@ public class Product {
         this.quantity = quantity;
         this.img = img;
         this.color = color;
+        this.in_stock = in_stock;
     }
 
     @Override

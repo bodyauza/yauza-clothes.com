@@ -59,7 +59,7 @@ public class MainController {
 
     //Добавление товара
     @PostMapping("/add-name")
-    protected String doSet(HttpServletRequest request, HttpServletResponse response, @RequestParam String img, @RequestParam Integer id, @RequestParam String name, @RequestParam Integer price, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color)
+    protected String doSet(HttpServletRequest request, HttpServletResponse response, @RequestParam String img, @RequestParam Integer id, @RequestParam String name, @RequestParam Integer price, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer in_stock)
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
@@ -79,7 +79,7 @@ public class MainController {
         }
 
         for (String attr : missingAttrs) {
-            Product product = new Product(id, name, price, item_size, quantity, img, color);
+            Product product = new Product(id, name, price, item_size, quantity, img, color, in_stock);
             if (cart.add(product)) { // товар успешно добавлен в сет
                 System.out.println("Товар " + product.getName() + " добавлен в сессию и сет");
                 session.setAttribute(attr, product);
@@ -101,15 +101,19 @@ public class MainController {
 
     //Изменение количества
     @PostMapping("/in-cart")
-   protected String inCart(HttpServletRequest request, HttpServletResponse response, @RequestParam String attr_name, @RequestParam String img, @RequestParam Integer id, @RequestParam String name, @RequestParam Integer price, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color)
+   protected String inCart(HttpServletRequest request, HttpServletResponse response, @RequestParam String attr_name, @RequestParam String img, @RequestParam Integer id, @RequestParam String name, @RequestParam Integer price, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer in_stock)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession();
-        session.removeAttribute(attr_name);
-        Product product = (Product) session.getAttribute("attr_name");
-        session.setMaxInactiveInterval(-1);
-        product = new Product(id, name, price, item_size, quantity, img, color);
-        session.setAttribute(attr_name, product);
+        Product stock = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Товар не найден"));
+
+        if(stock.getIn_stock() >= quantity) {
+            HttpSession session = request.getSession();
+            session.removeAttribute(attr_name);
+            Product product = (Product) session.getAttribute("attr_name");
+            session.setMaxInactiveInterval(-1);
+            product = new Product(id, name, price, item_size, quantity, img, color, in_stock);
+            session.setAttribute(attr_name, product);
+        }
         return "redirect:/basket";
 }
 
