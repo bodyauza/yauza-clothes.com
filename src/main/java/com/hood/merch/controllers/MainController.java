@@ -105,14 +105,16 @@ public class MainController {
             throws ServletException, IOException {
 
         Product stock = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Товар не найден"));
+        HttpSession session = request.getSession();
 
         if(stock.getIn_stock() >= quantity) {
-            HttpSession session = request.getSession();
             session.removeAttribute(attr_name);
             Product product = (Product) session.getAttribute("attr_name");
             session.setMaxInactiveInterval(-1);
             product = new Product(id, name, price, item_size, quantity, img, color, in_stock);
             session.setAttribute(attr_name, product);
+        } else {
+            session.removeAttribute(attr_name);
         }
         return "redirect:/basket";
 }
@@ -122,37 +124,42 @@ public class MainController {
     public String newOrder(HttpServletRequest request, HttpServletResponse response, @RequestParam String FIO, @RequestParam String email, @RequestParam String tel, @RequestParam String post, @RequestParam String street, @RequestParam String home, @RequestParam String country, @RequestParam String city, @RequestParam String region, @RequestParam String index, @RequestParam Integer id, @RequestParam String name, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer price, @RequestParam(value = "id1", required=false) Integer id1, @RequestParam(value = "name1", required=false) String name1, @RequestParam(value = "item_size1", required=false) String item_size1, @RequestParam(value = "quantity1", required=false) Integer quantity1, @RequestParam(value = "color1", required=false) String color1, @RequestParam(value = "price1", required=false) Integer price1) {
         String address = country + ", " + region + ", " + city + ", " + street + ", " + home + ", " + index;
 
-        Integer total_price = (quantity * price);
+        if (productService.purchaseProduct(id, quantity) == "Товар закончился") {
+            return "basket";
+        } else {
 
-        productService.purchaseProduct(id, quantity);
+            Integer total_price = (quantity * price);
 
-        String products = name + ", " + item_size + ", " + quantity.toString() + ", " + color + ";" + "\n" + "Сумма заказа:" + total_price.toString() + "руб.;";
+            productService.purchaseProduct(id, quantity);
 
-        if (quantity1 != null) {
+            String products = name + ", " + item_size + ", " + quantity.toString() + ", " + color + ";" + "\n" + "Сумма заказа:" + total_price.toString() + "руб.;";
 
-            productService.purchaseProduct(id1, quantity1);
+            if (quantity1 != null) {
 
-            total_price = (quantity * price) + (quantity1 * price1);
-            products = name + ", " + item_size + ", " + quantity.toString() + ", " + color + ";" + "\n" + name1 + ", " + item_size1 + ", " + quantity1.toString() + ", " + color1 + ";" + "\n" + "Сумма заказа:" + total_price.toString() + "руб.;";
+                productService.purchaseProduct(id1, quantity1);
+
+                total_price = (quantity * price) + (quantity1 * price1);
+                products = name + ", " + item_size + ", " + quantity.toString() + ", " + color + ";" + "\n" + name1 + ", " + item_size1 + ", " + quantity1.toString() + ", " + color1 + ";" + "\n" + "Сумма заказа:" + total_price.toString() + "руб.;";
+            }
+
+            Date date = new Date();
+            String status = "не оплачено";
+            Offer offer = new Offer(products, FIO, email, tel, post, address, status, total_price, date);
+            offerRepository.save(offer);
+            System.out.println(products);
+            System.out.println(address);
+
+            try {
+                emailService.sendEmailWithAttachment(email, "Оформление заказа", "Спасибо, что выбрали нас \uD83E\uDD70 \nСкоро вам поступит звонок от менеджера",
+                        "classpath:templates/post.html");
+            } catch (MessagingException | FileNotFoundException mailException) {
+                System.out.println("Unable to send email");
+            }
+
+            sessionService.removeSessions(request, response);
+
+            return "redirect:/pay";
         }
-
-        Date date = new Date();
-        String status = "не оплачено";
-        Offer offer = new Offer(products, FIO, email, tel, post, address, status, total_price, date);
-        offerRepository.save(offer);
-        System.out.println(products);
-        System.out.println(address);
-
-        try {
-            emailService.sendEmailWithAttachment(email, "Оформление заказа", "Спасибо, что выбрали нас \uD83E\uDD70 \nСкоро вам поступит звонок от менеджера",
-                    "classpath:templates/post.html");
-        } catch (MessagingException | FileNotFoundException mailException) {
-            System.out.println("Unable to send email");
-        }
-
-        sessionService.removeSessions(request, response);
-
-        return "redirect:/pay";
     }
 
 
