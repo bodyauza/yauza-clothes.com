@@ -656,12 +656,9 @@
                 if ($(".previous").text() == " ") {
                     $('.previous').css('margin-top', '0px');
                 }
-            });
 
 
-            $(document).ready(function () {
-
-                $(".cart_form").on("submit", function(e){
+                $(".quantity").on("submit", function(e){
                     e.preventDefault();
                     $.ajax({
                         url: '/in-cart',
@@ -669,6 +666,36 @@
                         data: $(this).serialize()
                     })
                 });
+
+                    var input = $('#cart_quantity');
+                    var value = parseInt(input.val());
+                    var pr = $('#price');
+                    var prv = parseInt(pr.val());
+
+                    var input1 = $('#cart_quantity1');
+                    var value1 = parseInt(input1.val());
+                    var pr1 = $('#price1');
+                    var prv1 = parseInt(pr1.val());
+
+                    var input2 = $('#cart_quantity2');
+                    var value2 = parseInt(input2.val());
+                    var pr2 = $('#price2');
+                    var prv2 = parseInt(pr2.val());
+
+                    var input3 = $('#cart_quantity3');
+                    var value3 = parseInt(input3.val());
+                    var pr3 = $('#price3');
+                    var prv3 = parseInt(pr3.val());
+
+                    var input4 = $('#cart_quantity4');
+                    var value4 = parseInt(input4.val());
+                    var pr4 = $('#price4');
+                    var prv4 = parseInt(pr4.val());
+
+                    var input5 = $('#cart_quantity5');
+                    var value5 = parseInt(input5.val());
+                    var pr5 = $('#price5');
+                    var prv5 = parseInt(pr5.val());
 
                     var in_stock = $('#in_stock');
                     var in_stock_value = parseInt(in_stock.val());
@@ -689,36 +716,6 @@
                     var in_stock_value5 = parseInt(in_stock5.val());
 
                     function total_cart() {
-
-                        var input = $('#cart_quantity');
-                        var value = parseInt(input.val());
-                        var pr = $('#price');
-                        var prv = parseInt(pr.val());
-
-                        var input1 = $('#cart_quantity1');
-                        var value1 = parseInt(input1.val());
-                        var pr1 = $('#price1');
-                        var prv1 = parseInt(pr1.val());
-
-                        var input2 = $('#cart_quantity2');
-                        var value2 = parseInt(input2.val());
-                        var pr2 = $('#price2');
-                        var prv2 = parseInt(pr2.val());
-
-                        var input3 = $('#cart_quantity3');
-                        var value3 = parseInt(input3.val());
-                        var pr3 = $('#price3');
-                        var prv3 = parseInt(pr3.val());
-
-                        var input4 = $('#cart_quantity4');
-                        var value4 = parseInt(input4.val());
-                        var pr4 = $('#price4');
-                        var prv4 = parseInt(pr4.val());
-
-                        var input5 = $('#cart_quantity5');
-                        var value5 = parseInt(input5.val());
-                        var pr5 = $('#price5');
-                        var prv5 = parseInt(pr5.val());
 
                         var total = [value * prv,
                             value1 * prv1,
@@ -747,29 +744,127 @@
                     total_cart();
 
                 //алгоритм для кнопок "+" и "-"
-                $('.plus-btn').click(function () {
-                    var $this = $(this);
-                    var input = $this.closest('div').find('input');
-                    var value = parseInt(input.val());
-                    if (value < 6 && value < in_stock_value) {
-                        value = value + 1;
-                    }
-                    input.val(value);
-                    total_cart();
-                });
+                    $('#plus-btn').click(function () {
+                        var $this = $(this);
+                        if (value < 6 && value < in_stock_value) {
+                            value = value + 1;
+                        }
+                        input.val(value);
+                        total_cart();
+                    });
 
-                $('.minus-btn').click(function () {
-                    var $this = $(this);
-                    var input = $this.closest('div').find('input');
-                    var value = parseInt(input.val());
-                    if (value > 1) {
-                        value = value - 1;
-                    } else {
-                        value = 1;
-                    }
-                    input.val(value);
-                    total_cart();
-                });
+                    $('#minus-btn').click(function () {
+                        var $this = $(this);
+                        if (value > 1) {
+                            value = value - 1;
+                        } else {
+                            value = 1;
+                        }
+                        input.val(value);
+                        total_cart();
+                    });
+
+
+                    $('#plus-btn1').click(function () {
+                        var $this = $(this);
+                        if (value1 < 6 && value1 < in_stock_value1) {
+                            value1 = value1 + 1;
+                        }
+                        input1.val(value1);
+                        total_cart();
+                    });
+
+                    $('#minus-btn1').click(function () {
+                        var $this = $(this);
+                        if (value1 > 1) {
+                            value1 = value1 - 1;
+                        } else {
+                            value1 = 1;
+                        }
+                        input1.val(value1);
+                        total_cart();
+                    });
+
+                   $('#plus-btn2').click(function () {
+                       var $this = $(this);
+                       if (value2 < 6 && value2 < in_stock_value2) {
+                           value2 = value2 + 1;
+                       }
+                       input2.val(value2);
+                       total_cart();
+                   });
+
+                    $('#minus-btn2').click(function () {
+                        var $this = $(this);
+                        if (value2 > 1) {
+                            value2 = value2 - 1;
+                        } else {
+                            value2 = 1;
+                        }
+                        input2.val(value2);
+                        total_cart();
+                    });
+
+                   $('#plus-btn3').click(function () {
+                       var $this = $(this);
+                       if (value3 < 6 && value3 < in_stock_value3) {
+                           value3 = value3 + 1;
+                       }
+                       input3.val(value3);
+                       total_cart();
+                   });
+
+                    $('#minus-btn3').click(function () {
+                        var $this = $(this);
+                        if (value3 > 1) {
+                            value3 = value3 - 1;
+                        } else {
+                            value3 = 1;
+                        }
+                        input3.val(value3);
+                        total_cart();
+                    });
+
+                   $('#plus-btn4').click(function () {
+                       var $this = $(this);
+                       if (value4 < 6 && value4 < in_stock_value4) {
+                           value4 = value4 + 1;
+                       }
+                       input4.val(value4);
+                       total_cart();
+                   });
+
+                    $('#minus-btn4').click(function () {
+                        var $this = $(this);
+                        if (value4 > 1) {
+                            value4 = value4 - 1;
+                        } else {
+                            value4 = 1;
+                        }
+                        input4.val(value4);
+                        total_cart();
+                    });
+
+                   $('#plus-btn5').click(function () {
+                       var $this = $(this);
+                       if (value5 < 6 && value5 < in_stock_value5) {
+                          value5 = value5 + 1;
+                       }
+                       input5.val(value5);
+                       total_cart();
+                   });
+
+                    $('#minus-btn5').click(function () {
+                        var $this = $(this);
+                        if (value5 > 1) {
+                            value5 = value5 - 1;
+                        } else {
+                            value5 = 1;
+                        }
+                        input5.val(value5);
+                        total_cart();
+                    });
+
             });
 
     </script>
@@ -802,7 +897,7 @@
                 <span th:text="${session.cart['item_size'] != null} ? ${session.cart['item_size']}"></span>
                 <span th:text="${session.cart['color']}"></span>
             </div>
-        <form class="cart_form">
+        <form class="quantity">
             <input type="hidden" name="attr_name" value="cart"/>
             <input type="hidden" name="id" th:value="${session.cart['id']}"/>
             <input type="hidden" name="img" th:value="${session.cart['img']}"/>
@@ -811,15 +906,13 @@
             <input type="hidden" name="color" th:value="${session.cart['color']}"/>
             <input type="hidden" name="price" th:value="${session.cart['price']}"/>
             <input type="hidden" name="in_stock" id="in_stock" th:value="${session.cart['in_stock']}"/>
-            <div class="quantity">
-            <button class="plus-btn" type="submit">
+            <button id="plus-btn" type="submit">
                     <img class="plus" src="plus.svg" alt=""/>
                 </button>
                 <input id="cart_quantity" name="quantity" th:value="${session.cart['quantity']}"/>
-                <button class="minus-btn" type="submit">
+                <button id="minus-btn" type="submit">
                     <img class="minus" src="minus.svg" alt=""/>
                 </button>
-            </div>
         </form>
         <input type="number" id="price" th:value="${session.cart['price']}" readonly/>
         <div class="buttons">
@@ -841,7 +934,7 @@
                 <span th:text="${session.cart1['item_size'] != null} ? ${session.cart1['item_size']}"></span>
                 <span th:text="${session.cart1['color']}"></span>
             </div>
-            <form class="cart_form">
+            <form class="quantity">
                 <input type="hidden" name="attr_name" value="cart1"/>
                 <input type="hidden" name="id" th:value="${session.cart1['id']}"/>
                 <input type="hidden" name="img" th:value="${session.cart1['img']}"/>
@@ -850,15 +943,13 @@
                 <input type="hidden" name="color" th:value="${session.cart1['color']}"/>
                 <input type="hidden" name="price" th:value="${session.cart1['price']}"/>
                 <input type="hidden" name="in_stock" id="in_stock1" th:value="${session.cart1['in_stock']}"/>
-                <div class="quantity">
-                    <button class="plus-btn" type="submit">
-                        <img class="plus" src="plus.svg" alt=""/>
-                    </button>
-                    <input id="cart_quantity1" name="quantity" th:value="${session.cart['quantity']}"/>
-                    <button class="minus-btn" type="submit">
-                        <img class="minus" src="minus.svg" alt=""/>
-                    </button>
-                </div>
+                <button id="plus-btn1" type="submit">
+                    <img class="plus" src="plus.svg" alt="" />
+                </button>
+                <input id="cart_quantity1" name="quantity" th:value="${session.cart1['quantity']}" />
+                <button id="minus-btn1" type="submit">
+                    <img class="minus" src="minus.svg" alt="" />
+                </button>
             </form>
             <input type="number" id="price1" th:value="${session.cart1['price']}" readonly/>
             <div class="buttons">
@@ -879,7 +970,7 @@
             <span th:text="${session.cart2['item_size'] != null} ? ${session.cart2['item_size']}"></span>
             <span th:text="${session.cart2['color']}"></span>
         </div>
-        <form class="cart_form">
+        <form class="quantity">
             <input type="hidden" name="attr_name" value="cart2"/>
             <input type="hidden" name="id" th:value="${session.cart2['id']}"/>
             <input type="hidden" name="img" th:value="${session.cart2['img']}"/>
@@ -916,7 +1007,7 @@
             <span th:text="${session.cart3['item_size'] != null} ? ${session.cart3['item_size']}"></span>
             <span th:text="${session.cart3['color']}"></span>
         </div>
-        <form class="cart_form">
+        <form class="quantity">
             <input type="hidden" name="attr_name" value="cart3"/>
             <input type="hidden" name="id" th:value="${session.cart3['id']}"/>
             <input type="hidden" name="img" th:value="${session.cart3['img']}"/>
@@ -953,7 +1044,7 @@
             <span th:text="${session.cart4['item_size'] != null} ? ${session.cart4['item_size']}"></span>
             <span th:text="${session.cart4['color']}"></span>
         </div>
-        <form class="cart_form">
+        <form class="quantity">
             <input type="hidden" name="attr_name" value="cart4"/>
             <input type="hidden" name="id" th:value="${session.cart4['id']}"/>
             <input type="hidden" name="img" th:value="${session.cart4['img']}"/>
@@ -990,7 +1081,7 @@
             <span th:text="${session.cart5['item_size'] != null} ? ${session.cart5['item_size']}"></span>
             <span th:text="${session.cart5['color']}"></span>
         </div>
-        <form class="cart_form">
+        <form class="quantity">
             <input type="hidden" name="attr_name" value="cart5"/>
             <input type="hidden" name="id" th:value="${session.cart5['id']}"/>
             <input type="hidden" name="img" th:value="${session.cart5['img']}"/>
