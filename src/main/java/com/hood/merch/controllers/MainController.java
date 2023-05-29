@@ -62,29 +62,33 @@ public class MainController {
     protected String doSet(HttpServletRequest request, HttpServletResponse response, @RequestParam String img, @RequestParam Integer id, @RequestParam String name, @RequestParam Integer price, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer in_stock)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession();
-        session.setMaxInactiveInterval(-1);
+        Product stock_check = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Товар не найден"));
 
-        Set<Product> cart = new LinkedHashSet<>();
-        List<String> attribs = Arrays.asList("cart", "cart1", "cart2", "cart3", "cart4", "cart5"); // и т.д.
-        Set<String> missingAttrs = new LinkedHashSet<>();
+        if(stock_check.getIn_stock() >= quantity) {
+            HttpSession session = request.getSession();
+            session.setMaxInactiveInterval(-1);
 
-        for (String attr : attribs) {
-            Product product = (Product) session.getAttribute(attr);
-            if (null == product) {
-                missingAttrs.add(attr);
-            } else if (cart.add(product)) { // товар успешно добавлен в сет
-                System.out.println("Товар " + product.getName() + " в сессии и сете");
+            Set<Product> cart = new LinkedHashSet<>();
+            List<String> attribs = Arrays.asList("cart", "cart1", "cart2", "cart3", "cart4", "cart5"); // и т.д.
+            Set<String> missingAttrs = new LinkedHashSet<>();
+
+            for (String attr : attribs) {
+                Product product = (Product) session.getAttribute(attr);
+                if (null == product) {
+                    missingAttrs.add(attr);
+                } else if (cart.add(product)) { // товар успешно добавлен в сет
+                    System.out.println("Товар " + product.getName() + " в сессии и сете");
+                }
             }
-        }
 
-        for (String attr : missingAttrs) {
-            Product product = new Product(id, name, price, item_size, quantity, img, color, in_stock);
-            if (cart.add(product)) { // товар успешно добавлен в сет
-                System.out.println("Товар " + product.getName() + " добавлен в сессию и сет");
-                session.setAttribute(attr, product);
-            } else {
-                System.out.println("Найден товар-дубликат " + product.getName() + " или добавлен другой размер");
+            for (String attr : missingAttrs) {
+                Product product = new Product(id, name, price, item_size, quantity, img, color, in_stock);
+                if (cart.add(product)) { // товар успешно добавлен в сет
+                    System.out.println("Товар " + product.getName() + " добавлен в сессию и сет");
+                    session.setAttribute(attr, product);
+                } else {
+                    System.out.println("Найден товар-дубликат " + product.getName() + " или добавлен другой размер");
+                }
             }
         }
 
@@ -130,13 +134,11 @@ public class MainController {
 
             Integer total_price = (quantity * price);
 
-            productService.purchaseProduct(id, quantity);
-
             String products = name + ", " + item_size + ", " + quantity.toString() + ", " + color + ";" + "\n" + "Сумма заказа:" + total_price.toString() + "руб.;";
 
             if (quantity1 != null) {
 
-                productService.purchaseProduct(id1, quantity1);
+                productService.purchaseProduct(id1, quantity1);// == 0
 
                 total_price = (quantity * price) + (quantity1 * price1);
                 products = name + ", " + item_size + ", " + quantity.toString() + ", " + color + ";" + "\n" + name1 + ", " + item_size1 + ", " + quantity1.toString() + ", " + color1 + ";" + "\n" + "Сумма заказа:" + total_price.toString() + "руб.;";
@@ -145,12 +147,13 @@ public class MainController {
             Date date = new Date();
             String status = "не оплачено";
             Offer offer = new Offer(products, FIO, email, tel, post, address, status, total_price, date);
+            //проблема с добавлением в репозиторий
             offerRepository.save(offer);
             System.out.println(products);
             System.out.println(address);
 
             try {
-                emailService.sendEmailWithAttachment(email, "Оформление заказа", "Спасибо, что выбрали нас \uD83E\uDD70 \nСкоро вам поступит звонок от менеджера",
+                emailService.sendEmailWithAttachment(email, "Оформление заказа", "Спасибо, что выбрали нас \uD83E\uDD70 \n" + products + address + "\nСкоро вам поступит звонок от менеджера",
                         "classpath:templates/post.html");
             } catch (MessagingException | FileNotFoundException mailException) {
                 System.out.println("Unable to send email");
