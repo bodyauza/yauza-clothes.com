@@ -9,6 +9,7 @@ import com.hood.merch.service.DefaultEmailService;
 import com.hood.merch.service.ProductService;
 import com.hood.merch.service.SessionService;
 import jakarta.mail.MessagingException;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -182,8 +183,17 @@ public class MainController {
         return "scarf";
     }
 
+    /*@PostMapping("/oversize-size")
+    public String oversizeSize(Model model, @RequestParam Integer id) {
+        Optional<Product> products1 = productRepository.findById(id);
+        ArrayList<Product> res = new ArrayList<>();
+        products1.ifPresent(res::add);
+        model.addAttribute("products1", res);
+        return "oversize";
+    }*/
+
     @GetMapping("/oversize")
-    public String black_scarf(Model model) {
+    public String oversize(Model model) {
         Optional<Product> products1 = productRepository.findById(2);
         ArrayList<Product> res = new ArrayList<>();
         products1.ifPresent(res::add);
