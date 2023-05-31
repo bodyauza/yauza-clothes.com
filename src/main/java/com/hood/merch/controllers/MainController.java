@@ -183,14 +183,14 @@ public class MainController {
         return "scarf";
     }
 
-    /*@PostMapping("/oversize-size")
+    @PostMapping("/oversize-size")
     public String oversizeSize(Model model, @RequestParam Integer id) {
-        Optional<Product> products1 = productRepository.findById(id);
+        Optional<Product> products2 = productRepository.findById(id);
         ArrayList<Product> res = new ArrayList<>();
-        products1.ifPresent(res::add);
-        model.addAttribute("products1", res);
+        products2.ifPresent(res::add);
+        model.addAttribute("products2", res);
         return "oversize";
-    }*/
+    }
 
     @GetMapping("/oversize")
     public String oversize(Model model) {
