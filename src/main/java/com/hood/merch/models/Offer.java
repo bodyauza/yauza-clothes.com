@@ -10,28 +10,22 @@ import java.util.Date;
 @Entity
 public class Offer {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
     public Offer() {
 
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    private String products, FIO, email, tel, post, address, status;
+    private int total_price;
+
+
+    private Date date;
+
     public Long getId() {
         return id;
-    }
-
-    public Offer(String products, String FIO, String email, String tel, String post, String address, String status, int total_price, Date date) {
-        this.products = products;
-        this.FIO = FIO;
-        this.email = email;
-        this.tel = tel;
-        this.post = post;
-        this.address = address;
-        this.status = status;
-        this.total_price = total_price;
-        this.date = date;
     }
 
     public void setId(Long id) {
@@ -94,14 +88,6 @@ public class Offer {
         this.status = status;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
     public int getTotal_price() {
         return total_price;
     }
@@ -110,10 +96,24 @@ public class Offer {
         this.total_price = total_price;
     }
 
-    private String products, FIO, email, tel, post, address, status;
-    private int total_price;
+    public Date getDate() {
+        return date;
+    }
 
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
-    private Date date;
+    public Offer(String products, String FIO, String email, String tel, String post, String address, String status, int total_price, Date date) {
+        this.products = products;
+        this.FIO = FIO;
+        this.email = email;
+        this.tel = tel;
+        this.post = post;
+        this.address = address;
+        this.status = status;
+        this.total_price = total_price;
+        this.date = date;
+    }
 
 }

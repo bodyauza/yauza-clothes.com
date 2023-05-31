@@ -24,36 +24,12 @@ public class Product {
     @Version
     private int in_stock;
 
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
-    }
-
-    public int getIn_stock() {
-        return in_stock;
-    }
-
-    public void setIn_stock(int in_stock) {
-        this.in_stock = in_stock;
+    public int getId() {
+        return id;
     }
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getName() {
@@ -64,14 +40,28 @@ public class Product {
         this.name = name;
     }
 
-
-
     public String getItem_size() {
         return item_size;
     }
 
     public void setItem_size(String item_size) {
         this.item_size = item_size;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 
     public int getPrice() {
@@ -88,6 +78,14 @@ public class Product {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public int getIn_stock() {
+        return in_stock;
+    }
+
+    public void setIn_stock(int in_stock) {
+        this.in_stock = in_stock;
     }
 
     public Product() {

@@ -588,7 +588,7 @@
                 $('#item_size').val($(this).data('value'));
                 $(this).toggleClass('focus').siblings().removeClass('focus');
 
-                /*var size_val = $('#item_size').val($(this).data('value'));
+                var size_val = $('#item_size').val($(this).data('value'));
                 var id_val;
 
                 if(size_val === "XS") {
@@ -610,8 +610,9 @@
                 $.ajax({
                     url: '/oversize-size',
                     type: 'post',
-                    data: id_val
-                })*/
+                    data: id_val,
+                    success: alert("даров")
+                })
             });
         });
 
