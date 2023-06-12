@@ -21,7 +21,7 @@ public class Product {
     @Column
     private String name;
     @OneToMany
-    @JoinColumn(name = "product_id", updatable=false,  referencedColumnName="size")
+    @JoinColumn(name = "id")
     private List<Sizes> item_size;
     @Column
     private String img;
