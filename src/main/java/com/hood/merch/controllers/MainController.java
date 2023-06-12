@@ -3,6 +3,7 @@ package com.hood.merch.controllers;
 
 import com.hood.merch.models.Offer;
 import com.hood.merch.models.Product;
+import com.hood.merch.models.Sizes;
 import com.hood.merch.models.repo.OfferRepository;
 import com.hood.merch.models.repo.ProductRepository;
 import com.hood.merch.service.DefaultEmailService;
@@ -60,7 +61,7 @@ public class MainController {
 
     //Добавление товара
     @PostMapping("/add-name")
-    protected String doSet(HttpServletRequest request, HttpServletResponse response, @RequestParam String img, @RequestParam Integer id, @RequestParam String name, @RequestParam Integer price, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer in_stock)
+    protected String doSet(HttpServletRequest request, HttpServletResponse response, @RequestParam String img, @RequestParam Integer id, @RequestParam String name, @RequestParam Integer price, @RequestParam Sizes item_size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer in_stock)
             throws ServletException, IOException {
 
         Product stock_check = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Товар не найден"));
@@ -83,7 +84,9 @@ public class MainController {
             }
 
             for (String attr : missingAttrs) {
-                Product product = new Product(id, name, price, item_size, quantity, img, color, in_stock);
+                List<Sizes> size = new ArrayList<>();
+                size.add(item_size);
+                Product product = new Product(id, name, price, size, quantity, img, color, in_stock);
                 if (cart.add(product)) { // товар успешно добавлен в сет
                     System.out.println("Товар " + product.getName() + " добавлен в сессию и сет");
                     session.setAttribute(attr, product);
@@ -106,7 +109,7 @@ public class MainController {
 
     //Изменение количества
     @PostMapping("/in-cart")
-   protected String inCart(HttpServletRequest request, HttpServletResponse response, @RequestParam String attr_name, @RequestParam String img, @RequestParam Integer id, @RequestParam String name, @RequestParam Integer price, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer in_stock)
+   protected String inCart(HttpServletRequest request, HttpServletResponse response, @RequestParam String attr_name, @RequestParam String img, @RequestParam Integer id, @RequestParam String name, @RequestParam Integer price, @RequestParam Sizes item_size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer in_stock)
             throws ServletException, IOException {
 
         Product stock = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Товар не найден"));
@@ -116,12 +119,17 @@ public class MainController {
             session.removeAttribute(attr_name);
             Product product = (Product) session.getAttribute("attr_name");
             session.setMaxInactiveInterval(-1);
-            product = new Product(id, name, price, item_size, quantity, img, color, in_stock);
+            List<Sizes> size = new ArrayList<>();
+            size.add(item_size);
+            product = new Product(id, name, price, size, quantity, img, color, in_stock);
             session.setAttribute(attr_name, product);
+            return "redirect:/basket";
         } else {
             session.removeAttribute(attr_name);
         }
-        return "redirect:/basket";
+        String referrer = request.getHeader("referer");
+
+        return referrer;
 }
 
     //Новый заказ
@@ -185,10 +193,10 @@ public class MainController {
 
     @PostMapping("/oversize-size")
     public String oversizeSize(Model model, @RequestParam Integer id) {
-        Optional<Product> products2 = productRepository.findById(id);
+        Optional<Product> products1 = productRepository.findById(id);
         ArrayList<Product> res = new ArrayList<>();
-        products2.ifPresent(res::add);
-        model.addAttribute("products2", res);
+        products1.ifPresent(res::add);
+        model.addAttribute("products1", res);
         return "oversize";
     }
 

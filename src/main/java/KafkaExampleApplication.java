@@ -7,7 +7,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 @SpringBootApplication
 public class KafkaExampleApplication {
 
-    @KafkaListener(topics="msg")
+    @KafkaListener(topics="order")
     public void msgListener(String msg){
         System.out.println(msg);
     }

@@ -216,7 +216,7 @@
             color: #a2a2a2;
         }
 
-        .sizes {
+        #sizes {
             color: #D9AAB7;
             width: 100%;
             /* grid-gap: 35px; */
@@ -541,6 +541,7 @@
 
     </style>
 
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
     <script>
@@ -610,8 +611,9 @@
                 $.ajax({
                     url: '/oversize-size',
                     type: 'post',
+                    dataType: html,
                     data: id_val,
-                    success: alert("даров")
+                    success: alert(id_val)
                 })
             });
         });
@@ -746,6 +748,7 @@
         </div>
     </div>
 </form>
+
 
 
 <svg class="icons" style="display: none;">
