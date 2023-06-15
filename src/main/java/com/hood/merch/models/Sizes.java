@@ -10,13 +10,10 @@ import lombok.Setter;
 public class Sizes {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "product_id")
     private int id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    @JoinColumn(name = "product_id")
+    @OneToOne(mappedBy = "size")
     private Product product;
 
     @Column

@@ -62,7 +62,7 @@ public class MainController {
 
     //Добавление товара
     @PostMapping("/add-name")
-    protected String doSet(HttpServletRequest request, @RequestParam String img, @RequestParam Integer id, @RequestParam String name, @RequestParam Integer price, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer in_stock)
+    protected String doSet(HttpServletRequest request, @RequestParam String img, @RequestParam Integer id, @RequestParam String name, @RequestParam Integer price, @RequestParam String size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer in_stock)
             throws ServletException, IOException {
 
         Product stock_check = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Товар не найден"));
@@ -76,23 +76,21 @@ public class MainController {
             Set<String> missingAttrs = new LinkedHashSet<>();
 
             for (String attr : attribs) {
-                Cart cart = (Cart) session.getAttribute(attr);
-                if (null == cart) {
+                Cart cart_dto = (Cart) session.getAttribute(attr);
+                if (null == cart_dto) {
                     missingAttrs.add(attr);
-                } else if (cart_set.add(cart)) { // товар успешно добавлен в сет
-                    System.out.println("Товар " + cart.getName() + " в сессии и сете");
+                } else if (cart_set.add(cart_dto)) { // товар успешно добавлен в сет
+                    System.out.println("Товар " + cart_dto.getName() + " в сессии и сете");
                 }
             }
 
             for (String attr : missingAttrs) {
-                Cart cart = new Cart(id, name, price, item_size, quantity, img, color, in_stock);
-                String referrer = request.getHeader("referer");
-                System.out.println(referrer);
-                if (cart_set.add(cart)) { // товар успешно добавлен в сет
-                    System.out.println("Товар " + cart.getName() + " добавлен в сессию и сет");
-                    session.setAttribute(attr, cart);
+                Cart cart_dto = new Cart(id, name, price, size, quantity, img, color, in_stock);
+                if (cart_set.add(cart_dto)) { // товар успешно добавлен в сет
+                    System.out.println("Товар " + cart_dto.getName() + " добавлен в сессию и сет" + cart_dto.getSize());
+                    session.setAttribute(attr, cart_dto);
                 } else {
-                    System.out.println("Найден товар-дубликат " + cart.getName() + " или добавлен другой размер");
+                    System.out.println("Найден товар-дубликат " + cart_dto.getName() + " или добавлен другой размер");
                 }
             }
         }
@@ -115,6 +113,7 @@ public class MainController {
 
         Product stock = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Товар не найден"));
         HttpSession session = request.getSession();
+        String referrer = request.getHeader("referer");
 
         if(stock.getIn_stock() >= quantity) {
             session.removeAttribute(attr_name);
@@ -126,8 +125,6 @@ public class MainController {
         } else {
             session.removeAttribute(attr_name);
         }
-        String referrer = request.getHeader("referer");
-
         return referrer;
 }
 
@@ -183,10 +180,13 @@ public class MainController {
     //Товары
     @GetMapping("/scarf")
     public String scarf(Model model) {
+        Product stock = productRepository.findById(1).orElseThrow(() -> new RuntimeException("Товар не найден"));
         Optional<Product> products = productRepository.findById(1);
         ArrayList<Product> res = new ArrayList<>();
         products.ifPresent(res::add);
+        String size = stock.getSize().getSize();
         model.addAttribute("products", res);
+        model.addAttribute("size", size);
         return "scarf";
     }
 
