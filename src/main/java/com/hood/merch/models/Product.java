@@ -1,117 +1,53 @@
 package com.hood.merch.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Version;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Getter
+@Setter
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-
+    @Column
     private String name;
-    private String item_size;
+    @Column
     private String img;
+    @Column
     private String color;
-    private int price, quantity;
+    @Column
+    private int price;
+    @Column
+    private int quantity;
 
+    @Column
     @Version
     private int in_stock;
 
-    public int getId() {
-        return id;
-    }
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JoinColumn(name = "id")
+    private Sizes size;
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getItem_size() {
-        return item_size;
-    }
-
-    public void setItem_size(String item_size) {
-        this.item_size = item_size;
-    }
-
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public int getIn_stock() {
-        return in_stock;
-    }
-
-    public void setIn_stock(int in_stock) {
-        this.in_stock = in_stock;
-    }
 
     public Product() {
     }
 
-    public Product(int id, String name, int price, String item_size, int quantity, String img, String color, int in_stock) {
+    public Product(int id, String name, int price, int quantity, String img, String color, int in_stock) {
         this.id = id;
         this.name = name;
         this.price = price;
-        this.item_size = item_size;
         this.quantity = quantity;
         this.img = img;
         this.color = color;
         this.in_stock = in_stock;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Product product = (Product) o;
-        return name.equals(product.name) && item_size.equals(product.item_size);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, item_size);
     }
 }

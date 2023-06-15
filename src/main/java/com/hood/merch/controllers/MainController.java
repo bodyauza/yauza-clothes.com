@@ -1,8 +1,10 @@
 package com.hood.merch.controllers;
 
 
+import com.hood.merch.dto.Cart;
 import com.hood.merch.models.Offer;
 import com.hood.merch.models.Product;
+import com.hood.merch.models.Sizes;
 import com.hood.merch.models.repo.OfferRepository;
 import com.hood.merch.models.repo.ProductRepository;
 import com.hood.merch.service.DefaultEmailService;
@@ -60,7 +62,7 @@ public class MainController {
 
     //Добавление товара
     @PostMapping("/add-name")
-    protected String doSet(HttpServletRequest request, HttpServletResponse response, @RequestParam String img, @RequestParam Integer id, @RequestParam String name, @RequestParam Integer price, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer in_stock)
+    protected String doSet(HttpServletRequest request, @RequestParam String img, @RequestParam Integer id, @RequestParam String name, @RequestParam Integer price, @RequestParam String size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer in_stock)
             throws ServletException, IOException {
 
         Product stock_check = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Товар не найден"));
@@ -69,26 +71,26 @@ public class MainController {
             HttpSession session = request.getSession();
             session.setMaxInactiveInterval(-1);
 
-            Set<Product> cart = new LinkedHashSet<>();
+            Set<Cart> cart_set = new LinkedHashSet<>();
             List<String> attribs = Arrays.asList("cart", "cart1", "cart2", "cart3", "cart4", "cart5"); // и т.д.
             Set<String> missingAttrs = new LinkedHashSet<>();
 
             for (String attr : attribs) {
-                Product product = (Product) session.getAttribute(attr);
-                if (null == product) {
+                Cart cart_dto = (Cart) session.getAttribute(attr);
+                if (null == cart_dto) {
                     missingAttrs.add(attr);
-                } else if (cart.add(product)) { // товар успешно добавлен в сет
-                    System.out.println("Товар " + product.getName() + " в сессии и сете");
+                } else if (cart_set.add(cart_dto)) { // товар успешно добавлен в сет
+                    System.out.println("Товар " + cart_dto.getName() + " в сессии и сете");
                 }
             }
 
             for (String attr : missingAttrs) {
-                Product product = new Product(id, name, price, item_size, quantity, img, color, in_stock);
-                if (cart.add(product)) { // товар успешно добавлен в сет
-                    System.out.println("Товар " + product.getName() + " добавлен в сессию и сет");
-                    session.setAttribute(attr, product);
+                Cart cart_dto = new Cart(id, name, price, size, quantity, img, color, in_stock);
+                if (cart_set.add(cart_dto)) { // товар успешно добавлен в сет
+                    System.out.println("Товар " + cart_dto.getName() + " добавлен в сессию и сет" + cart_dto.getSize());
+                    session.setAttribute(attr, cart_dto);
                 } else {
-                    System.out.println("Найден товар-дубликат " + product.getName() + " или добавлен другой размер");
+                    System.out.println("Найден товар-дубликат " + cart_dto.getName() + " или добавлен другой размер");
                 }
             }
         }
@@ -98,7 +100,7 @@ public class MainController {
 
     //Удаление из корзины
     @PostMapping("/cart/remove")
-    public String Cart_remove(HttpServletRequest request, HttpServletResponse response, @RequestParam String attr_name, @RequestParam Integer id) {
+    public String Cart_remove(HttpServletRequest request, @RequestParam String attr_name) {
         HttpSession session = request.getSession();
         session.removeAttribute(attr_name);
         return "redirect:/basket";
@@ -106,22 +108,24 @@ public class MainController {
 
     //Изменение количества
     @PostMapping("/in-cart")
-   protected String inCart(HttpServletRequest request, HttpServletResponse response, @RequestParam String attr_name, @RequestParam String img, @RequestParam Integer id, @RequestParam String name, @RequestParam Integer price, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer in_stock)
+   protected String inCart(HttpServletRequest request, @RequestParam String attr_name, @RequestParam String img, @RequestParam Integer id, @RequestParam String name, @RequestParam Integer price, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer in_stock)
             throws ServletException, IOException {
 
         Product stock = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Товар не найден"));
         HttpSession session = request.getSession();
+        String referrer = request.getHeader("referer");
 
         if(stock.getIn_stock() >= quantity) {
             session.removeAttribute(attr_name);
-            Product product = (Product) session.getAttribute("attr_name");
+            Cart cart = (Cart) session.getAttribute("attr_name");
             session.setMaxInactiveInterval(-1);
-            product = new Product(id, name, price, item_size, quantity, img, color, in_stock);
-            session.setAttribute(attr_name, product);
+            cart = new Cart(id, name, price, item_size, quantity, img, color, in_stock);
+            session.setAttribute(attr_name, cart);
+            return "redirect:/basket";
         } else {
             session.removeAttribute(attr_name);
         }
-        return "redirect:/basket";
+        return referrer;
 }
 
     //Новый заказ
@@ -176,19 +180,22 @@ public class MainController {
     //Товары
     @GetMapping("/scarf")
     public String scarf(Model model) {
+        Product stock = productRepository.findById(1).orElseThrow(() -> new RuntimeException("Товар не найден"));
         Optional<Product> products = productRepository.findById(1);
         ArrayList<Product> res = new ArrayList<>();
         products.ifPresent(res::add);
+        String size = stock.getSize().getSize();
         model.addAttribute("products", res);
+        model.addAttribute("size", size);
         return "scarf";
     }
 
     @PostMapping("/oversize-size")
     public String oversizeSize(Model model, @RequestParam Integer id) {
-        Optional<Product> products2 = productRepository.findById(id);
+        Optional<Product> products1 = productRepository.findById(id);
         ArrayList<Product> res = new ArrayList<>();
-        products2.ifPresent(res::add);
-        model.addAttribute("products2", res);
+        products1.ifPresent(res::add);
+        model.addAttribute("products1", res);
         return "oversize";
     }
 

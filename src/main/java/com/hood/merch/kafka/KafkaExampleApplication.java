@@ -1,13 +1,10 @@
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.kafka.annotation.EnableKafka;
-import org.springframework.kafka.annotation.KafkaListener;
+package com.hood.merch.kafka;
 
 /*@EnableKafka
 @SpringBootApplication
 public class KafkaExampleApplication {
 
-    @KafkaListener(topics="msg")
+    @KafkaListener(topics="order")
     public void msgListener(String msg){
         System.out.println(msg);
     }
