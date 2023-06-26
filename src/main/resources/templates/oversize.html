@@ -541,9 +541,6 @@
 
     </style>
 
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-
     <script>
 
         function myFunction() {
@@ -563,7 +560,11 @@
                 }
             }
         }
+    </script>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+    <script>
         //наличие товаров в корзине
         $(document).ready(function () {
 
@@ -586,36 +587,21 @@
 
             //добавление размера
             $('.size').click(function () {
-                $('#item_size').val($(this).data('value'));
                 $(this).toggleClass('focus').siblings().removeClass('focus');
+                $('#item_size').val($(this).data('value'));
 
-                var size_val = $('#item_size').val($(this).data('value'));
-                var id_val;
+                var form = $('#size_ajx')
 
-                if(size_val === "XS") {
-                    id_val = 2;
-                }
-                if(size_val === "S") {
-                    id_val = 3;
-                }
-                if(size_val === "M") {
-                    id_val = 4;
-                }
-                if(size_val === "L") {
-                    id_val = 5;
-                }
-                if(size_val === "XL") {
-                    id_val = 6;
-                }
-
-                $.ajax({
-                    url: '/oversize-size',
-                    type: 'post',
-                    dataType: html,
-                    data: id_val,
-                    success: alert(id_val)
-                })
+                form.submit();
             });
+
+            /*$('#size_ajx').on( "submit", function( event ) {
+                $.ajax({
+                    url: '/size',
+                    type: 'post',
+                    data: $(this).serialize()
+                })
+            });*/
         });
 
     </script>
@@ -738,8 +724,6 @@
 
                 </div>
 
-                <input type="hidden" name="item_size" id="item_size"/>
-
                 <h3 th:text="${el.price}"></h3>
                 <input type="hidden" name="price"  class="total-price" th:value="${el.price}"/>
                 <button type="submit" class="btn-to_cart">В корзину</button>
@@ -747,6 +731,10 @@
             </div>
         </div>
     </div>
+</form>
+
+<form id="size_ajx" method="post" th:action="'/oversize-size'">
+    <input type="hidden" name="size" id="item_size" value=""/>
 </form>
 
 

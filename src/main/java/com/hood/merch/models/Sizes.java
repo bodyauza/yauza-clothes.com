@@ -10,11 +10,8 @@ import lombok.Setter;
 public class Sizes {
 
     @Id
-    @Column(name = "product_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-
-    @OneToOne(mappedBy = "size")
-    private Product product;
 
     @Column
     private String size;

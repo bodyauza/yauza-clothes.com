@@ -41,6 +41,7 @@ public class MainController {
 
     @Autowired
     private DefaultEmailService emailService;
+    private int id;
 
     @GetMapping("/pay")
     public String pay(Model model) {
@@ -184,14 +185,18 @@ public class MainController {
         Optional<Product> products = productRepository.findById(1);
         ArrayList<Product> res = new ArrayList<>();
         products.ifPresent(res::add);
-        String size = stock.getSize().getSize();
+        /*String size = stock.getSize().getSize();*/
         model.addAttribute("products", res);
-        model.addAttribute("size", size);
+        //model.addAttribute("size", size);
         return "scarf";
     }
 
     @PostMapping("/oversize-size")
-    public String oversizeSize(Model model, @RequestParam Integer id) {
+    public String oversizeSize(Model model, @RequestParam String size) {
+        String str = "XS";
+        if (size.equals(str)) {
+            id = 2;
+        }
         Optional<Product> products1 = productRepository.findById(id);
         ArrayList<Product> res = new ArrayList<>();
         products1.ifPresent(res::add);

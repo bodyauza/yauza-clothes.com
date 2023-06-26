@@ -20,22 +20,16 @@ public class Product {
     @Column
     private String name;
     @Column
+    private int price;
+    @Column
+    private int quantity;
+    @Column
     private String img;
     @Column
     private String color;
     @Column
-    private int price;
-    @Column
-    private int quantity;
-
-    @Column
     @Version
     private int in_stock;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    @JoinColumn(name = "id")
-    private Sizes size;
 
 
     public Product() {
