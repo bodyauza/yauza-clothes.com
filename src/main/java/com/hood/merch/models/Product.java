@@ -31,6 +31,11 @@ public class Product {
     @Version
     private int in_stock;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JoinColumn(name = "id")
+    private Sizes size;
+
 
     public Product() {
     }

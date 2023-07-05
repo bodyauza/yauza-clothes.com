@@ -185,9 +185,9 @@ public class MainController {
         Optional<Product> products = productRepository.findById(1);
         ArrayList<Product> res = new ArrayList<>();
         products.ifPresent(res::add);
-        /*String size = stock.getSize().getSize();*/
+        String size = stock.getSize().getSize();
         model.addAttribute("products", res);
-        //model.addAttribute("size", size);
+        model.addAttribute("size", size);
         return "scarf";
     }
 

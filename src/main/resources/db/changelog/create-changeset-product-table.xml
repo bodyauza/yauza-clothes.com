@@ -7,11 +7,16 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
     <changeSet id="create_table_product" author="store_author">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="product"/>
+            </not>
+        </preConditions>
         <createTable tableName="product">
             <column autoIncrement="true" name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="name" type="varchar(100)">
+            <column name="name" type="text">
                 <constraints nullable="false"/>
             </column>
             <column name="price" type="integer">
@@ -30,6 +35,11 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+            <!--<addForeignKeyConstraint baseColumnNames="id"
+                baseTableName="product"
+                constraintName="fk_product_id"
+                referencedColumnNames="size_id"
+                referencedTableName="sizes"/>-->
     </changeSet>
 
 </databaseChangeLog>
