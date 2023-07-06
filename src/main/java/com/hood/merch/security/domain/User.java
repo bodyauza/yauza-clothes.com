@@ -8,7 +8,7 @@ import lombok.Setter;
 import java.util.HashSet;
 import java.util.Set;
 
-//@Entity
+@Entity
 @Getter
 @Setter
 public class User {
