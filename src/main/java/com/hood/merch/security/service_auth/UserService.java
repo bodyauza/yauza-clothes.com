@@ -1,12 +1,10 @@
-/*package com.hood.merch.security.service;
+package com.hood.merch.security.service_auth;
 
 import com.hood.merch.security.domain.User;
-import com.hood.merch.security.domain.Role;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,4 +28,4 @@ public class UserService {
                 .findFirst();
     }
 
-}*/
+}

@@ -1,4 +1,4 @@
-package com.hood.merch.security.config;
+package com.hood.merch.security.config_auth;
 
 import com.hood.merch.security.filter.JwtFilter;
 import lombok.RequiredArgsConstructor;

@@ -43,6 +43,12 @@ public class MainController {
     private DefaultEmailService emailService;
     private int id;
 
+    @GetMapping("/auth")
+    public String auth(Model model) {
+        model.addAttribute("title", "Auth");
+        return "auth";
+    }
+
     @GetMapping("/pay")
     public String pay(Model model) {
         model.addAttribute("title", "Pay");
@@ -51,7 +57,7 @@ public class MainController {
 
     @GetMapping("/form")
     public String form(Model model) {
-        model.addAttribute("", "Оформить заказ");
+        model.addAttribute("title", "Оформить заказ");
         return "offer";
     }
 

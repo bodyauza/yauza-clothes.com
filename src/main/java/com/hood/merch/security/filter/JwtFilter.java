@@ -1,8 +1,8 @@
 package com.hood.merch.security.filter;
 
 import com.hood.merch.security.domain.JwtAuthentication;
-import com.hood.merch.security.service.JwtProvider;
-import com.hood.merch.security.service.JwtUtils;
+import com.hood.merch.security.service_auth.JwtProvider;
+import com.hood.merch.security.service_auth.JwtUtils;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

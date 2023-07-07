@@ -1,4 +1,4 @@
-package com.hood.merch.security.service;
+package com.hood.merch.security.service_auth;
 
 import org.springframework.stereotype.Service;
 

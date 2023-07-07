@@ -1,19 +1,20 @@
-/*package com.hood.merch.controllers;
+package com.hood.merch.controllers;
 
 
 import com.hood.merch.security.domain.JwtRequest;
 import com.hood.merch.security.domain.JwtResponse;
 import com.hood.merch.security.domain.RefreshJwtRequest;
-import com.hood.merch.security.service.AuthService;
+import com.hood.merch.security.service_auth.AuthService;
 import jakarta.security.auth.message.AuthException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Controller
 @RequestMapping("api/auth")
 @RequiredArgsConstructor
 public class AuthController {
@@ -38,4 +39,4 @@ public class AuthController {
         return ResponseEntity.ok(token);
     }
 
-}*/
+}

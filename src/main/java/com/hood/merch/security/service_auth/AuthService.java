@@ -1,4 +1,4 @@
-/*package com.hood.merch.security.service;
+package com.hood.merch.security.service_auth;
 
 import com.hood.merch.security.domain.User;
 import com.hood.merch.security.domain.JwtAuthentication;
@@ -8,7 +8,6 @@ import io.jsonwebtoken.Claims;
 import jakarta.security.auth.message.AuthException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -77,4 +76,4 @@ public class AuthService {
         return (JwtAuthentication) SecurityContextHolder.getContext().getAuthentication();
     }
 
-}*/
+}
