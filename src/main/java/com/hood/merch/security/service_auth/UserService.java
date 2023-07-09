@@ -1,8 +1,10 @@
 package com.hood.merch.security.service_auth;
 
-import com.hood.merch.security.domain.User;
+import com.hood.merch.security.model_auth.User;
+import com.hood.merch.security.repo_auth.UserRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,12 +15,11 @@ import java.util.Optional;
 public class UserService {
 
     private final List<User> users;
-    private User user;
+    @Autowired
+    private UserRepository userRepository;
 
     public UserService() {
-        this.users = List.of(
-                new User(user.getLogin(), user.getPassword(), user.getFirstName(), user.getLastName(), user.getRole())
-        );
+        this.users = userRepository.findAll();
         //new User(user.getLogin(), user.getPassword(), user.getFirstName(), user.getLastName(), Collections.singleton(Role.USER))
     }
 

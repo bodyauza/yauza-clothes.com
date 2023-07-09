@@ -1,13 +1,14 @@
 package com.hood.merch.security.service_auth;
 
-import com.hood.merch.security.domain.User;
 import com.hood.merch.security.domain.JwtAuthentication;
 import com.hood.merch.security.domain.JwtRequest;
 import com.hood.merch.security.domain.JwtResponse;
+import com.hood.merch.security.model_auth.User;
 import io.jsonwebtoken.Claims;
 import jakarta.security.auth.message.AuthException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -18,17 +19,17 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AuthService {
 
+    @Autowired
     private final UserService userService;
+
     private final Map<String, String> refreshStorage = new HashMap<>();
     private final JwtProvider jwtProvider;
-    private User user;
-    private String password = String.valueOf(user.getPassword());
 
 
     public JwtResponse login(@NonNull JwtRequest authRequest) throws AuthException {
         final User user = userService.getByLogin(authRequest.getLogin())
                 .orElseThrow(() -> new AuthException("Пользователь не найден"));
-        if (password.equals(authRequest.getPassword())) {
+        if (authRequest.getPassword().equals(user.getPassword())) {
             final String accessToken = jwtProvider.generateAccessToken(user);
             final String refreshToken = jwtProvider.generateRefreshToken(user);
             refreshStorage.put(user.getLogin(), refreshToken);

@@ -1,6 +1,6 @@
 package com.hood.merch.security.service_auth;
 
-import com.hood.merch.security.domain.User;
+import com.hood.merch.security.model_auth.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;

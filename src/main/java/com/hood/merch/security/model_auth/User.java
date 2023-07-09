@@ -1,12 +1,11 @@
-package com.hood.merch.security.domain;
+package com.hood.merch.security.model_auth;
 
-import com.hood.merch.security.domain.Role;
+import com.hood.merch.security.domain.JwtRequest;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -37,5 +36,18 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return password == user.password;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(password);
     }
 }
