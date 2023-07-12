@@ -11,16 +11,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class UserService {
 
-    private final List<User> users;
+    @Autowired
+    private List<User> users;
     @Autowired
     private UserRepository userRepository;
 
     public UserService() {
         this.users = userRepository.findAll();
-        //new User(user.getLogin(), user.getPassword(), user.getFirstName(), user.getLastName(), Collections.singleton(Role.USER))
     }
 
     public Optional<User> getByLogin(@NonNull String login) {

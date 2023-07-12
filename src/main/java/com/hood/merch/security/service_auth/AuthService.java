@@ -16,14 +16,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-@RequiredArgsConstructor
 public class AuthService {
 
     @Autowired
-    private final UserService userService;
+    private UserService userService;
 
     private final Map<String, String> refreshStorage = new HashMap<>();
-    private final JwtProvider jwtProvider;
+    @Autowired
+    private JwtProvider jwtProvider;
 
 
     public JwtResponse login(@NonNull JwtRequest authRequest) throws AuthException {
