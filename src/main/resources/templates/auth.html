@@ -14,7 +14,7 @@
             // создаём новый экземпляр запроса XHR
             let xhr = new XMLHttpRequest();
             // адрес, куда мы отправим нашу JSON-строку
-            let url = "http://localhost:8081/api/auth/login";
+            let url = "http://localhost:8081/person/auth/login";
             // открываем соединение
             xhr.open("POST", url, true);
             // устанавливаем заголовок — выбираем тип контента, который отправится на сервер, в нашем случае мы явно пишем, что это JSON
@@ -36,8 +36,8 @@
 </head>
 <body>
 
-    <input type="text" title="Логин" id="login">
-    <input type="password" title="Пароль" id="password">
+    <input type="text" id="login">
+    <input type="password" id="password">
     <button onclick="sendJSON()">Жми!</button>
 
     <p class="result" style="color:blue"></p>

@@ -1,6 +1,7 @@
 package com.hood.merch.controllers;
 
 
+import com.hood.merch.security.domain.JwtAuthentication;
 import com.hood.merch.security.domain.JwtRequest;
 import com.hood.merch.security.domain.JwtResponse;
 import com.hood.merch.security.domain.RefreshJwtRequest;
@@ -9,14 +10,12 @@ import jakarta.security.auth.message.AuthException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("api/auth")
+@RequestMapping("person/auth")
 public class AuthController {
 
     @Autowired

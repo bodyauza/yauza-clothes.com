@@ -24,17 +24,10 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .httpBasic().disable()
-                .csrf()
-                .and()
+                .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeHttpRequests(
-                        authz -> authz
-                                .requestMatchers(new AntPathRequestMatcher("/api/auth/login", "/api/auth/token")).authenticated()
-                                .anyRequest().permitAll() //другие URL разрешены всем пользователям
-                                .and()
-                                .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                ).build();
+                .build();
     }
 
 }

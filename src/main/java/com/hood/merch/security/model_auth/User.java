@@ -1,40 +1,28 @@
 package com.hood.merch.security.model_auth;
 
 import com.hood.merch.security.domain.JwtRequest;
+import com.hood.merch.security.domain.Role;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Objects;
+import java.util.Set;
 
-@Entity
+
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    @Column
     private String login;
-    @Column
-    private char password;
-    @Column
+    private String password;
     private String firstName;
-    @Column
     private String lastName;
-    @Column
-    private String role;
+    private Set<Role> roles;
 
-    public User() {
-
-    }
-
-    public User(String login, char password, String firstName, String lastName, String role) {
-        this.login = login;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.role = role;
-    }
 }
+
