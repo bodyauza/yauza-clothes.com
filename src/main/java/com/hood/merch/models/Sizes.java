@@ -10,6 +10,7 @@ import lombok.Setter;
 public class Sizes {
 
     @Id
+    @Column(name = "id")
     private int id;
 
     @OneToOne(mappedBy = "size")
