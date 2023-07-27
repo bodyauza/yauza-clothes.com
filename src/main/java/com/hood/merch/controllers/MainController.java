@@ -4,7 +4,6 @@ package com.hood.merch.controllers;
 import com.hood.merch.dto.Cart;
 import com.hood.merch.models.Offer;
 import com.hood.merch.models.Product;
-import com.hood.merch.models.Sizes;
 import com.hood.merch.models.repo.OfferRepository;
 import com.hood.merch.models.repo.ProductRepository;
 import com.hood.merch.service.DefaultEmailService;
