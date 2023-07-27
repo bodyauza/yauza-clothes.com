@@ -661,7 +661,7 @@
                 $(".quantity").on("submit", function(e){
                     e.preventDefault();
                     $.ajax({
-                        url: '/oversize-size',
+                        url: '/in-cart',
                         type: 'post',
                         data: $(this).serialize()
                     })

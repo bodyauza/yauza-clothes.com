@@ -10,7 +10,7 @@ import lombok.Setter;
 public class Sizes {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "product_id")
     private int id;
 
     @OneToOne(mappedBy = "size")
