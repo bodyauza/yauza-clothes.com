@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script>
+        function sendJSON() {
+            // с помощью jQuery обращаемся к элементам на странице по их именам
+            let login = document.querySelector('#login');
+            let password = document.querySelector('#password');
+            // а вот сюда мы поместим ответ от сервера
+            let result = document.querySelector('.result');
+            // создаём новый экземпляр запроса XHR
+            let xhr = new XMLHttpRequest();
+            // адрес, куда мы отправим нашу JSON-строку
+            let url = "http://localhost:8081/person/auth/login";
+            // открываем соединение
+            xhr.open("POST", url, true);
+            // устанавливаем заголовок — выбираем тип контента, который отправится на сервер, в нашем случае мы явно пишем, что это JSON
+            xhr.setRequestHeader("Content-Type", "application/json");
+            // когда придёт ответ на наше обращение к серверу, мы его обработаем здесь
+            xhr.onreadystatechange = function () {
+                // если запрос принят и сервер ответил, что всё в порядке
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    // выводим то, что ответил нам сервер — так мы убедимся, что данные он получил правильно
+                    result.innerHTML = this.responseText;
+                }
+            };
+            // преобразуем наши данные JSON в строку
+            var data = JSON.stringify({ "login": login.value, "password": password.value });
+            // когда всё готово, отправляем JSON на сервер
+            xhr.send(data);
+        }
+
+        async function stat() {
+            let response = await fetch('http://localhost:8081/auth')
+            let response_status = response.status;
+            let result = document.querySelector('.st');
+            result.innerHTML = response_status.toString();
+        }
+
+        function sendHello() {
+            let result = document.querySelector('.result');
+            let res_token = result.toString();
+            fetch('http://localhost:8080/person/hello/user', {
+                method: 'GET',
+                headers: new Headers({
+                    'Authorization': 'Bearer ' + res_token,
+                    'Content-Type': 'application/json'
+                })
+            });
+        }
+    </script>
+</head>
+<body onload="stat()">
+
+    <input type="text" id="login">
+    <input type="password" id="password">
+    <button onclick="sendJSON()">Жми!</button>
+
+    <p class="result" style="color:blue"></p>
+    <p class="st" style="color:red"></p>
+
+    <button onclick="sendHello()">Отправка токена в личный кабинет</button>
+
+</body>
+</html>

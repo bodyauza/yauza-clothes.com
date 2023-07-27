@@ -41,6 +41,13 @@ public class MainController {
 
     @Autowired
     private DefaultEmailService emailService;
+    private int id;
+
+    @GetMapping("/auth")
+    public String auth(Model model) {
+        model.addAttribute("title", "Auth");
+        return "auth";
+    }
 
     @GetMapping("/pay")
     public String pay(Model model) {
@@ -50,7 +57,7 @@ public class MainController {
 
     @GetMapping("/form")
     public String form(Model model) {
-        model.addAttribute("", "Оформить заказ");
+        model.addAttribute("title", "Оформить заказ");
         return "offer";
     }
 
@@ -191,7 +198,11 @@ public class MainController {
     }
 
     @PostMapping("/oversize-size")
-    public String oversizeSize(Model model, @RequestParam Integer id) {
+    public String oversizeSize(Model model, @RequestParam String size) {
+        String str = "XS";
+        if (size.equals(str)) {
+            id = 2;
+        }
         Optional<Product> products1 = productRepository.findById(id);
         ArrayList<Product> res = new ArrayList<>();
         products1.ifPresent(res::add);
