@@ -10,5 +10,35 @@
         <insert tableName="sizes">
             <column name="size" value="OS"/>
         </insert>
+        <insert tableName="sizes">
+            <column name="size_id" value="2"/>
+        </insert>
+        <insert tableName="sizes">
+            <column name="size" value="XS"/>
+        </insert>
+        <insert tableName="sizes">
+            <column name="size_id" value="2"/>
+        </insert>
+        <insert tableName="sizes">
+            <column name="size" value="S"/>
+        </insert>
+        <insert tableName="sizes">
+            <column name="size_id" value="2"/>
+        </insert>
+        <insert tableName="sizes">
+            <column name="size" value="M"/>
+        </insert>
+        <insert tableName="sizes">
+            <column name="size_id" value="2"/>
+        </insert>
+        <insert tableName="sizes">
+            <column name="size" value="XL"/>
+        </insert>
+        <insert tableName="sizes">
+            <column name="size_id" value="2"/>
+        </insert>
+        <insert tableName="sizes">
+            <column name="size" value="L"/>
+        </insert>
     </changeSet>
 </databaseChangeLog>
