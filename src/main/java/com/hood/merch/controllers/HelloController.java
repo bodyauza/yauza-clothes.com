@@ -19,9 +19,9 @@ public class HelloController {
 
     @PreAuthorize("hasAuthority('USER')")
     @GetMapping("hello/user")
-    public ResponseEntity<String> helloUser() {
-        final JwtAuthentication authInfo = authService.getAuthInfo();
-        return ResponseEntity.ok("Hello user " + authInfo.getPrincipal() + "!");
+    public String helloUser(Model model) {
+        model.addAttribute("title", "Личный кабинет");
+        return "private";
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")

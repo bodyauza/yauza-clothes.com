@@ -23,11 +23,20 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
+                .cors()
+                .and()
                 .httpBasic().disable()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .build();
+                .authorizeHttpRequests(
+                        authz -> authz
+                                .requestMatchers("/person/auth/login", "/person/auth/token", "/auth").permitAll()
+                                .requestMatchers("/person/hello/user").hasAuthority("USER")
+                                .requestMatchers("/person/hello/admin").hasAuthority("ADMIN")
+                                .and()
+                                .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                ).build();
     }
 
 }
