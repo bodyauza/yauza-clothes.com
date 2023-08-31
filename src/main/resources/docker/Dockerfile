@@ -1,6 +1,6 @@
 FROM openjdk:19
 COPY . /src
 WORKDIR /src
-EXPOSE 8081
+EXPOSE 81
 RUN javac MerchApplication.java
 CMD ["java", "MerchApplication"]
