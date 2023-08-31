@@ -25,5 +25,26 @@
         <insert tableName="product">
             <column name="in_stock" value="15"/>
         </insert>
+        <insert tableName="product">
+            <column name="id" value="2"/>
+        </insert>
+        <insert tableName="product">
+            <column name="name" value="OVERSIZE SAKURA"/>
+        </insert>
+        <insert tableName="product">
+            <column name="price" value="1500"/>
+        </insert>
+        <insert tableName="product">
+            <column name="quantity" value="1"/>
+        </insert>
+        <insert tableName="product">
+            <column name="image" value="/oversize.png"/>
+        </insert>
+        <insert tableName="product">
+            <column name="color" value="white"/>
+        </insert>
+        <insert tableName="product">
+            <column name="in_stock" value="15"/>
+        </insert>
     </changeSet>
 </databaseChangeLog>

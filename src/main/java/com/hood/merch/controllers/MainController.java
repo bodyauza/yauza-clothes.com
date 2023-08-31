@@ -177,7 +177,6 @@ public class MainController {
         }
     }
 
-
     @GetMapping("/basket")
     public String basket(Model model) {
         model.addAttribute("title", "Корзина");
