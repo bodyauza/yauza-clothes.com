@@ -31,7 +31,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests(
                         authz -> authz
-                                .requestMatchers("/person/hello/user").authenticated()
+                                .requestMatchers("/person/hello/user", "/person/hello/admin").authenticated()
                                 .anyRequest().permitAll()
                                 .and()
                                 .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
