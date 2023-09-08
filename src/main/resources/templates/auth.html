@@ -41,11 +41,10 @@
             let res_token = $('.res').text()
             let header = document.querySelector('.header')
             header.innerHTML = res_token
-            fetch('https://localhost:8081/person/hello/user', {
+            fetch('https://localhost:8081/person/hello/admin', {
                 method: 'GET',
                 headers: new Headers({
-                    'Authorization': 'Bearer ' + res_token,
-                    'Content-Type': 'application/json'
+                    'Authorization': 'Bearer ' + res_token
                 })
             });
         }
