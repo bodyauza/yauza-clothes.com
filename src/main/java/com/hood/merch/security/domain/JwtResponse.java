@@ -1,4 +1,4 @@
-package com.hood.merch.security.domain;
+/*package com.hood.merch.security.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,4 +11,4 @@ public class JwtResponse {
     private String accessToken;
     private String refreshToken;
 
-}
+}*/

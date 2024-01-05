@@ -1,4 +1,4 @@
-package com.hood.merch.security.domain;
+/*package com.hood.merch.security.domain;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -40,4 +40,4 @@ public class JwtAuthentication implements Authentication {
     @Override
     public String getName() { return firstName; }
 
-}
+}*/

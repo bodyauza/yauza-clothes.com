@@ -229,7 +229,7 @@
     <form th:action="'/new-order'" class="form" method="post">
       <input type="hidden" name="id" th:value="${session.cart['id']}"/>
       <input type="hidden" name="name" th:value="${session.cart['name']}"/>
-      <input type="hidden" name="item_size" th:value="${session.cart['item_size']}"/>
+      <input type="hidden" name="item_size" th:value="${session.cart['size']}"/>
       <input type="hidden" name="color" th:value="${session.cart['color']}"/>
       <input type="hidden" name="quantity" th:value="${session.cart['quantity']}"/>
       <input type="hidden" name="price" th:value="${session.cart['price']}"/>
@@ -237,10 +237,42 @@
       <div th:each="el : ${session.cart1}">
         <input type="hidden" name="id1" th:value="${session.cart1['id']}"/>
         <input type="hidden" name="name1" th:value="${session.cart1['name']}"/>
-        <input type="hidden" name="item_size1" th:value="${session.cart1['item_size']}"/>
+        <input type="hidden" name="item_size1" th:value="${session.cart1['size']}"/>
         <input type="hidden" name="color1" th:value="${session.cart1['color']}"/>
         <input type="hidden" name="quantity1" th:value="${session.cart1['quantity']}"/>
         <input type="hidden" name="price1" th:value="${session.cart1['price']}"/>
+      </div>
+      <div th:each="el : ${session.cart2}">
+        <input type="hidden" name="id1" th:value="${session.cart2['id']}"/>
+        <input type="hidden" name="name1" th:value="${session.cart2['name']}"/>
+        <input type="hidden" name="item_size1" th:value="${session.cart2['size']}"/>
+        <input type="hidden" name="color1" th:value="${session.cart2['color']}"/>
+        <input type="hidden" name="quantity1" th:value="${session.cart2['quantity']}"/>
+        <input type="hidden" name="price1" th:value="${session.cart2['price']}"/>
+      </div>
+      <div th:each="el : ${session.cart3}">
+        <input type="hidden" name="id1" th:value="${session.cart3['id']}"/>
+        <input type="hidden" name="name1" th:value="${session.cart3['name']}"/>
+        <input type="hidden" name="item_size1" th:value="${session.cart3['size']}"/>
+        <input type="hidden" name="color1" th:value="${session.cart3['color']}"/>
+        <input type="hidden" name="quantity1" th:value="${session.cart3['quantity']}"/>
+        <input type="hidden" name="price1" th:value="${session.cart3['price']}"/>
+      </div>
+      <div th:each="el : ${session.cart4}">
+        <input type="hidden" name="id1" th:value="${session.cart4['id']}"/>
+        <input type="hidden" name="name1" th:value="${session.cart4['name']}"/>
+        <input type="hidden" name="item_size1" th:value="${session.cart4['size']}"/>
+        <input type="hidden" name="color1" th:value="${session.cart4['color']}"/>
+        <input type="hidden" name="quantity1" th:value="${session.cart4['quantity']}"/>
+        <input type="hidden" name="price1" th:value="${session.cart4['price']}"/>
+      </div>
+      <div th:each="el : ${session.cart5}">
+        <input type="hidden" name="id1" th:value="${session.cart5['id']}"/>
+        <input type="hidden" name="name1" th:value="${session.cart5['name']}"/>
+        <input type="hidden" name="item_size1" th:value="${session.cart5['size']}"/>
+        <input type="hidden" name="color1" th:value="${session.cart5['color']}"/>
+        <input type="hidden" name="quantity1" th:value="${session.cart5['quantity']}"/>
+        <input type="hidden" name="price1" th:value="${session.cart5['price']}"/>
       </div>
 
       <div class="input-box">
@@ -256,7 +288,7 @@
       <div class="column">
         <div class="input-box">
           <label>Телефон</label>
-          <input type="number" name="tel" id="tel" placeholder="+7" required />
+          <input type="text" name="tel" id="tel" placeholder="+7" required />
         </div>
       </div>
       <div class="post-box">

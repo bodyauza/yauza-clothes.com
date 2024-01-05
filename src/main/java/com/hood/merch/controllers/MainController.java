@@ -137,7 +137,11 @@ public class MainController {
 
     //Новый заказ
     @PostMapping("/new-order")
-    public String newOrder(HttpServletRequest request, HttpServletResponse response, @RequestParam String FIO, @RequestParam String email, @RequestParam String tel, @RequestParam String post, @RequestParam String street, @RequestParam String home, @RequestParam String country, @RequestParam String city, @RequestParam String region, @RequestParam String index, @RequestParam Integer id, @RequestParam String name, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer price, @RequestParam(value = "id1", required=false) Integer id1, @RequestParam(value = "name1", required=false) String name1, @RequestParam(value = "item_size1", required=false) String item_size1, @RequestParam(value = "quantity1", required=false) Integer quantity1, @RequestParam(value = "color1", required=false) String color1, @RequestParam(value = "price1", required=false) Integer price1) {
+    public String newOrder(HttpServletRequest request, HttpServletResponse response, @RequestParam String FIO, @RequestParam String email, @RequestParam String tel, @RequestParam String post, @RequestParam String street,
+                           @RequestParam String home, @RequestParam String country, @RequestParam String city, @RequestParam String region, @RequestParam String index,
+                           @RequestParam Integer id, @RequestParam String name, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color,
+                           @RequestParam Integer price, @RequestParam(value = "id1", required=false) Integer id1, @RequestParam(value = "name1", required=false) String name1,
+                           @RequestParam(value = "item_size1", required=false) String item_size1, @RequestParam(value = "quantity1", required=false) Integer quantity1, @RequestParam(value = "color1", required=false) String color1, @RequestParam(value = "price1", required=false) Integer price1) {
         String address = country + ", " + region + ", " + city + ", " + street + ", " + home + ", " + index;
 
         if (productService.purchaseProduct(id, quantity) == "Товар закончился") {

@@ -1,4 +1,4 @@
-package com.hood.merch.security.domain;
+/*package com.hood.merch.security.domain;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,4 +9,4 @@ public class RefreshJwtRequest {
 
     public String refreshToken;
 
-}
+}*/

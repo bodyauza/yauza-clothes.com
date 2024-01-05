@@ -1,4 +1,4 @@
-package com.hood.merch.controllers;
+/*package com.hood.merch.controllers;
 
 
 import com.hood.merch.security.domain.JwtAuthentication;
@@ -39,4 +39,4 @@ public class AuthController {
         return ResponseEntity.ok(token);
     }
 
-}
+}*/
