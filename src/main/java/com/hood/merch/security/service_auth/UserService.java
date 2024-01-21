@@ -1,4 +1,4 @@
-package com.hood.merch.security.service_auth;
+/*package com.hood.merch.security.service_auth;
 
 import com.hood.merch.security.domain.Role;
 import com.hood.merch.security.model_auth.User;
@@ -30,4 +30,4 @@ public class UserService {
                 .findFirst();
     }
 
-}
+}*/

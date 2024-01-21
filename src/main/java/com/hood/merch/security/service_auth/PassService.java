@@ -1,4 +1,4 @@
-package com.hood.merch.security.service_auth;
+/*package com.hood.merch.security.service_auth;
 
 import org.springframework.stereotype.Service;
 
@@ -27,4 +27,4 @@ public class PassService {
             throw new RuntimeException(e);
         }
     }
-}
+}*/

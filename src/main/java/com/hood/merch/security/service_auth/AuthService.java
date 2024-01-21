@@ -1,4 +1,4 @@
-package com.hood.merch.security.service_auth;
+/*package com.hood.merch.security.service_auth;
 
 import com.hood.merch.security.domain.JwtAuthentication;
 import com.hood.merch.security.domain.JwtRequest;
@@ -77,4 +77,4 @@ public class AuthService {
         return (JwtAuthentication) SecurityContextHolder.getContext().getAuthentication();
     }
 
-}
+}*/

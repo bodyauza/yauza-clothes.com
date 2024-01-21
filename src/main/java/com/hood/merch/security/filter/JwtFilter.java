@@ -1,4 +1,4 @@
-package com.hood.merch.security.filter;
+/*package com.hood.merch.security.filter;
 
 import com.hood.merch.security.domain.JwtAuthentication;
 import com.hood.merch.security.service_auth.JwtProvider;
@@ -47,4 +47,4 @@ public class JwtFilter extends GenericFilterBean {
         }
         return null;
     }
-}
+}*/

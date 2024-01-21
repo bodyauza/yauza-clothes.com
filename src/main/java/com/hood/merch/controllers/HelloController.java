@@ -1,4 +1,4 @@
-package com.hood.merch.controllers;
+/*package com.hood.merch.controllers;
 
 import com.hood.merch.security.domain.JwtAuthentication;
 import com.hood.merch.security.service_auth.AuthService;
@@ -46,4 +46,4 @@ public class HelloController {
 
         return new ResponseEntity<>("private", headers, HttpStatus.OK);
     }
-}
+}*/

@@ -1,4 +1,4 @@
-package com.hood.merch.security.model_auth;
+/*package com.hood.merch.security.model_auth;
 
 import com.hood.merch.security.domain.JwtRequest;
 import com.hood.merch.security.domain.Role;
@@ -24,5 +24,5 @@ public class User {
     private String lastName;
     private Set<Role> roles;
 
-}
+}*/
 
