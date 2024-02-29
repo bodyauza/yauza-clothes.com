@@ -3,6 +3,6 @@ server:
     key-alias: spring-https
     key-store: classpath:javamerch.jks
     key-store-type: JKS
-    key-password: fifty26
+    key-password: 
 
   port: 8081
