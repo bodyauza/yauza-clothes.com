@@ -14,7 +14,7 @@ import java.util.Set;
 public class SessionService {
 
     public void removeSessions(HttpServletRequest request, HttpServletResponse response) {
-        List<String> attribs = Arrays.asList("cart", "cart1", "cart2", "cart3", "cart4", "cart5");
+        List<String> attribs = Arrays.asList("item", "item1", "item2", "item3", "item4", "item5");
         HttpSession session = request.getSession();
 
         for (String attr : attribs) {

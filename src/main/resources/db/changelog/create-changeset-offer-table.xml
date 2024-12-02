@@ -7,10 +7,10 @@
     <changeSet id="create_table_offer" author="store_author">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="offer"/>
+                <tableExists tableName="order"/>
             </not>
         </preConditions>
-        <createTable tableName="offer">
+        <createTable tableName="order">
             <column autoIncrement="true" name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>

@@ -1,17 +1,16 @@
 package com.hood.merch.controllers;
 
 
-import com.hood.merch.dto.Cart;
-import com.hood.merch.models.Offer;
+import com.hood.merch.dto.ProductDTO;
+import com.hood.merch.dto.OrderDTO;
+import com.hood.merch.models.Order;
 import com.hood.merch.models.Product;
-import com.hood.merch.models.Sizes;
-import com.hood.merch.models.repo.OfferRepository;
+import com.hood.merch.models.repo.OrderRepository;
 import com.hood.merch.models.repo.ProductRepository;
 import com.hood.merch.service.DefaultEmailService;
 import com.hood.merch.service.ProductService;
 import com.hood.merch.service.SessionService;
 import jakarta.mail.MessagingException;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +33,14 @@ public class MainController {
     private ProductService productService;
 
     @Autowired
-    private OfferRepository offerRepository;
+    private OrderRepository orderRepository;
 
     @Autowired
     private SessionService sessionService;
 
     @Autowired
     private DefaultEmailService emailService;
+
     private int id;
 
     @GetMapping("/auth")
@@ -49,17 +49,20 @@ public class MainController {
         return "auth";
     }
 
+
     @GetMapping("/pay")
     public String pay(Model model) {
         model.addAttribute("title", "Pay");
         return "payment";
     }
 
-    @GetMapping("/form")
-    public String form(Model model) {
+
+    @GetMapping("/creating-order")
+    public String creatingOrder(Model model) {
         model.addAttribute("title", "Оформить заказ");
-        return "offer";
+        return "personal_data";
     }
+
 
     @GetMapping("/")
     public String home(Model model) {
@@ -67,9 +70,10 @@ public class MainController {
         return "home";
     }
 
-    //Добавление товара
-    @PostMapping("/add-name")
-    protected String doSet(HttpServletRequest request, @RequestParam String img, @RequestParam Integer id, @RequestParam String name, @RequestParam Integer price, @RequestParam String size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer in_stock)
+
+    // Добавление товара в корзину.
+    @PostMapping("/add-item")
+    protected String addToitem(HttpServletRequest request, @RequestParam String img, @RequestParam Integer id, @RequestParam String name, @RequestParam Integer price, @RequestParam String size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer in_stock)
             throws ServletException, IOException {
 
         Product stock_check = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Товар не найден"));
@@ -77,27 +81,26 @@ public class MainController {
         if(stock_check.getIn_stock() >= quantity) {
             HttpSession session = request.getSession();
             session.setMaxInactiveInterval(-1);
-
-            Set<Cart> cart_set = new LinkedHashSet<>();
-            List<String> attribs = Arrays.asList("cart", "cart1", "cart2", "cart3", "cart4", "cart5"); // и т.д.
+            Set<ProductDTO> productDTO_set = new LinkedHashSet<>();
+            List<String> attribs = Arrays.asList("item", "item1", "item2", "item3", "item4", "item5"); // и т.д.
             Set<String> missingAttrs = new LinkedHashSet<>();
 
             for (String attr : attribs) {
-                Cart cart_dto = (Cart) session.getAttribute(attr);
-                if (null == cart_dto) {
-                    missingAttrs.add(attr);
-                } else if (cart_set.add(cart_dto)) { // товар успешно добавлен в сет
-                    System.out.println("Товар " + cart_dto.getName() + " в сессии и сете");
+                ProductDTO productDTO = (ProductDTO) session.getAttribute(attr);
+                if (productDTO == null) {
+                    missingAttrs.add(attr); // Товары, которых нет в сессии.
+                } else if (productDTO_set.add(productDTO)) { // Товар успешно добавлен в сет.
+                    System.out.println("Товар " + productDTO.getName() + " в сессии и сете");
                 }
             }
 
             for (String attr : missingAttrs) {
-                Cart cart_dto = new Cart(id, name, price, size, quantity, img, color, in_stock);
-                if (cart_set.add(cart_dto)) { // товар успешно добавлен в сет
-                    System.out.println("Товар " + cart_dto.getName() + " добавлен в сессию и сет" + cart_dto.getSize());
-                    session.setAttribute(attr, cart_dto);
+                ProductDTO productDTO_dto = new ProductDTO(id, name, price, size, quantity, img, color, in_stock);
+                if (productDTO_set.add(productDTO_dto)) { // Товар успешно добавлен в сет.
+                    System.out.println("Товар " + productDTO_dto.getName() + " добавлен в сессию и сет" + productDTO_dto.getSize());
+                    session.setAttribute(attr, productDTO_dto);
                 } else {
-                    System.out.println("Найден товар-дубликат " + cart_dto.getName() + " или добавлен другой размер");
+                    System.out.println("Найден товар-дубликат " + productDTO_dto.getName());
                 }
             }
         }
@@ -105,81 +108,86 @@ public class MainController {
         return "redirect:/basket";
     }
 
-    //Удаление из корзины
-    @PostMapping("/cart/remove")
-    public String Cart_remove(HttpServletRequest request, @RequestParam String attr_name) {
+
+    // Удаление из корзины единиц товара.
+    @PostMapping("/item-remove")
+    public String itemRemove(HttpServletRequest request, @RequestParam String attr_name) {
         HttpSession session = request.getSession();
         session.removeAttribute(attr_name);
         return "redirect:/basket";
     }
 
-    //Изменение количества
+
+    // Изменение количества единиц товара в корзине.
     @PostMapping("/in-cart")
-   protected String inCart(HttpServletRequest request, @RequestParam String attr_name, @RequestParam String img, @RequestParam Integer id, @RequestParam String name, @RequestParam Integer price, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer in_stock)
+    public String inCart(HttpServletRequest request, @RequestParam String attr_name, @RequestParam String img, @RequestParam Integer id, @RequestParam String name, @RequestParam Integer price, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer in_stock)
             throws ServletException, IOException {
 
-        Product stock = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Товар не найден"));
+        Product stock_check = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Товар не найден"));
         HttpSession session = request.getSession();
         String referrer = request.getHeader("referer");
 
-        if(stock.getIn_stock() >= quantity) {
+        if(stock_check.getIn_stock() >= quantity) {
             session.removeAttribute(attr_name);
-            Cart cart = (Cart) session.getAttribute("attr_name");
+            ProductDTO productDTO = (ProductDTO) session.getAttribute("attr_name");
             session.setMaxInactiveInterval(-1);
-            cart = new Cart(id, name, price, item_size, quantity, img, color, in_stock);
-            session.setAttribute(attr_name, cart);
+            productDTO = new ProductDTO(id, name, price, item_size, quantity, img, color, in_stock);
+            session.setAttribute(attr_name, productDTO);
             return "redirect:/basket";
         } else {
             session.removeAttribute(attr_name);
         }
         return referrer;
-}
-
-    //Новый заказ
-    @PostMapping("/new-order")
-    public String newOrder(HttpServletRequest request, HttpServletResponse response, @RequestParam String FIO, @RequestParam String email, @RequestParam String tel, @RequestParam String post, @RequestParam String street,
-                           @RequestParam String home, @RequestParam String country, @RequestParam String city, @RequestParam String region, @RequestParam String index,
-                           @RequestParam Integer id, @RequestParam String name, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color,
-                           @RequestParam Integer price, @RequestParam(value = "id1", required=false) Integer id1, @RequestParam(value = "name1", required=false) String name1,
-                           @RequestParam(value = "item_size1", required=false) String item_size1, @RequestParam(value = "quantity1", required=false) Integer quantity1, @RequestParam(value = "color1", required=false) String color1, @RequestParam(value = "price1", required=false) Integer price1) {
-        String address = country + ", " + region + ", " + city + ", " + street + ", " + home + ", " + index;
-
-        if (productService.purchaseProduct(id, quantity) == "Товар закончился") {
-            return "basket";
-        } else {
-
-            Integer total_price = (quantity * price);
-
-            String products = name + ", " + item_size + ", " + quantity.toString() + ", " + color + ";" + "\n" + "Сумма заказа:" + total_price.toString() + "руб.;";
-
-            if (quantity1 != null) {
-
-                productService.purchaseProduct(id1, quantity1);// == 0
-
-                total_price = (quantity * price) + (quantity1 * price1);
-                products = name + ", " + item_size + ", " + quantity.toString() + ", " + color + ";" + "\n" + name1 + ", " + item_size1 + ", " + quantity1.toString() + ", " + color1 + ";" + "\n" + "Сумма заказа:" + total_price.toString() + "руб.;";
-            }
-
-            Date date = new Date();
-            String status = "не оплачено";
-            Offer offer = new Offer(products, FIO, email, tel, post, address, status, total_price, date);
-            //проблема с добавлением в репозиторий
-            offerRepository.save(offer);
-            System.out.println(products);
-            System.out.println(address);
-
-            try {
-                emailService.sendEmailWithAttachment(email, "Оформление заказа", "Спасибо, что выбрали нас \uD83E\uDD70 \n" + products + address + "\nСкоро вам поступит звонок от менеджера",
-                        "classpath:templates/post.html");
-            } catch (MessagingException | FileNotFoundException mailException) {
-                System.out.println("Unable to send email");
-            }
-
-            sessionService.removeSessions(request, response);
-
-            return "redirect:/pay";
-        }
     }
+
+
+    // Новый заказ.
+    @ResponseBody
+    @RequestMapping(value = "/new-order", method = RequestMethod.POST)
+    public String newOrder(HttpServletRequest request, HttpServletResponse response, @RequestBody OrderDTO orderDTO) {
+        String address = orderDTO.getCountry() + ", " + orderDTO.getRegion() + ", " + orderDTO.getCity() + ", " + orderDTO.getStreet()
+                + ", " + orderDTO.getHome() + ", " + orderDTO.getIndex();
+
+        // Уменьшение кол-ва товаров на складе.
+        for (ProductDTO productDTO : orderDTO.getOrdered_items()) {
+            if (productService.purchaseProduct(productDTO.getId(), productDTO.getQuantity()).equals("Товар закончился")) {
+                return "basket";
+            }
+        }
+
+        Integer total_price = null;
+        StringBuilder products = new StringBuilder();
+
+        for (ProductDTO productDTO : orderDTO.getOrdered_items()) {
+            // Количество единиц оформляемого товара и id товара возвращает браузер.
+            Product item = productRepository.findById(productDTO.getId()).orElseThrow(() -> new RuntimeException("Товар не найден"));
+            total_price += (productDTO.getQuantity() * item.getPrice());
+            products.append(item.getName() + ", " + item.getSize() + ", " + Integer.toString(productDTO.getQuantity())
+                    + ", " + item.getColor() + ";");
+        }
+
+        Date date = new Date();
+        String status = "не оплачено";
+        Order order = new Order(products.toString(), orderDTO.getFIO(), orderDTO.getEmail(), orderDTO.getTel(), orderDTO.getPost(),
+                address, status, total_price, date);
+        //проблема с добавлением в репозиторий
+        orderRepository.save(order);
+        System.out.println(products);
+        System.out.println(address);
+
+        try {
+            emailService.sendEmailWithAttachment(orderDTO.getEmail(), "Оформление заказа", "Спасибо, что выбрали нас \uD83E\uDD70 \n"
+                            + products + address + "\nСкоро вам поступит звонок от менеджера",
+                    "classpath:templates/post.html");
+        } catch (MessagingException | FileNotFoundException mailException) {
+            System.out.println("Unable to send email");
+        }
+
+        sessionService.removeSessions(request, response);
+
+        return "redirect:/pay";
+    }
+
 
     @GetMapping("/basket")
     public String basket(Model model) {
@@ -187,38 +195,39 @@ public class MainController {
         return "basket";
     }
 
-    //Товары
+
     @GetMapping("/scarf")
     public String scarf(Model model) {
-        Product stock = productRepository.findById(1).orElseThrow(() -> new RuntimeException("Товар не найден"));
-        Optional<Product> products = productRepository.findById(1);
-        ArrayList<Product> res = new ArrayList<>();
-        products.ifPresent(res::add);
-        String size = stock.getSize().getSize();
-        model.addAttribute("products", res);
+        Product product = productRepository.findById(1).orElseThrow(() -> new RuntimeException("Товар не найден"));
+        ArrayList<Product> res = new ArrayList<>();  // зачем?
+        res.add(product);
+        String size = product.getSize().getSize();
+        model.addAttribute("product", res);
         model.addAttribute("size", size);
         return "scarf";
     }
 
-    @PostMapping("/oversize-size")
-    public String oversizeSize(Model model, @RequestParam String size) {
-        String str = "XS";
-        if (size.equals(str)) {
-            id = 2;
-        }
-        Optional<Product> products1 = productRepository.findById(id);
-        ArrayList<Product> res = new ArrayList<>();
-        products1.ifPresent(res::add);
-        model.addAttribute("products1", res);
-        return "oversize";
-    }
+
+//    @PostMapping("/oversize-size")
+//    public String oversizeSize(Model model, @RequestParam String size) {
+//        String str = "XS";
+//        if (size.equals(str)) {
+//            id = 2;
+//        }
+//        Optional<Product> products1 = productRepository.findById(id);
+//        ArrayList<Product> res = new ArrayList<>();
+//        products1.ifPresent(res::add);
+//        model.addAttribute("products1", res);
+//        return "oversize";
+//    }
+
 
     @GetMapping("/oversize")
     public String oversize(Model model) {
-        Optional<Product> products1 = productRepository.findById(2);
+        Product product = productRepository.findById(2).orElseThrow(() -> new RuntimeException("Товар не найден"));
         ArrayList<Product> res = new ArrayList<>();
-        products1.ifPresent(res::add);
-        model.addAttribute("products1", res);
+        res.add(product);
+        model.addAttribute("product1", res);
         return "oversize";
     }
 
@@ -227,11 +236,5 @@ public class MainController {
     public String contacts(Model model) {
         model.addAttribute("title", "Контакты");
         return "contacts";
-    }
-
-    @GetMapping("/mail")
-    public String offer(Model model) {
-        model.addAttribute("title", "Email");
-        return "sender";
     }
 }

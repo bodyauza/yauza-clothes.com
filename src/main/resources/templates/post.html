@@ -16,8 +16,8 @@
     </div>
 </header>
 
-<div class="shopping-cart-container">
-    <div class="shopping-cart" style="width: 750px; height: 423px;
+<div class="shopping-productDTO-container">
+    <div class="shopping-productDTO" style="width: 750px; height: 423px;
             margin: 80px auto;
             background: #FFFFFF;
             box-shadow: 1px 2px 3px 0px rgba(0,0,0,0.10);
@@ -37,11 +37,11 @@
         </div>
 
 
-        <div class="item" th:each="el : ${session.cart}" style="padding: 20px 30px;
+        <div class="item" th:each="el : ${session.item}" style="padding: 20px 30px;
             height: 120px;
             display: flex; border-top: 1px solid #E1E8EE">
             <div class="image">
-                <img th:src="${session.cart['img']}" alt="" style="width: 100%;
+                <img th:src="${session.item['img']}" alt="" style="width: 100%;
                 text-align: center;
                 margin: 6px 0"/>
             </div>
@@ -50,9 +50,9 @@
             color: #43484D;
             font-weight: 400; width: 100%;
                 text-align: center">
-                <span th:text="${session.cart['name']}"></span>
-                <span th:text="${session.cart['item_size'] != null} ? ${session.cart['item_size']}"></span>
-                <span th:text="${session.cart['color']}"></span>
+                <span th:text="${session.item['name']}"></span>
+                <span th:text="${session.item['item_size'] != null} ? ${session.item['item_size']}"></span>
+                <span th:text="${session.item['color']}"></span>
             </div>
             <div class="quantity" style="padding-top: 20px;
             margin-left: 400px;
@@ -63,7 +63,7 @@
             width: 32px;
             font-size: 16px;
             color: #43484D;
-            font-weight: 300" th:value="${session.cart['quantity']}" readonly/>
+            font-weight: 300" th:value="${session.item['quantity']}" readonly/>
             </div>
             <input type="number" id="price" style="position: absolute;
             margin-left: 600px;
@@ -73,7 +73,7 @@
             color: #43484D;
             font-weight: 300;
             border: none;
-            padding-top: 30px" th:value="${session.cart['price']}" readonly/>
+            padding-top: 30px" th:value="${session.item['price']}" readonly/>
         </div>
 
         <div class="item-total" style="position: absolute;

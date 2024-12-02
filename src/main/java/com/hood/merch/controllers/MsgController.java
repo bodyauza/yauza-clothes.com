@@ -1,7 +1,6 @@
 package com.hood.merch.controllers;
 
-import com.hood.merch.models.Offer;
-import jakarta.persistence.criteria.CriteriaBuilder;
+import com.hood.merch.models.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
@@ -15,12 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class MsgController {
 
     @Autowired
-    private KafkaTemplate<Integer, Offer> kafkaTemplate;
+    private KafkaTemplate<Integer, Order> kafkaTemplate;
 
     @PostMapping
-    public void sendOrder(Integer msgId, Offer offer){
-        offer = new Offer();
-        ListenableFuture<SendResult<Integer, Offer>> future = (ListenableFuture<SendResult<Integer, Offer>>) kafkaTemplate.send("msg", msgId, offer);
+    public void sendOrder(Integer msgId, Order order){
+        order = new Order();
+        ListenableFuture<SendResult<Integer, Order>> future = (ListenableFuture<SendResult<Integer, Order>>) kafkaTemplate.send("msg", msgId, order);
         future.addCallback(System.out::println, System.err::println);
         kafkaTemplate.flush();
     }

@@ -10,7 +10,7 @@
     <include file="create-changeset-product-table.xml" relativeToChangelogFile="true"/>
     <include file="create-changeset-sizes-table.xml" relativeToChangelogFile="true"/>
     <include file="create-changeset-user-table.xml" relativeToChangelogFile="true"/>
-    <include file="create-changeset-offer-table.xml" relativeToChangelogFile="true"/>
+    <include file="create-changeset-order-table.xml" relativeToChangelogFile="true"/>
         <!--
     <include file="insert-changeset-product-table.xml" relativeToChangelogFile="true"/>
     <include file="insert-changeset-sizes-table.xml" relativeToChangelogFile="true"/>-->

@@ -427,11 +427,11 @@ toggle between hiding and showing the dropdown content */
 
 <body>
 
-<div class="item" th:each="el : ${session.cart}">
-  <input type="hidden" id="total_header"  th:value="${session.cart['quantity'] != null} ? ${session.cart['quantity']}">
+<div class="item" th:each="el : ${session.item}">
+  <input type="hidden" id="total_header"  th:value="${session.item['quantity'] != null} ? ${session.item['quantity']}">
 </div>
-<div class="item" th:each="el : ${session.cart1}">
-  <input type="hidden" id="total_header1"  th:value="${session.cart1['quantity'] != null} ? ${session.cart1['quantity']}">
+<div class="item" th:each="el : ${session.item1}">
+  <input type="hidden" id="total_header1"  th:value="${session.item1['quantity'] != null} ? ${session.item1['quantity']}">
 </div>
 
 <header th:insert="~{/header :: header}"></header>

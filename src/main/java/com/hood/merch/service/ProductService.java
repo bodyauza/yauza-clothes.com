@@ -19,6 +19,6 @@ public class ProductService {
         } else {
             return "Товар закончился";
         }
-        return null;
+        return "Товар отгружен со склада";
     }
 }

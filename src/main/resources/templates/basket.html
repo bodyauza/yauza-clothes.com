@@ -319,7 +319,7 @@
             width: 750px;
         }
 
-        .img_cart {
+        .img_item {
             height: 90px;
             width: 90px;
         }
@@ -330,7 +330,7 @@
                 font-size: 2.5em;
             }
 
-            .img_cart {
+            .img_item {
                 width: 460px;
                 height: 460px;
             }
@@ -665,38 +665,38 @@
                 $(".quantity").on("submit", function(e){
                     e.preventDefault();
                     $.ajax({
-                        url: '/in-cart',
+                        url: '/in-item',
                         type: 'post',
                         data: $(this).serialize()
                     })
                 });
 
-                    var input = $('#cart_quantity');
+                    var input = $('#item_quantity');
                     var value = parseInt(input.val());
                     var pr = $('#price');
                     var prv = parseInt(pr.val());
 
-                    var input1 = $('#cart_quantity1');
+                    var input1 = $('#item_quantity1');
                     var value1 = parseInt(input1.val());
                     var pr1 = $('#price1');
                     var prv1 = parseInt(pr1.val());
 
-                    var input2 = $('#cart_quantity2');
+                    var input2 = $('#item_quantity2');
                     var value2 = parseInt(input2.val());
                     var pr2 = $('#price2');
                     var prv2 = parseInt(pr2.val());
 
-                    var input3 = $('#cart_quantity3');
+                    var input3 = $('#item_quantity3');
                     var value3 = parseInt(input3.val());
                     var pr3 = $('#price3');
                     var prv3 = parseInt(pr3.val());
 
-                    var input4 = $('#cart_quantity4');
+                    var input4 = $('#item_quantity4');
                     var value4 = parseInt(input4.val());
                     var pr4 = $('#price4');
                     var prv4 = parseInt(pr4.val());
 
-                    var input5 = $('#cart_quantity5');
+                    var input5 = $('#item_quantity5');
                     var value5 = parseInt(input5.val());
                     var pr5 = $('#price5');
                     var prv5 = parseInt(pr5.val());
@@ -719,7 +719,7 @@
                     var in_stock5 = $('#in_stock5');
                     var in_stock_value5 = parseInt(in_stock5.val());
 
-                    function total_cart() {
+                    function total_item() {
 
                         var total = [value * prv,
                             value1 * prv1,
@@ -745,16 +745,16 @@
 
                     }
 
-                    total_cart();
+                    total_item();
 
-                //алгоритм для кнопок "+" и "-"
+                    // алгоритм для кнопок "+" и "-"
                     $('#plus-btn').click(function () {
                         var $this = $(this);
                         if (value < 6 && value < in_stock_value) {
                             value = value + 1;
                         }
                         input.val(value);
-                        total_cart();
+                        total_item();
                     });
 
                     $('#minus-btn').click(function () {
@@ -765,7 +765,7 @@
                             value = 1;
                         }
                         input.val(value);
-                        total_cart();
+                        total_item();
                     });
 
 
@@ -775,7 +775,7 @@
                             value1 = value1 + 1;
                         }
                         input1.val(value1);
-                        total_cart();
+                        total_item();
                     });
 
                     $('#minus-btn1').click(function () {
@@ -786,7 +786,7 @@
                             value1 = 1;
                         }
                         input1.val(value1);
-                        total_cart();
+                        total_item();
                     });
 
                    $('#plus-btn2').click(function () {
@@ -795,7 +795,7 @@
                            value2 = value2 + 1;
                        }
                        input2.val(value2);
-                       total_cart();
+                       total_item();
                    });
 
                     $('#minus-btn2').click(function () {
@@ -806,7 +806,7 @@
                             value2 = 1;
                         }
                         input2.val(value2);
-                        total_cart();
+                        total_item();
                     });
 
                    $('#plus-btn3').click(function () {
@@ -815,7 +815,7 @@
                            value3 = value3 + 1;
                        }
                        input3.val(value3);
-                       total_cart();
+                       total_item();
                    });
 
                     $('#minus-btn3').click(function () {
@@ -826,7 +826,7 @@
                             value3 = 1;
                         }
                         input3.val(value3);
-                        total_cart();
+                        total_item();
                     });
 
                    $('#plus-btn4').click(function () {
@@ -835,7 +835,7 @@
                            value4 = value4 + 1;
                        }
                        input4.val(value4);
-                       total_cart();
+                       total_item();
                    });
 
                     $('#minus-btn4').click(function () {
@@ -846,7 +846,7 @@
                             value4 = 1;
                         }
                         input4.val(value4);
-                        total_cart();
+                        total_item();
                     });
 
                    $('#plus-btn5').click(function () {
@@ -855,7 +855,7 @@
                           value5 = value5 + 1;
                        }
                        input5.val(value5);
-                       total_cart();
+                       total_item();
                    });
 
                     $('#minus-btn5').click(function () {
@@ -866,7 +866,7 @@
                             value5 = 1;
                         }
                         input5.val(value5);
-                        total_cart();
+                        total_item();
                     });
 
             });
@@ -888,238 +888,237 @@
     </div>
 
 
-    <div class="previous" th:if="${session.cart == null and session.cart1 == null and session.cart2 == null and session.cart3 == null and session.cart4 == null and session.cart5 == null}">
+    <div class="previous" th:if="${session.item == null and session.item1 == null and session.item2 == null and session.item3 == null and session.item4 == null and session.item5 == null}">
         Ничего не добавлено
     </div>
 
-    <div class="item" th:each="el : ${session.cart}">
+    <div class="item" th:each="el : ${session.item}">
         <div class="image">
-            <img class="img_cart" th:src="${session.cart['img']}" alt=""/>
+            <img class="img_item" th:src="${session.item['img']}" alt=""/>
         </div>
             <div class="description">
-                <span th:text="${session.cart['name']}"></span>
-                <span th:text="${session.cart['size'] != null} ? ${session.cart['size']}"></span>
-                <span th:text="${session.cart['color']}"></span>
+                <span th:text="${session.item['name']}"></span>
+                <span th:text="${session.item['size'] != null} ? ${session.item['size']}"></span>
+                <span th:text="${session.item['color']}"></span>
             </div>
         <form class="quantity">
-            <input type="hidden" name="attr_name" value="cart"/>
-            <input type="hidden" name="id" th:value="${session.cart['id']}"/>
-            <input type="hidden" name="img" th:value="${session.cart['img']}"/>
-            <input type="hidden" name="name" th:value="${session.cart['name']}"/>
-            <input type="hidden" name="item_size" th:value="${session.cart['size'] != null} ? ${session.cart['size']}"/>
-            <input type="hidden" name="color" th:value="${session.cart['color']}"/>
-            <input type="hidden" name="price" th:value="${session.cart['price']}"/>
-            <input type="hidden" name="in_stock" id="in_stock" th:value="${session.cart['in_stock']}"/>
+            <input type="hidden" name="attr_name" value="item"/>
+            <input type="hidden" name="id" th:value="${session.item['id']}"/>
+            <input type="hidden" name="img" th:value="${session.item['img']}"/>
+            <input type="hidden" name="name" th:value="${session.item['name']}"/>
+            <input type="hidden" name="item_size" th:value="${session.item['size'] != null} ? ${session.item['size']}"/>
+            <input type="hidden" name="color" th:value="${session.item['color']}"/>
+            <input type="hidden" name="price" th:value="${session.item['price']}"/>
+            <input type="hidden" name="in_stock" id="in_stock" th:value="${session.item['in_stock']}"/>
             <button id="plus-btn" type="submit">
-                    <img class="plus" src="plus.svg" alt=""/>
-                </button>
-                <input id="cart_quantity" name="quantity" th:value="${session.cart['quantity']}"/>
-                <button id="minus-btn" type="submit">
-                    <img class="minus" src="minus.svg" alt=""/>
-                </button>
+                <img class="plus" src="plus.svg" alt=""/>
+            </button>
+            <input id="item_quantity" name="quantity" th:value="${session.item['quantity']}"/>
+            <button id="minus-btn" type="submit">
+                <img class="minus" src="minus.svg" alt=""/>
+            </button>
         </form>
-        <input type="number" id="price" th:value="${session.cart['price']}" readonly/>
+        <input type="number" id="price" th:value="${session.item['price']}" readonly/>
         <div class="buttons">
-            <form th:action="'/cart/remove'" method="post">
-                <input type="hidden" name="id" th:value="${session.cart['id']}"/>
-                <input type="hidden" name="attr_name" value="cart"/>
+            <form th:action="'/item-remove'" method="post">
+                <input type="hidden" name="id" th:value="${session.item['id']}"/>
+                <input type="hidden" name="attr_name" value="item"/>
                 <button class="delete-btn" type="submit"></button>
             </form>
         </div>
         </div>
 
 
-        <div class="item" th:each="el : ${session.cart1}">
+        <div class="item" th:each="el : ${session.item1}">
             <div class="image">
-                <img class="img_cart" th:src="${session.cart1['img']}" alt=""/>
+                <img class="img_item" th:src="${session.item1['img']}" alt=""/>
             </div>
             <div class="description">
-                <span th:text="${session.cart1['name']}"></span>
-                <span th:text="${session.cart1['size'] != null} ? ${session.cart1['size']}"></span>
-                <span th:text="${session.cart1['color']}"></span>
+                <span th:text="${session.item1['name']}"></span>
+                <span th:text="${session.item1['size'] != null} ? ${session.item1['size']}"></span>
+                <span th:text="${session.item1['color']}"></span>
             </div>
             <form class="quantity">
-                <input type="hidden" name="attr_name" value="cart1"/>
-                <input type="hidden" name="id" th:value="${session.cart1['id']}"/>
-                <input type="hidden" name="img" th:value="${session.cart1['img']}"/>
-                <input type="hidden" name="name" th:value="${session.cart1['name']}"/>
-                <input type="hidden" name="item_size" th:value="${session.cart1['size'] != null} ? ${session.cart1['size']}"/>
-                <input type="hidden" name="color" th:value="${session.cart1['color']}"/>
-                <input type="hidden" name="price" th:value="${session.cart1['price']}"/>
-                <input type="hidden" name="in_stock" id="in_stock1" th:value="${session.cart1['in_stock']}"/>
+                <input type="hidden" name="attr_name" value="item1"/>
+                <input type="hidden" name="id" th:value="${session.item1['id']}"/>
+                <input type="hidden" name="img" th:value="${session.item1['img']}"/>
+                <input type="hidden" name="name" th:value="${session.item1['name']}"/>
+                <input type="hidden" name="item_size" th:value="${session.item1['size'] != null} ? ${session.item1['size']}"/>
+                <input type="hidden" name="color" th:value="${session.item1['color']}"/>
+                <input type="hidden" name="price" th:value="${session.item1['price']}"/>
+                <input type="hidden" name="in_stock" id="in_stock1" th:value="${session.item1['in_stock']}"/>
                 <button id="plus-btn1" type="submit">
                     <img class="plus" src="plus.svg" alt="" />
                 </button>
-                <input id="cart_quantity1" name="quantity" th:value="${session.cart1['quantity']}" />
+                <input id="item_quantity1" name="quantity" th:value="${session.item1['quantity']}" />
                 <button id="minus-btn1" type="submit">
                     <img class="minus" src="minus.svg" alt="" />
                 </button>
             </form>
-            <input type="number" id="price1" th:value="${session.cart1['price']}" readonly/>
+            <input type="number" id="price1" th:value="${session.item1['price']}" readonly/>
             <div class="buttons">
-                <form th:action="'/cart/remove'" method="post">
-                    <input type="hidden" name="id" th:value="${session.cart1['id']}"/>
-                    <input type="hidden" name="attr_name" value="cart1"/>
+                <form th:action="'/item-remove'" method="post">
+                    <input type="hidden" name="id" th:value="${session.item1['id']}"/>
+                    <input type="hidden" name="attr_name" value="item1"/>
                     <button class="delete-btn" type="submit"></button>
                 </form>
             </div>
         </div>
 
-    <div class="item" th:each="el : ${session.cart2}">
+    <div class="item" th:each="el : ${session.item2}">
         <div class="image">
-            <img class="img_cart" th:src="${session.cart2['img']}" alt=""/>
+            <img class="img_item" th:src="${session.item2['img']}" alt=""/>
         </div>
         <div class="description">
-            <span th:text="${session.cart2['name']}"></span>
-            <span th:text="${session.cart2['size'] != null} ? ${session.cart2['size']}"></span>
-            <span th:text="${session.cart2['color']}"></span>
+            <span th:text="${session.item2['name']}"></span>
+            <span th:text="${session.item2['size'] != null} ? ${session.item2['size']}"></span>
+            <span th:text="${session.item2['color']}"></span>
         </div>
         <form class="quantity">
-            <input type="hidden" name="attr_name" value="cart2"/>
-            <input type="hidden" name="id" th:value="${session.cart2['id']}"/>
-            <input type="hidden" name="img" th:value="${session.cart2['img']}"/>
-            <input type="hidden" name="name" th:value="${session.cart2['name']}"/>
-            <input type="hidden" name="item_size" th:value="${session.cart2['size'] != null} ? ${session.cart2['size']}"/>
-            <input type="hidden" name="color" th:value="${session.cart2['color']}"/>
-            <input type="hidden" name="price" th:value="${session.cart2['price']}"/>
-            <input type="hidden" name="in_stock" id="in_stock2" th:value="${session.cart2['in_stock']}"/>
+            <input type="hidden" name="attr_name" value="item2"/>
+            <input type="hidden" name="id" th:value="${session.item2['id']}"/>
+            <input type="hidden" name="img" th:value="${session.item2['img']}"/>
+            <input type="hidden" name="name" th:value="${session.item2['name']}"/>
+            <input type="hidden" name="item_size" th:value="${session.item2['size'] != null} ? ${session.item2['size']}"/>
+            <input type="hidden" name="color" th:value="${session.item2['color']}"/>
+            <input type="hidden" name="price" th:value="${session.item2['price']}"/>
+            <input type="hidden" name="in_stock" id="in_stock2" th:value="${session.item2['in_stock']}"/>
             <button id="plus-btn2" type="submit">
                 <img class="plus" src="plus.svg" alt=""/>
             </button>
-            <input id="cart_quantity2" name="quantity" th:value="${session.cart2['quantity']}"/>
+            <input id="item_quantity2" name="quantity" th:value="${session.item2['quantity']}"/>
             <button id="minus-btn2" type="submit">
                 <img class="minus" src="minus.svg" alt=""/>
             </button>
         </form>
-        <input type="number" id="price2" th:value="${session.cart2['price']}" readonly/>
+        <input type="number" id="price2" th:value="${session.item2['price']}" readonly/>
         <div class="buttons">
-            <form th:action="'/cart/remove'" method="post">
-                <input type="hidden" name="id" th:value="${session.cart2['id']}"/>
-                <input type="hidden" name="attr_name" value="cart2"/>
+            <form th:action="'/item-remove'" method="post">
+                <input type="hidden" name="id" th:value="${session.item2['id']}"/>
+                <input type="hidden" name="attr_name" value="item2"/>
                 <button class="delete-btn" type="submit"></button>
             </form>
         </div>
     </div>
 
 
-    <div class="item" th:each="el : ${session.cart3}">
+    <div class="item" th:each="el : ${session.item3}">
         <div class="image">
-            <img class="img_cart" th:src="${session.cart3['img']}" alt=""/>
+            <img class="img_item" th:src="${session.item3['img']}" alt=""/>
         </div>
         <div class="description">
-            <span th:text="${session.cart3['name']}"></span>
-            <span th:text="${session.cart3['size'] != null} ? ${session.cart3['size']}"></span>
-            <span th:text="${session.cart3['color']}"></span>
+            <span th:text="${session.item3['name']}"></span>
+            <span th:text="${session.item3['size'] != null} ? ${session.item3['size']}"></span>
+            <span th:text="${session.item3['color']}"></span>
         </div>
         <form class="quantity">
-            <input type="hidden" name="attr_name" value="cart3"/>
-            <input type="hidden" name="id" th:value="${session.cart3['id']}"/>
-            <input type="hidden" name="img" th:value="${session.cart3['img']}"/>
-            <input type="hidden" name="name" th:value="${session.cart3['name']}"/>
-            <input type="hidden" name="item_size" th:value="${session.cart3['size'] != null} ? ${session.cart3['size']}"/>
-            <input type="hidden" name="color" th:value="${session.cart3['color']}"/>
-            <input type="hidden" name="price" th:value="${session.cart3['price']}"/>
-            <input type="hidden" name="in_stock" id="in_stock3" th:value="${session.cart3['in_stock']}"/>
+            <input type="hidden" name="attr_name" value="item3"/>
+            <input type="hidden" name="id" th:value="${session.item3['id']}"/>
+            <input type="hidden" name="img" th:value="${session.item3['img']}"/>
+            <input type="hidden" name="name" th:value="${session.item3['name']}"/>
+            <input type="hidden" name="item_size" th:value="${session.item3['size'] != null} ? ${session.item3['size']}"/>
+            <input type="hidden" name="color" th:value="${session.item3['color']}"/>
+            <input type="hidden" name="price" th:value="${session.item3['price']}"/>
+            <input type="hidden" name="in_stock" id="in_stock3" th:value="${session.item3['in_stock']}"/>
             <button id="plus-btn3" type="submit">
                 <img class="plus" src="plus.svg" alt="" />
             </button>
-            <input id="cart_quantity3" name="quantity" th:value="${session.cart3['quantity']}" />
+            <input id="item_quantity3" name="quantity" th:value="${session.item3['quantity']}" />
             <button id="minus-btn3" type="submit">
                 <img class="minus" src="minus.svg" alt="" />
             </button>
         </form>
-        <input type="number" id="price3" th:value="${session.cart3['price']}" readonly/>
+        <input type="number" id="price3" th:value="${session.item3['price']}" readonly/>
         <div class="buttons">
-            <form th:action="'/cart/remove'" method="post">
-                <input type="hidden" name="id" th:value="${session.cart3['id']}"/>
-                <input type="hidden" name="attr_name" value="cart3"/>
+            <form th:action="'/item-remove'" method="post">
+                <input type="hidden" name="id" th:value="${session.item3['id']}"/>
+                <input type="hidden" name="attr_name" value="item3"/>
                 <button class="delete-btn" type="submit"></button>
             </form>
         </div>
     </div>
 
 
-    <div class="item" th:each="el : ${session.cart4}">
+    <div class="item" th:each="el : ${session.item4}">
         <div class="image">
-            <img class="img_cart" th:src="${session.cart4['img']}" alt=""/>
+            <img class="img_item" th:src="${session.item4['img']}" alt=""/>
         </div>
         <div class="description">
-            <span th:text="${session.cart4['name']}"></span>
-            <span th:text="${session.cart4['size'] != null} ? ${session.cart4['size']}"></span>
-            <span th:text="${session.cart4['color']}"></span>
+            <span th:text="${session.item4['name']}"></span>
+            <span th:text="${session.item4['size'] != null} ? ${session.item4['size']}"></span>
+            <span th:text="${session.item4['color']}"></span>
         </div>
         <form class="quantity">
-            <input type="hidden" name="attr_name" value="cart4"/>
-            <input type="hidden" name="id" th:value="${session.cart4['id']}"/>
-            <input type="hidden" name="img" th:value="${session.cart4['img']}"/>
-            <input type="hidden" name="name" th:value="${session.cart4['name']}"/>
-            <input type="hidden" name="item_size" th:value="${session.cart4['size'] != null} ? ${session.cart4['size']}"/>
-            <input type="hidden" name="color" th:value="${session.cart4['color']}"/>
-            <input type="hidden" name="price" th:value="${session.cart4['price']}"/>
-            <input type="hidden" name="in_stock" id="in_stock4" th:value="${session.cart4['in_stock']}"/>
+            <input type="hidden" name="attr_name" value="item4"/>
+            <input type="hidden" name="id" th:value="${session.item4['id']}"/>
+            <input type="hidden" name="img" th:value="${session.item4['img']}"/>
+            <input type="hidden" name="name" th:value="${session.item4['name']}"/>
+            <input type="hidden" name="item_size" th:value="${session.item4['size'] != null} ? ${session.item4['size']}"/>
+            <input type="hidden" name="color" th:value="${session.item4['color']}"/>
+            <input type="hidden" name="price" th:value="${session.item4['price']}"/>
+            <input type="hidden" name="in_stock" id="in_stock4" th:value="${session.item4['in_stock']}"/>
             <button id="plus-btn4" type="submit">
                 <img class="plus" src="plus.svg" alt="" />
             </button>
-            <input id="cart_quantity4" name="quantity" th:value="${session.cart4['quantity']}" />
+            <input id="item_quantity4" name="quantity" th:value="${session.item4['quantity']}" />
             <button id="minus-btn4" type="submit">
                 <img class="minus" src="minus.svg" alt="" />
             </button>
         </form>
-        <input type="number" id="price4" th:value="${session.cart4['price']}" readonly/>
+        <input type="number" id="price4" th:value="${session.item4['price']}" readonly/>
         <div class="buttons">
-            <form th:action="'/cart/remove'" method="post">
-                <input type="hidden" name="id" th:value="${session.cart4['id']}"/>
-                <input type="hidden" name="attr_name" value="cart4"/>
+            <form th:action="'/item-remove'" method="post">
+                <input type="hidden" name="id" th:value="${session.item4['id']}"/>
+                <input type="hidden" name="attr_name" value="item4"/>
                 <button class="delete-btn" type="submit"></button>
             </form>
         </div>
     </div>
 
 
-    <div class="item" th:each="el : ${session.cart5}">
+    <div class="item" th:each="el : ${session.item5}">
         <div class="image">
-            <img class="img_cart" th:src="${session.cart5['img']}" alt=""/>
+            <img class="img_item" th:src="${session.item5['img']}" alt=""/>
         </div>
         <div class="description">
-            <span th:text="${session.cart5['name']}"></span>
-            <span th:text="${session.cart5['size'] != null} ? ${session.cart5['size']}"></span>
-            <span th:text="${session.cart5['color']}"></span>
+            <span th:text="${session.item5['name']}"></span>
+            <span th:text="${session.item5['size'] != null} ? ${session.item5['size']}"></span>
+            <span th:text="${session.item5['color']}"></span>
         </div>
         <form class="quantity">
-            <input type="hidden" name="attr_name" value="cart5"/>
-            <input type="hidden" name="id" th:value="${session.cart5['id']}"/>
-            <input type="hidden" name="img" th:value="${session.cart5['img']}"/>
-            <input type="hidden" name="name" th:value="${session.cart5['name']}"/>
-            <input type="hidden" name="item_size" th:value="${session.cart5['size'] != null} ? ${session.cart5['size']}"/>
-            <input type="hidden" name="color" th:value="${session.cart5['color']}"/>
-            <input type="hidden" name="price" th:value="${session.cart5['price']}"/>
-            <input type="hidden" name="in_stock" id="in_stock5" th:value="${session.cart5['in_stock']}"/>
+            <input type="hidden" name="attr_name" value="item5"/>
+            <input type="hidden" name="id" th:value="${session.item5['id']}"/>
+            <input type="hidden" name="img" th:value="${session.item5['img']}"/>
+            <input type="hidden" name="name" th:value="${session.item5['name']}"/>
+            <input type="hidden" name="item_size" th:value="${session.item5['size'] != null} ? ${session.item5['size']}"/>
+            <input type="hidden" name="color" th:value="${session.item5['color']}"/>
+            <input type="hidden" name="price" th:value="${session.item5['price']}"/>
+            <input type="hidden" name="in_stock" id="in_stock5" th:value="${session.item5['in_stock']}"/>
             <button id="plus-btn5" type="submit">
                 <img class="plus" src="plus.svg" alt="" />
             </button>
-            <input id="cart_quantity5" name="quantity" th:value="${session.cart5['quantity']}" />
+            <input id="item_quantity5" name="quantity" th:value="${session.item5['quantity']}" />
             <button id="minus-btn5" type="submit">
                 <img class="minus" src="minus.svg" alt="" />
             </button>
         </form>
-        <input type="number" id="price5" th:value="${session.cart5['price']}" readonly/>
+        <input type="number" id="price5" th:value="${session.item5['price']}" readonly/>
         <div class="buttons">
-            <form th:action="'/cart/remove'" method="post">
-                <input type="hidden" name="id" th:value="${session.cart5['id']}"/>
-                <input type="hidden" name="attr_name" value="cart5"/>
+            <form th:action="'/item-remove'" method="post">
+                <input type="hidden" name="id" th:value="${session.item5['id']}"/>
+                <input type="hidden" name="attr_name" value="item5"/>
                 <button class="delete-btn" type="submit"></button>
             </form>
         </div>
     </div>
 
-    <div class="item-total" th:if="${session.cart != null or session.cart1 != null or session.cart2 != null or session.cart3 != null or session.cart4 != null or session.cart5 != null}">
+    <div class="item-total" th:if="${session.item != null or session.item1 != null or session.item2 != null or session.item3 != null or session.item4 != null or session.item5 != null}">
     <div class="total">Итого: <span id="total-price" name="total_price"></span>pуб.</div>
 
-            <input type="text" class="input_code" name="coupon_code" placeholder="Промо-код (если есть)" value="">
+        <input type="text" class="input_code" name="coupon_code" placeholder="Промо-код (если есть)" value="">
         <input type="hidden" id="of_total_price" name="of_price"/>
 
-        <a class="payment-btn" onclick="window.location.href = '/form';">Оформить заказ</a>
-
+        <a class="payment-btn" onclick="window.location.href = '/creating-order';">Оформить заказ</a>
     </div>
 
 </div>
