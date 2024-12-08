@@ -101,6 +101,7 @@ public class MainController {
                     session.setAttribute(attr, productDTO_dto);
                 } else {
                     System.out.println("Найден товар-дубликат " + productDTO_dto.getName());
+                    return "redirect:/basket";
                 }
             }
         }
