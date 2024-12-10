@@ -44,12 +44,12 @@ public class ProductDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProductDTO productDTO = (ProductDTO) o;
-        return name.equals(productDTO.name) && size.equals(productDTO.size);
+        ProductDTO that = (ProductDTO) o;
+        return id == that.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, size);
+        return Objects.hashCode(id);
     }
 }

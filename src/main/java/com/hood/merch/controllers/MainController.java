@@ -9,7 +9,6 @@ import com.hood.merch.models.repo.OrderRepository;
 import com.hood.merch.models.repo.ProductRepository;
 import com.hood.merch.service.DefaultEmailService;
 import com.hood.merch.service.ProductService;
-import com.hood.merch.service.SessionService;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
@@ -35,13 +34,15 @@ public class MainController {
     @Autowired
     private OrderRepository orderRepository;
 
-    @Autowired
-    private SessionService sessionService;
+//    @Autowired
+//    private SessionService sessionService;
 
     @Autowired
     private DefaultEmailService emailService;
 
-    private int id;
+    // Динамический массив-корзина.
+    ArrayList<ProductDTO> cart;
+
 
     @GetMapping("/auth")
     public String auth(Model model) {
@@ -73,70 +74,64 @@ public class MainController {
 
     // Добавление товара в корзину.
     @PostMapping("/add-item")
-    protected String addToitem(HttpServletRequest request, @RequestParam String img, @RequestParam Integer id, @RequestParam String name, @RequestParam Integer price, @RequestParam String size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer in_stock)
+    protected String addItem(HttpServletRequest request, @RequestParam String img, @RequestParam int id, @RequestParam String name, @RequestParam Integer price, @RequestParam String size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer in_stock)
             throws ServletException, IOException {
 
         Product stock_check = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Товар не найден"));
 
-        if(stock_check.getIn_stock() >= quantity) {
+        if (stock_check.getIn_stock() >= quantity) {
             HttpSession session = request.getSession();
             session.setMaxInactiveInterval(-1);
-            Set<ProductDTO> productDTO_set = new LinkedHashSet<>();
-            List<String> attribs = Arrays.asList("item", "item1", "item2", "item3", "item4", "item5"); // и т.д.
-            Set<String> missingAttrs = new LinkedHashSet<>();
+            ArrayList<ProductDTO> item_in_session = (ArrayList<ProductDTO>) session.getAttribute("cart");
+            ProductDTO added_item = new ProductDTO(id, name, price, size, quantity, img, color, in_stock);
 
-            for (String attr : attribs) {
-                ProductDTO productDTO = (ProductDTO) session.getAttribute(attr);
-                if (productDTO == null) {
-                    missingAttrs.add(attr); // Товары, которых нет в сессии.
-                } else if (productDTO_set.add(productDTO)) { // Товар успешно добавлен в сет.
-                    System.out.println("Товар " + productDTO.getName() + " в сессии и сете");
+            for (ProductDTO item : item_in_session) {
+                if (item.equals(added_item)) {
+                    System.out.println("Найден товар-дубликат " + item.getName());
+                    return "redirect:/cart";
                 }
             }
-
-            for (String attr : missingAttrs) {
-                ProductDTO productDTO_dto = new ProductDTO(id, name, price, size, quantity, img, color, in_stock);
-                if (productDTO_set.add(productDTO_dto)) { // Товар успешно добавлен в сет.
-                    System.out.println("Товар " + productDTO_dto.getName() + " добавлен в сессию и сет" + productDTO_dto.getSize());
-                    session.setAttribute(attr, productDTO_dto);
-                } else {
-                    System.out.println("Найден товар-дубликат " + productDTO_dto.getName());
-                    return "redirect:/basket";
-                }
-            }
+            cart.add(added_item);
+            session.setAttribute("cart", cart);
         }
-
-        return "redirect:/basket";
+        return "redirect:/cart";
     }
-
 
     // Удаление из корзины единиц товара.
-    @PostMapping("/item-remove")
-    public String itemRemove(HttpServletRequest request, @RequestParam String attr_name) {
+    @PostMapping("/remove-item")
+    public String removeItem(HttpServletRequest request, @RequestParam int id) {
         HttpSession session = request.getSession();
-        session.removeAttribute(attr_name);
-        return "redirect:/basket";
+        cart.removeIf(item -> item.getId() == id);
+        session.setAttribute("cart", cart);
+        return "redirect:/cart";
     }
-
 
     // Изменение количества единиц товара в корзине.
     @PostMapping("/in-cart")
-    public String inCart(HttpServletRequest request, @RequestParam String attr_name, @RequestParam String img, @RequestParam Integer id, @RequestParam String name, @RequestParam Integer price, @RequestParam String item_size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer in_stock)
+    public String inCart(HttpServletRequest request, @RequestParam String img, @RequestParam int id, @RequestParam String name, @RequestParam Integer price, @RequestParam String size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer in_stock)
             throws ServletException, IOException {
 
         Product stock_check = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Товар не найден"));
         HttpSession session = request.getSession();
         String referrer = request.getHeader("referer");
+        String attr_name = Integer.toString(id);
 
         if(stock_check.getIn_stock() >= quantity) {
-            session.removeAttribute(attr_name);
-            ProductDTO productDTO = (ProductDTO) session.getAttribute("attr_name");
-            session.setMaxInactiveInterval(-1);
-            productDTO = new ProductDTO(id, name, price, item_size, quantity, img, color, in_stock);
-            session.setAttribute(attr_name, productDTO);
-            return "redirect:/basket";
+//            session.removeAttribute(attr_name);
+//            session.setMaxInactiveInterval(-1);
+            ArrayList<ProductDTO> item_in_session = (ArrayList<ProductDTO>) session.getAttribute("cart");
+            ProductDTO added_item = new ProductDTO(id, name, price, size, quantity, img, color, in_stock);
+            for (ProductDTO item : item_in_session) {
+                if (item.equals(added_item)) {
+                    // Может понадобиться переопределение equals() в ProductDTO.
+                    cart.set(item_in_session.indexOf(item), added_item);
+                    session.setAttribute("cart", cart);
+                    return "redirect:/cart";
+                }
+            }
         } else {
-            session.removeAttribute(attr_name);
+            cart.removeIf(item -> item.getId() == stock_check.getId());
+            session.setAttribute("cart", cart);
         }
         return referrer;
     }
@@ -149,13 +144,16 @@ public class MainController {
         String address = orderDTO.getCountry() + ", " + orderDTO.getRegion() + ", " + orderDTO.getCity() + ", " + orderDTO.getStreet()
                 + ", " + orderDTO.getHome() + ", " + orderDTO.getIndex();
 
+        HttpSession session = request.getSession();
+        
         // Уменьшение кол-ва товаров на складе.
         for (ProductDTO productDTO : orderDTO.getOrdered_items()) {
-            if (productService.purchaseProduct(productDTO.getId(), productDTO.getQuantity()).equals("Товар закончился")) {
-                return "basket";
+            if (productDTO.getQuantity() <= 0 ||
+                    productService.purchaseProduct(productDTO.getId(), productDTO.getQuantity()).equals("Товар закончился")) {
+                return "redirect:/cart";
             }
         }
-
+        
         Integer total_price = null;
         StringBuilder products = new StringBuilder();
 
@@ -184,16 +182,16 @@ public class MainController {
             System.out.println("Unable to send email");
         }
 
-        sessionService.removeSessions(request, response);
+        session.removeAttribute("cart");
 
         return "redirect:/pay";
     }
 
 
-    @GetMapping("/basket")
-    public String basket(Model model) {
+    @GetMapping("/cart")
+    public String cart(Model model) {
         model.addAttribute("title", "Корзина");
-        return "basket";
+        return "cart";
     }
 
 

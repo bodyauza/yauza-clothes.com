@@ -196,36 +196,28 @@
 
     });
 
-    // Определяем класс item
+    // Определяем класс Item.
     class Item {
-        constructor(id, name, price, size, quantity, color) {
+        constructor(id, quantity) {
             this.id = id;
-            this.name = name;
-            this.size = size;
             this.quantity = quantity;
-            this.color = color;
         }
     }
 
-    // Получаем значения из скрытых полей
-    const id = document.querySelector('input[name="id"]').value;
-    const name = document.querySelector('input[name="name"]').value;
-    const size = document.querySelector('input[name="item_size"]').value;
-    const color = document.querySelector('input[name="color"]').value;
-    const quantity = document.querySelector('input[name="quantity"]').value;
-    const price = document.querySelector('input[name="price"]').value;
+    // Создаем Set для хранения объектов Item
+    const itemSet = new Set();
 
-    const id1 = document.querySelector('input[name="id1"]').value;
-    const name1 = document.querySelector('input[name="name1"]').value;
-    const size1 = document.querySelector('input[name="item_size1"]').value;
-    const color1 = document.querySelector('input[name="color1"]').value;
-    const quantity1 = document.querySelector('input[name="quantity1"]').value;
-    const price1 = document.querySelector('input[name="price1"]').value;
+    // Получаем все скрытые поля с id и quantity:
+    const ids = document.querySelectorAll('input[name="id"]');
+    const quantities = document.querySelectorAll('input[name="quantity"]');
 
-    const item = new item(id, name, price, size, quantity, color);
-    const item1 = new item(id1, name1, price1, size1, quantity1, color1);
-
-    const itemSet = new Set([item, item1]);
+    // Добавляем каждый объект Item в itemSet
+    ids.forEach((input, index) => {
+        const id = input.value;
+        const quantity = quantities[index].value; // соответствующее количество
+        const item = new Item(id, quantity);
+        itemSet.add(item);
+    });
 
     // Функция для сбора данных из формы и отправки на сервер
     function submitOrder() {
@@ -233,7 +225,7 @@
         const FIO = document.querySelector('input[name="FIO"]').value;
         const email = document.querySelector('input[name="email"]').value;
         const tel = document.querySelector('input[name="tel"]').value;
-        const post = document.querySelector('input[name="post"]').value;
+        const post = document.querySelector('input[name="post"]:checked').value; // Убедитесь, что выбирается отмеченное радио
         const street = document.querySelector('input[name="street"]').value;
         const home = document.querySelector('input[name="home"]').value;
         const country = document.querySelector('select[name="country"]').value;
@@ -281,11 +273,11 @@
         });
     }
 
-    // Пример вызова функции при отправке формы
+    // Вызов функции при отправке формы.
     document.querySelector('form').addEventListener('submit', function(event) {
         event.preventDefault(); // Предотвращаем стандартное поведение формы
         if (isEmailValid(input.value) && isTelValid(input1.value)) {
-              submitOrder(); // Вызываем функцию отправки
+              submitOrder(); // Вызываем функцию отправки.
         }
     });
 
@@ -299,55 +291,10 @@
 <section class="container">
   <header>Оформление заказа</header>
   <button class="back" onclick="history.back();"></button>
-  <form th:action="'/new-orderDTO'" class="form" method="post">
-    <div th:each="el : ${session.item}">
-      <input type="hidden" name="id" th:value="${session.item['id']}"/>
-      <input type="hidden" name="name" th:value="${session.item['name']}"/>
-      <input type="hidden" name="item_size" th:value="${session.item['size']}"/>
-      <input type="hidden" name="color" th:value="${session.item['color']}"/>
-      <input type="hidden" name="quantity" th:value="${session.item['quantity']}"/>
-      <input type="hidden" name="price" th:value="${session.item['price']}"/>
-    </div>
-
-    <div th:each="el : ${session.item1}">
-      <input type="hidden" name="id1" th:value="${session.item1['id']}"/>
-      <input type="hidden" name="name1" th:value="${session.item1['name']}"/>
-      <input type="hidden" name="item_size1" th:value="${session.item1['size']}"/>
-      <input type="hidden" name="color1" th:value="${session.item1['color']}"/>
-      <input type="hidden" name="quantity1" th:value="${session.item1['quantity']}"/>
-      <input type="hidden" name="price1" th:value="${session.item1['price']}"/>
-    </div>
-    <div th:each="el : ${session.item2}">
-      <input type="hidden" name="id1" th:value="${session.item2['id']}"/>
-      <input type="hidden" name="name1" th:value="${session.item2['name']}"/>
-      <input type="hidden" name="item_size1" th:value="${session.item2['size']}"/>
-      <input type="hidden" name="color1" th:value="${session.item2['color']}"/>
-      <input type="hidden" name="quantity1" th:value="${session.item2['quantity']}"/>
-      <input type="hidden" name="price1" th:value="${session.item2['price']}"/>
-    </div>
-    <div th:each="el : ${session.item3}">
-      <input type="hidden" name="id1" th:value="${session.item3['id']}"/>
-      <input type="hidden" name="name1" th:value="${session.item3['name']}"/>
-      <input type="hidden" name="item_size1" th:value="${session.item3['size']}"/>
-      <input type="hidden" name="color1" th:value="${session.item3['color']}"/>
-      <input type="hidden" name="quantity1" th:value="${session.item3['quantity']}"/>
-      <input type="hidden" name="price1" th:value="${session.item3['price']}"/>
-    </div>
-    <div th:each="el : ${session.item4}">
-      <input type="hidden" name="id1" th:value="${session.item4['id']}"/>
-      <input type="hidden" name="name1" th:value="${session.item4['name']}"/>
-      <input type="hidden" name="item_size1" th:value="${session.item4['size']}"/>
-      <input type="hidden" name="color1" th:value="${session.item4['color']}"/>
-      <input type="hidden" name="quantity1" th:value="${session.item4['quantity']}"/>
-      <input type="hidden" name="price1" th:value="${session.item4['price']}"/>
-    </div>
-    <div th:each="el : ${session.item5}">
-      <input type="hidden" name="id1" th:value="${session.item5['id']}"/>
-      <input type="hidden" name="name1" th:value="${session.item5['name']}"/>
-      <input type="hidden" name="item_size1" th:value="${session.item5['size']}"/>
-      <input type="hidden" name="color1" th:value="${session.item5['color']}"/>
-      <input type="hidden" name="quantity1" th:value="${session.item5['quantity']}"/>
-      <input type="hidden" name="price1" th:value="${session.item5['price']}"/>
+  <form th:action="'/new-order'" class="form" method="post">
+    <div th:each="item : ${session.cart}">
+      <input type="hidden" name="id" th:value="${item.id}"/>
+      <input type="hidden" name="quantity" th:value="${item.quantity}"/>
     </div>
 
     <div class="input-box">

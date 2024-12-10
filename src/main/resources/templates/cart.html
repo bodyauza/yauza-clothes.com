@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title th:text="${title}"/>
+
+    <style>
+
+        body {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: normal;
+            align-items: normal;
+            background:  #ffffff url("/anime-back.jpg");
+            overflow: scroll;
+            overflow-x:hidden;
+            flex-direction: column;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Nosifer&family=Pacifico&display=swap');
+
+        .merch-container {
+            text-align: center;
+            margin-top: -8px;
+        }
+
+        .menu-container {
+            position: relative;
+            text-align: center;
+        }
+
+        .circle1 {
+            margin-top: 48px;
+            margin-left: 120px;
+            z-index: 9;
+            position: absolute;
+            display: none;
+            width: 0.5em;
+            height: 0.5em;
+            border: 4px solid red;
+            border-radius: 50%;
+            shape-inside: circle(50% at center center);
+            background: #ff1a00;
+        }
+
+        .circle {
+            margin-top: -70px;
+            margin-left: 160px;
+            z-index: 9;
+            position: absolute;
+            display: none;
+            width: 1em;
+            height: 1em;
+            border: 2px solid red;
+            border-radius: 50%;
+            shape-inside: circle(50% at center center);
+            background: mistyrose;
+        }
+
+
+        .buttonblue  {
+            margin-top: -50px;
+            top: 50%;
+            left: 50%;
+            border: none;
+            transform: translate(-50%, -50%);
+            padding: 10px 40px;
+            cursor: pointer;
+            border-radius: 10px;
+            margin-left: 120px;
+            font-family: 'Pacifico', cursive;
+            font-size: 2em;
+            color: white;
+            text-decoration: none;
+            background: #deaca5;
+            border-bottom: 5px solid #2980B9;
+            text-shadow: 0px -2px gray;
+        }
+
+        .buttonblue:active
+        {
+            border-bottom: 1px solid;
+        }
+        /* Dropdown button on hover & focus */
+        .buttonblue:hover, .buttonblue:focus {
+            background-color: #2980B9;
+        }
+
+        /* The container <div> - needed to position the dropdown content */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        @media (max-width: 1000px) {
+
+            body {
+                background: url("/back_mob2.jpg") no-repeat;
+            }
+        }
+
+
+        /* Dropdown Content (Hidden by Default) */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            margin-left: 60px;
+        }
+
+        /* Links inside the dropdown */
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        /* Change color of dropdown links on hover */
+        .dropdown-content a:hover {background-color: #ddd}
+
+        /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+        .show {
+            display:block;
+        }
+
+
+
+        * {
+            box-sizing: border-box;
+        }
+        .shopping-cart {
+            width: 750px;
+            height: 310px;
+            margin: 80px auto;
+            background: #FFFFFF;
+            box-shadow: 1px 2px 3px 0px rgba(0,0,0,0.10);
+            border-radius: 6px;
+            overflow: scroll;
+            overflow-x:hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .previous {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .previous {
+            color: #5E6977;
+            font-size: 18px;
+            font-weight: 400;
+        }
+
+        .title {
+            height: 60px;
+            border-bottom: 1px solid #E1E8EE;
+            padding: 20px 30px;
+            color: #5E6977;
+            font-size: 18px;
+            font-weight: 400;
+        }
+
+        .item {
+            border-bottom:  1px solid #E1E8EE;
+            padding: 20px 30px;
+            height: 120px;
+            display: flex;
+        }
+
+        .buttons {
+            padding-top: 30px;
+            margin-left: 40px;
+        }
+        .delete-btn{
+            display: inline-block;
+            Cursor: pointer;
+            border: none;
+        }
+        .delete-btn {
+            width: 18px;
+            height: 17px;
+            background: url("delete-icn.svg") no-repeat center;
+        }
+
+        .description span {
+            margin-left: 40px;
+            display: block;
+            font-size: 14px;
+            color: #43484D;
+            font-weight: 400;
+        }
+
+        .description span:first-child {
+            margin-bottom: 5px;
+            margin-left: 40px;
+        }
+        .description span:last-child {
+            font-weight: 300;
+            margin-top: 8px;
+            color: #86939E;
+        }
+
+
+        is-active {
+            animation-name: animate;
+            animation-duration: .8s;
+            animation-iteration-count: 1;
+            animation-timing-function: steps(28);
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes animate {
+            0%   { background-position: left;  }
+            50%  { background-position: right; }
+            100% { background-position: right; }
+        }
+
+        .quantity {
+            padding-top: 20px;
+            margin-left: 50px;
+        }
+        .quantity input {
+            -webkit-appearance: none;
+            border: none;
+            text-align: center;
+            width: 32px;
+            font-size: 16px;
+            color: #43484D;
+            font-weight: 300;
+        }
+
+        #minus-btn {
+            margin-bottom: 3px;
+            margin-top: 2px;
+            width: 30px;
+            height: 30px;
+            background-color: #E1E8EE;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+        }
+        #plus-btn {
+            margin-top: 2px;
+            width: 30px;
+            height: 30px;
+            background-color: #E1E8EE;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:focus,
+        input:focus {
+            outline:0;
+        }
+
+        #price {
+            margin-left: 80px;
+            width: 83px;
+            text-align: center;
+            font-size: 16px;
+            color: #43484D;
+            font-weight: 300;
+            border: none;
+        }
+
+        .payment-btn{
+            width: 180px;
+            position: absolute;
+            height: 55px;
+            display: inline-block;
+            vertical-align: middle;
+            background: #000;
+            border: none;
+            color: #fff;
+            text-align: center;
+            padding: 13px 17px 11px;
+            transition: color .2s ease, background-color .2s ease;
+            box-sizing: border-box;
+            margin-left: 500px;
+        }
+
+        .input_code{
+            margin-left: 250px;
+            position: absolute;
+            border: 1px solid #e2e2e2;
+            padding: 14px 3px 13px 17px;
+            box-sizing: border-box;
+            height: 58px;
+        }
+
+        .item-total {
+            background: white;
+            position: absolute;
+            margin-top: 295px;
+            padding: 20px 30px;
+            height: 120px;
+            display: flex;
+            border-bottom: 1px solid #E1E8EE;
+            width: 750px;
+        }
+
+        .img_item {
+            height: 90px;
+            width: 90px;
+        }
+
+        @media (max-width: 1000px) {
+
+            .buttonblue {
+                font-size: 2.5em;
+            }
+
+            .img_item {
+                width: 460px;
+                height: 460px;
+            }
+
+            .previous {
+                font-size: 48px;
+            }
+
+            .delete-btn {
+                margin-left: -120px;
+                width: 38px;
+                height: 37px;
+                background: url("delete-icn1.svg") no-repeat center;
+            }
+
+            .buttons{
+                margin-left: 400px;
+                margin-top: -750px;
+                width: 20px;
+                height: 20px;
+                position: relative;
+            }
+
+            .title {
+                border-top: 2px solid #E1E8EE;
+                height: 90px;
+                border-bottom: 2px solid #E1E8EE;
+                padding: 20px 30px;
+                color: #5E6977;
+                font-size: 48px;
+                font-weight: 400;
+            }
+
+            .shopping-cart {
+                width: 100%;
+                height: 1100px;
+            }
+
+            .item {
+                height: 100%;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .image,
+            .quantity,
+            .description {
+                width: 100%;
+                text-align: center;
+                margin: 6px 0;
+            }
+
+
+            .total {
+                margin-left: 50px;
+                font-size: 50px;
+                margin-top: 450px;
+            }
+
+            .description span {
+                margin-left: 0px;
+                display: block;
+                font-size: 44px;
+                color: #43484D;
+                font-weight: 400;
+            }
+
+            .description span:first-child {
+                margin-left: 0px;
+            }
+
+
+            .item-total {
+                background: none;
+                margin-left: 100px;
+                position: absolute;
+                margin-top: 705px;
+                padding: 20px 30px;
+                height: 120px;
+                display: flex;
+                border: none;
+            }
+
+            .input_code {
+                margin-top: 560px;
+                width: 650px;
+                margin-left: 50px;
+                position: absolute;
+                border: 1px solid #e2e2e2;
+                padding: 14px 3px 13px 17px;
+                box-sizing: border-box;
+                height: 105px;
+                font-size: 30px;
+            }
+
+            .payment-btn {
+                width: 650px;
+                position: absolute;
+                height: 105px;
+                display: inline-block;
+                vertical-align: middle;
+                background: #000;
+                border: none;
+                color: #fff;
+                text-align: center;
+                padding: 13px 17px 11px;
+                transition: color .2s ease, background-color .2s ease;
+                box-sizing: border-box;
+                margin-left: 50px;
+                font-size: 45px;
+                margin-top: 700px;
+            }
+
+            #plus-btn {
+                background: no-repeat #E1E8EE url(/plus-mobile.svg) center;
+                margin-top: 2px;
+                width: 80px;
+                height: 80px;
+                border-radius: 6px;
+                border: none;
+                cursor: pointer;
+            }
+
+            #minus-btn {
+                background: no-repeat #E1E8EE url(/minus-mobile.svg) center;
+                margin-bottom: 3px;
+                margin-top: 2px;
+                width: 80px;
+                height: 80px;
+                border-radius: 6px;
+                border: none;
+                cursor: pointer;
+            }
+
+            .minus {
+                filter: opacity(0%);
+            }
+
+            .quantity input {
+                -webkit-appearance: none;
+                border: none;
+                text-align: center;
+                width: 72px;
+                font-size: 36px;
+                color: #43484D;
+                font-weight: 300;
+            }
+
+            #price {
+                position: relative;
+                margin-left: 400px;
+                width: 100px;
+                text-align: center;
+                font-size: 46px;
+                color: #43484D;
+                font-weight: 300;
+                border: none;
+                padding-top: 30px;
+            }
+
+            .quantity {
+                padding-top: 20px;
+                position: relative;
+            }
+        }
+
+        /* Import Google font - Poppins */
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        /*Responsive*/
+        @media screen and (max-width: 500px) {
+            .form .column {
+                flex-wrap: wrap;
+            }
+            .form :where(.gender-option, .gender) {
+                row-gap: 15px;
+            }
+        }
+
+    </style>
+
+
+    <script>
+
+        /* Анимация открытия меню */
+        function myFunction() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        // Close the dropdown menu if the user clicks outside of it
+        window.onclick = function(event) {
+            if (!event.target.matches('.buttonblue')) {
+
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+    <script>
+
+            // Изменение товаров в корзине.
+            $(document).ready(function() {
+
+                if ($(".previous").text() == " ") {
+                    $('.previous').css('margin-top', '0px');
+                }
+
+                $(".quantity").on("submit", function(e){
+                    e.preventDefault();
+                    $.ajax({
+                        url: '/in-cart',
+                        type: 'post',
+                        data: $(this).serialize()
+                    })
+                });
+
+                var input = $('#item_quantity');
+                var value = parseInt(input.val());
+                var pr = $('#price');
+                var prv = parseInt(pr.val());
+
+                var in_stock = $('#in_stock');
+                var in_stock_value = parseInt(in_stock.val());
+
+                // Функция для расчета итоговой цены.
+                function calculateTotalPrice() {
+                    let totalPrice = 0;
+
+                    // Получаем все элементы с классом 'item'
+                    const items = document.querySelectorAll('.item');
+
+                    items.forEach(item => {
+                        // Получаем цену и количество товара
+                        const price = parseFloat(item.querySelector('input[name="price"]').value);
+                        const quantity = parseInt(item.querySelector('input[name="quantity"]').value);
+
+                        // Увеличиваем общую сумму
+                        totalPrice += price * quantity;
+                    });
+
+                    // Обновляем элемент с итоговой ценой
+                    document.getElementById('total-price').textContent = totalPrice.toFixed(2);
+
+                    //маркер наличия товаров в корзине
+                        if (totalPrice != null) {
+                            $('.circle').css('display', 'block');
+                            $('.circle1').css('display', 'block');
+                        }
+                }
+
+                calculateTotalPrice();
+
+               // Пересчёт итоговой цены при изменении количества
+               document.querySelectorAll('.quantity input[name="quantity"]').forEach(input => {
+                   input.addEventListener('change', calculateTotalPrice);
+               });
+
+               // Алгоритм для кнопок "+" и "-"
+               $('#plus-btn').click(function () {
+                   var $this = $(this);
+                   if (value < in_stock_value) {
+                       value = value + 1;
+                   }
+                   input.val(value);
+               });
+
+               $('#minus-btn').click(function () {
+                   var $this = $(this);
+                   if (value > in_stock_value) {
+                       value = value - 1;
+                   } else {
+                       value = 1;
+                   }
+                   input.val(value);
+               });
+            });
+
+    </script>
+
+</head>
+
+<body>
+
+    <header th:insert="~{/header :: header}"></header>
+
+    <div class="shopping-cart-container">
+        <div class="shopping-cart">
+            <!-- Title -->
+            <div class="title">
+                Корзина
+            </div>
+
+            <div class="previous" th:if="${session.cart == null}">
+                Ничего не добавлено.
+            </div>
+
+            <div class="item" th:each="item : ${session.cart}">
+                <div class="image">
+                    <img class="img_item" th:src="${item.img}" alt=""/>
+                </div>
+                    <div class="description">
+                        <span th:text="${item.name}"></span>
+                        <span th:text="${item.size != null} ? ${item.size}"></span>
+                        <span th:text="${item.color}"></span>
+                    </div>
+                <form class="quantity">
+                    <input type="hidden" name="id" th:value="${item.id}"/>
+                    <input type="hidden" name="img" th:value="${item.img}"/>
+                    <input type="hidden" name="name" th:value="${item.name}"/>
+                    <input type="hidden" name="item_size" th:value="${item.size != null} ? ${item.size}"/>
+                    <input type="hidden" name="color" th:value="${item.color}"/>
+                    <input type="hidden" name="price" th:value="${item.price}"/>
+                    <input type="hidden" name="in_stock" id="in_stock" th:value="${item.in_stock}"/>
+                    <button id="plus-btn" type="submit">
+                        <img class="plus" src="plus.svg" alt=""/>
+                    </button>
+                    <input id="item_quantity" name="quantity" th:value="${item.quantity}"/>
+                    <button id="minus-btn" type="submit">
+                        <img class="minus" src="minus.svg" alt=""/>
+                    </button>
+                </form>
+                <input type="number" id="price" th:value="${item.price}" readonly/>
+                <div class="buttons">
+                    <form th:action="'/remove-item'" method="post">
+                        <input type="hidden" name="id" th:value="${item.id}"/>
+                        <button class="delete-btn" type="submit"></button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="item-total" th:if="${session.cart != null}">
+            <div class="total">Итого: <span id="total-price" name="total_price"></span>pуб.</div>
+                <input type="text" class="input_code" name="coupon_code" placeholder="Промо-код (если есть)" value="">
+                <a class="payment-btn" onclick="window.location.href = '/creating-order';">Оформить заказ</a>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

@@ -18,7 +18,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
-    /*private final JwtFilter jwtFilter;*/
+//    private final JwtFilter jwtFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -33,8 +33,8 @@ public class SecurityConfig {
                         authz -> authz
                                 .requestMatchers("/person/hello/user", "/person/hello/admin").authenticated()
                                 .anyRequest().permitAll()
-                                /*.and()
-                                .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)*/
+//                                .and()
+//                                .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 ).build();
     }
 

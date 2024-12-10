@@ -46,7 +46,7 @@ public class MainControllerTest {
 
     @Test
     public void cartRemove() throws Exception {
-        mockMvc.perform(post("/item-remove")
+        mockMvc.perform(post("/remove-item")
                         .param("attr_name", "item")
                         .with(user("user")))
                 .andExpect(status().isOk())
