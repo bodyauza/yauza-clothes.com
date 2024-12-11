@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1733932590441-1" author="bogda (generated)">
+        <createTable tableName="order">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="fio" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="tel" type="VARCHAR(255)"/>
+            <column name="address" type="VARCHAR(255)"/>
+            <column defaultValueComputed="NULL" name="date" type="datetime"/>
+            <column name="post" type="VARCHAR(255)"/>
+            <column name="products" type="VARCHAR(255)"/>
+            <column name="status" type="VARCHAR(255)"/>
+            <column defaultValueComputed="NULL" name="total_price" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1733932590441-2" author="bogda (generated)">
+        <createTable tableName="product">
+            <column name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="color" type="VARCHAR(255)"/>
+            <column name="img" type="VARCHAR(255)"/>
+            <column defaultValueComputed="NULL" name="in_stock" type="INT"/>
+            <column defaultValueComputed="NULL" name="price" type="INT"/>
+            <column defaultValueComputed="NULL" name="quantity" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1733932590441-3" author="bogda (generated)">
+        <createTable tableName="sizes">
+            <column name="product_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="size" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1733932590441-4" author="bogda (generated)">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="product"
+                                 constraintName="FKokjl1um836jb6ckkx7g1acd2y" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="product_id" referencedTableName="sizes"/>
+    </changeSet>
+
+</databaseChangeLog>

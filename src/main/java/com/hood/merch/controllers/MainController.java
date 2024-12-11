@@ -74,7 +74,8 @@ public class MainController {
 
     // Добавление товара в корзину.
     @PostMapping("/add-item")
-    protected String addItem(HttpServletRequest request, @RequestParam String img, @RequestParam int id, @RequestParam String name, @RequestParam Integer price, @RequestParam String size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer in_stock)
+    protected String addItem(HttpServletRequest request, @RequestParam String img, @RequestParam int id, @RequestParam String name, @RequestParam Integer price,
+                             @RequestParam String size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer in_stock)
             throws ServletException, IOException {
 
         Product stock_check = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Товар не найден"));
@@ -108,7 +109,8 @@ public class MainController {
 
     // Изменение количества единиц товара в корзине.
     @PostMapping("/in-cart")
-    public String inCart(HttpServletRequest request, @RequestParam String img, @RequestParam int id, @RequestParam String name, @RequestParam Integer price, @RequestParam String size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer in_stock)
+    public String inCart(HttpServletRequest request, @RequestParam String img, @RequestParam int id, @RequestParam String name, @RequestParam Integer price,
+                         @RequestParam String size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer in_stock)
             throws ServletException, IOException {
 
         Product stock_check = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Товар не найден"));

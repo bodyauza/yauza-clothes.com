@@ -15,7 +15,7 @@ import java.util.Objects;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column
     private String name;
@@ -29,9 +29,11 @@ public class Product {
     private int quantity;
 
     @Column
-    @Version
+    @Version // Предотвращает потерю изменений при конкурентном доступе к данным.
     private int in_stock;
 
+    // Значение поля size не будет загружено из базы в момент загрузки родительского объекта Product.
+    // Объект типа Sizes будет загружен при первом обращении к полю size.
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "id")

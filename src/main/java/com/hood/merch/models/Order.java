@@ -1,9 +1,6 @@
 package com.hood.merch.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,12 +16,25 @@ public class Order {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String products, FIO, email, tel, post, address, status;
+    @Column
+    private String FIO;
+    @Column
+    private String email;
+    @Column
+    private String tel;
+    @Column
+    private String post;
+    @Column
+    private String address;
+    @Column
+    private String products;
+    @Column
+    private String status;
+    @Column
     private int total_price;
-
+    @Column
     private Date date;
 
     public Order(String products, String FIO, String email, String tel, String post, String address, String status, int total_price, Date date) {
