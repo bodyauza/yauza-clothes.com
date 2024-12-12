@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd">
+    <changeSet id="1733960875754-1" author="bogda">
+        <insert tableName="product">
+            <column name="id" valueNumeric="1"/>
+            <column name="name" value="Шарф SAKURA"/>
+            <column name="img" value="/scarf.png"/>
+            <column name="color" value="color"/>
+            <column name="price" valueNumeric="750"/>
+            <column name="quantity" valueNumeric="1"/>
+            <column name="in_stock" valueNumeric="15"/>
+        </insert>
+    </changeSet>
+    <changeSet id="1733961103575-1" author="bogda">
+        <insert tableName="product">
+            <column name="id" valueNumeric="2"/>
+            <column name="name" value="OVERSIZE SAKURA"/>
+            <column name="img" value="/oversize.png"/>
+            <column name="color" value="white"/>
+            <column name="price" valueNumeric="1500"/>
+            <column name="quantity" valueNumeric="1"/>
+            <column name="in_stock" valueNumeric="15"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

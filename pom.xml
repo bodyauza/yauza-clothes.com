@@ -120,10 +120,6 @@
             <artifactId>spring-security-web</artifactId>
             <version>6.1.0</version>
         </dependency>
-<!--		<dependency>-->
-<!--			<groupId>org.liquibase</groupId>-->
-<!--			<artifactId>liquibase-core</artifactId>-->
-<!--		</dependency>-->
 		<dependency>
 			<groupId>au.com.dius</groupId>
 			<artifactId>pact-jvm-provider-maven</artifactId>
