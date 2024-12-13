@@ -13,6 +13,7 @@ import jakarta.mail.MessagingException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -162,16 +163,42 @@ public class MainController {
         return "redirect:/cart";
     }
 
+    /*
+
+    Параметр consumes определяет тип содержимого тела запроса. Например, consumes="application/json" определяет,
+    что Content-Type запроса, который отправил клиент должен быть "application/json".
+    Можно задать отрицательное указание: consumes="!application/json". Тогда будет требоваться любой Content-Type,
+    кроме указанного. Допускается указание нескольких значений: ("text/plain", "application/*).
+
+    Параметр produces определяет формат возвращаемого методом значения. Если на клиенте в header'ах не указан
+    заголовок Accept, то не имеет значение, что установлено в produces. Если же заголовок Accept установлен,
+    то значение produces должно совпадать с ним для успешного возвращения результата клиенту.
+    Параметр produces может также содержать перечисление значений.
+
+    // Запрос на сервер.
+    fetch('/new-order', {
+            method: 'POST',
+            headers: {
+                'dataType': 'json'
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(orderData)
+    })
+
+    */
 
     // Новый заказ.
-    @ResponseBody
-    @RequestMapping(value = "/new-order", method = RequestMethod.POST)
-    public String newOrder(HttpServletRequest request, HttpServletResponse response, @RequestBody OrderDTO orderDTO) {
+    @RequestMapping(value = "/new-order", method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public @ResponseBody String newOrder(HttpServletRequest request, OrderDTO orderDTO) {
         String address = orderDTO.getCountry() + ", " + orderDTO.getRegion() + ", " + orderDTO.getCity() + ", " + orderDTO.getStreet()
                 + ", " + orderDTO.getHome() + ", " + orderDTO.getIndex();
 
+        System.out.println(orderDTO.getOrdered_items());
+        System.out.println(orderDTO.getFIO());
         HttpSession session = request.getSession();
-        
+
         // Уменьшение кол-ва товаров на складе.
         for (ProductDTO productDTO : orderDTO.getOrdered_items()) {
             if (productDTO.getQuantity() <= 0 ||
@@ -179,7 +206,7 @@ public class MainController {
                 return "redirect:/cart";
             }
         }
-        
+
         Integer total_price = null;
         StringBuilder products = new StringBuilder();
 

@@ -544,71 +544,51 @@
             // Инициализация общей цены
             calculateTotalPrice();
 
-            const items = document.querySelectorAll('.item');
+            const items = $('.item'); // Используем jQuery для выбора элементов
 
-            items.forEach(item => {
-                const plusButton = item.querySelector('.plus-btn');
-                const minusButton = item.querySelector('.minus-btn');
-                const quantityInput = item.querySelector('.item_quantity');
-                const priceInput = item.querySelector('input[name="price"]'); // Получаем цену из скрытого поля
-                const inStockInput = item.querySelector('input[name="in_stock"]');
+            items.each(function() {
+                const item = $(this);
+                const plusButton = item.find('.plus-btn');
+                const minusButton = item.find('.minus-btn');
+                const quantityInput = item.find('.item_quantity');
+                const priceInput = item.find('input[name="price"]'); // Получаем цену из скрытого поля
+                const inStockInput = item.find('input[name="in_stock"]');
 
-                if (plusButton && minusButton && quantityInput) {
-                    plusButton.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        let quantity = parseInt(quantityInput.value);
-                        let inStock = parseInt(inStockInput.value);
+                if (plusButton.length && minusButton.length && quantityInput.length) {
+                    plusButton.on('click', function(e) {
+                        let quantity = parseInt(quantityInput.val());
+                        let inStock = parseInt(inStockInput.val());
                         if (quantity < inStock) {
                             quantity += 1;
-                            quantityInput.value = quantity;
+                            quantityInput.val(quantity);
                             calculateTotalPrice();
                         }
                     });
-                    minusButton.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        let quantity = parseInt(quantityInput.value);
+
+                    minusButton.on('click', function(e) {
+                        let quantity = parseInt(quantityInput.val());
                         if (quantity > 1) {
                             quantity -= 1;
-                            quantityInput.value = quantity;
+                            quantityInput.val(quantity);
                             calculateTotalPrice();
                         }
                     });
-                    quantityInput.addEventListener('change', function() {
+
+                    quantityInput.on('change', function() {
                         calculateTotalPrice();
                     });
                 } else {
                     console.error('Не удалось найти необходимые элементы для обработки событий.');
                 }
+            });
 
-                /*
-                // Обработчик события на отправку формы
-                const form_quantity = item.closest('.form_quantity'); // Получаем родительскую форму
-                form_quantity.addEventListener('submit', function(e) {
-                    e.preventDefault(); // Отменяем стандартное поведение формы
-
-                    // Создаем объект FormData из формы
-                    const formData = new FormData(form_quantity);
-
-                    // Выполняем AJAX-запрос с помощью fetch
-                    fetch('/in-cart', {
-                        method: 'POST',
-                        body: formData
+            $('.form_quantity').on("submit", function(e){
+                    e.preventDefault();
+                    $.ajax({
+                        url: '/in-cart',
+                        type: 'post',
+                        data: $(this).serialize()
                     })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Сетевая ошибка');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log("Данные успешно отправлены", data);
-                        calculateTotalPrice(); // Пересчитываем общую цену после успешной отправки данных
-                    })
-                    .catch(error => {
-                        console.error("Ошибка при отправке данных", error);
-                    });
-                });
-                */
             });
 
             // Функция для расчета итоговой цены.
@@ -662,11 +642,11 @@
                     <input type="hidden" name="color" th:value="${item.color}"/>
                     <input type="hidden" name="price" th:value="${item.price}"/>
                     <input type="hidden" name="in_stock" id="in_stock" th:value="${item.in_stock}"/>
-                    <button type="button" class="plus-btn">
+                    <button type="submit" class="plus-btn">
                         <img class="plus" src="plus.svg" alt=""/>
                     </button>
                     <input class="item_quantity" name="quantity" th:value="${item.quantity}"/>
-                    <button type="button" class="minus-btn">
+                    <button type="submit" class="minus-btn">
                         <img class="minus" src="minus.svg" alt=""/>
                     </button>
                 </form>
