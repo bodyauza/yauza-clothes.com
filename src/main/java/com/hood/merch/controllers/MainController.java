@@ -34,14 +34,8 @@ public class MainController {
     @Autowired
     private OrderRepository orderRepository;
 
-//    @Autowired
-//    private SessionService sessionService;
-
     @Autowired
     private DefaultEmailService emailService;
-
-    // Динамический массив-корзина.
-    ArrayList<ProductDTO> cart;
 
 
     @GetMapping("/auth")
@@ -74,68 +68,98 @@ public class MainController {
 
     // Добавление товара в корзину.
     @PostMapping("/add-item")
-    protected String addItem(HttpServletRequest request, @RequestParam String img, @RequestParam int id, @RequestParam String name, @RequestParam Integer price,
-                             @RequestParam String size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer in_stock)
-            throws ServletException, IOException {
+    protected String addItem(HttpServletRequest request,
+                             @RequestParam String img,
+                             @RequestParam int id,
+                             @RequestParam String name,
+                             @RequestParam Integer price,
+                             @RequestParam String size,
+                             @RequestParam Integer quantity,
+                             @RequestParam String color,
+                             @RequestParam Integer in_stock) throws ServletException, IOException {
 
-        Product stock_check = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Товар не найден"));
+        // Проверка наличия товара на складе
+        Product stock_check = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Товар не найден"));
+
+        ProductDTO added_item = new ProductDTO(id, name, price, size, quantity, img, color, in_stock);
 
         if (stock_check.getIn_stock() >= quantity) {
             HttpSession session = request.getSession();
             session.setMaxInactiveInterval(-1);
-            ArrayList<ProductDTO> item_in_session = (ArrayList<ProductDTO>) session.getAttribute("cart");
-            ProductDTO added_item = new ProductDTO(id, name, price, size, quantity, img, color, in_stock);
 
-            for (ProductDTO item : item_in_session) {
+            // Получаем корзину из сессии или создаем новую
+            ArrayList<ProductDTO> cart = (ArrayList<ProductDTO>) session.getAttribute("cart");
+            if (cart == null) {
+                cart = new ArrayList<>(); // Инициализация новой корзины
+            }
+
+            // Проверка на дубликаты
+            for (ProductDTO item : cart) {
                 if (item.equals(added_item)) {
                     System.out.println("Найден товар-дубликат " + item.getName());
                     return "redirect:/cart";
                 }
             }
+
+            // Добавление товара в корзину
             cart.add(added_item);
             session.setAttribute("cart", cart);
+        } else {
+            System.out.println("Недостаточно товара на складе для добавления в корзину.");
         }
+
         return "redirect:/cart";
     }
+
 
     // Удаление из корзины единиц товара.
     @PostMapping("/remove-item")
     public String removeItem(HttpServletRequest request, @RequestParam int id) {
         HttpSession session = request.getSession();
+        ArrayList<ProductDTO> cart = (ArrayList<ProductDTO>) session.getAttribute("cart");
         cart.removeIf(item -> item.getId() == id);
+        if (cart.isEmpty()) {
+            session.removeAttribute("cart");
+            return "redirect:/cart";
+        }
         session.setAttribute("cart", cart);
         return "redirect:/cart";
     }
 
+
     // Изменение количества единиц товара в корзине.
     @PostMapping("/in-cart")
-    public String inCart(HttpServletRequest request, @RequestParam String img, @RequestParam int id, @RequestParam String name, @RequestParam Integer price,
-                         @RequestParam String size, @RequestParam Integer quantity, @RequestParam String color, @RequestParam Integer in_stock)
+    public String inCart(HttpServletRequest request,
+                         @RequestParam String img,
+                         @RequestParam int id,
+                         @RequestParam String name,
+                         @RequestParam Integer price,
+                         @RequestParam String item_size,
+                         @RequestParam Integer quantity,
+                         @RequestParam String color,
+                         @RequestParam Integer in_stock)
             throws ServletException, IOException {
 
         Product stock_check = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Товар не найден"));
         HttpSession session = request.getSession();
         String referrer = request.getHeader("referer");
-        String attr_name = Integer.toString(id);
+        ArrayList<ProductDTO> item_in_cart = (ArrayList<ProductDTO>) session.getAttribute("cart");
 
         if(stock_check.getIn_stock() >= quantity) {
-//            session.removeAttribute(attr_name);
-//            session.setMaxInactiveInterval(-1);
-            ArrayList<ProductDTO> item_in_session = (ArrayList<ProductDTO>) session.getAttribute("cart");
-            ProductDTO added_item = new ProductDTO(id, name, price, size, quantity, img, color, in_stock);
-            for (ProductDTO item : item_in_session) {
+            ProductDTO added_item = new ProductDTO(id, name, price, item_size, quantity, img, color, in_stock);
+            for (ProductDTO item : item_in_cart) {
                 if (item.equals(added_item)) {
-                    // Может понадобиться переопределение equals() в ProductDTO.
-                    cart.set(item_in_session.indexOf(item), added_item);
-                    session.setAttribute("cart", cart);
+                    item_in_cart.set(item_in_cart.indexOf(item), added_item);
+                    session.setAttribute("cart", item_in_cart);
                     return "redirect:/cart";
                 }
             }
         } else {
-            cart.removeIf(item -> item.getId() == stock_check.getId());
-            session.setAttribute("cart", cart);
+            item_in_cart.removeIf(item -> item.getId() == stock_check.getId());
+            session.setAttribute("cart", item_in_cart);
         }
-        return referrer;
+        return "redirect:/cart";
     }
 
 

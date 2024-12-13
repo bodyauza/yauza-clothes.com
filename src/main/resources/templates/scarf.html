@@ -536,17 +536,13 @@
 
         //наличие товаров в корзине
         $(document).ready(function () {
-            var input = $('#total_header');
+            var input = $('#not_empty_cart');
             var value = parseInt(input.val());
-            var input1 = $('#total_header1');
-            var value1 = parseInt(input.val());
-            if (value > 0 || value1 > 0) {
+            if (value > 0) {
                 $('.circle').css('display', 'block');
                 $('.circle1').css('display', 'block');
-            }
 
             var in_stock = $('#in_stock');
-
             if (in_stock.val() === "0") {
                 $('.btn-to_cart').css('background', '#999')
                 $('.btn-to_cart').html("Подписаться")
@@ -562,12 +558,7 @@
 
 <header th:insert="~{/header :: header}"></header>
 
-<div class="item" th:each="el : ${session.item}">
-    <input type="hidden" id="total_header"  th:value="${session.item['quantity'] != null} ? ${session.item['quantity']}">
-</div>
-<div class="item" th:each="el : ${session.item1}">
-    <input type="hidden" id="total_header1"  th:value="${session.item1['quantity'] != null} ? ${session.item1['quantity']}">
-</div>
+<input type="hidden" id="not_empty_cart" th:value="${session.cart != null} ? ${session.cart}">
 
 <div class="img-container">
 

@@ -1,4 +1,4 @@
-package com.hood.merch.security.config_auth;
+package com.hood.merch.jwt_authentication_and_authorization.config_auth;
 
 /*import com.hood.merch.security.filter.JwtFilter;*/
 import lombok.RequiredArgsConstructor;
@@ -9,8 +9,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity

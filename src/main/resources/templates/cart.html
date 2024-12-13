@@ -223,11 +223,11 @@
             100% { background-position: right; }
         }
 
-        .quantity {
+        .form_quantity {
             padding-top: 20px;
             margin-left: 50px;
         }
-        .quantity input {
+        .form_quantity input {
             -webkit-appearance: none;
             border: none;
             text-align: center;
@@ -237,7 +237,7 @@
             font-weight: 300;
         }
 
-        #minus-btn {
+        .minus-btn {
             margin-bottom: 3px;
             margin-top: 2px;
             width: 30px;
@@ -247,7 +247,7 @@
             border: none;
             cursor: pointer;
         }
-        #plus-btn {
+        .plus-btn {
             margin-top: 2px;
             width: 30px;
             height: 30px;
@@ -365,7 +365,7 @@
             }
 
             .image,
-            .quantity,
+            .form_quantity,
             .description {
                 width: 100%;
                 text-align: center;
@@ -433,7 +433,7 @@
                 margin-top: 700px;
             }
 
-            #plus-btn {
+            .plus-btn {
                 background: no-repeat #E1E8EE url(/plus-mobile.svg) center;
                 margin-top: 2px;
                 width: 80px;
@@ -443,7 +443,7 @@
                 cursor: pointer;
             }
 
-            #minus-btn {
+            .minus-btn {
                 background: no-repeat #E1E8EE url(/minus-mobile.svg) center;
                 margin-bottom: 3px;
                 margin-top: 2px;
@@ -458,7 +458,7 @@
                 filter: opacity(0%);
             }
 
-            .quantity input {
+            .form_quantity input {
                 -webkit-appearance: none;
                 border: none;
                 text-align: center;
@@ -480,7 +480,7 @@
                 padding-top: 30px;
             }
 
-            .quantity {
+            .form_quantity {
                 padding-top: 20px;
                 position: relative;
             }
@@ -535,87 +535,100 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
     <script>
+        $(document).ready(function() {
+            // Проверка наличия товаров в корзине
+            if ($(".previous").text().trim() === "") {
+                $('.previous').css('margin-top', '0px');
+            }
 
-            // Изменение товаров в корзине.
-            $(document).ready(function() {
+            // Инициализация общей цены
+            calculateTotalPrice();
 
-                if ($(".previous").text() == " ") {
-                    $('.previous').css('margin-top', '0px');
-                }
+            const items = document.querySelectorAll('.item');
 
-                $(".quantity").on("submit", function(e){
-                    e.preventDefault();
-                    $.ajax({
-                        url: '/in-cart',
-                        type: 'post',
-                        data: $(this).serialize()
-                    })
-                });
+            items.forEach(item => {
+                const plusButton = item.querySelector('.plus-btn');
+                const minusButton = item.querySelector('.minus-btn');
+                const quantityInput = item.querySelector('.item_quantity');
+                const priceInput = item.querySelector('input[name="price"]'); // Получаем цену из скрытого поля
+                const inStockInput = item.querySelector('input[name="in_stock"]');
 
-                var input = $('#item_quantity');
-                var value = parseInt(input.val());
-                var pr = $('#price');
-                var prv = parseInt(pr.val());
-
-                var in_stock = $('#in_stock');
-                var in_stock_value = parseInt(in_stock.val());
-
-                // Функция для расчета итоговой цены.
-                function calculateTotalPrice() {
-                    let totalPrice = 0;
-
-                    // Получаем все элементы с классом 'item'
-                    const items = document.querySelectorAll('.item');
-
-                    items.forEach(item => {
-                        // Получаем цену и количество товара
-                        const price = parseFloat(item.querySelector('input[name="price"]').value);
-                        const quantity = parseInt(item.querySelector('input[name="quantity"]').value);
-
-                        // Увеличиваем общую сумму
-                        totalPrice += price * quantity;
-                    });
-
-                    // Обновляем элемент с итоговой ценой
-                    document.getElementById('total-price').textContent = totalPrice.toFixed(2);
-
-                    //маркер наличия товаров в корзине
-                        if (totalPrice != null) {
-                            $('.circle').css('display', 'block');
-                            $('.circle1').css('display', 'block');
+                if (plusButton && minusButton && quantityInput) {
+                    plusButton.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        let quantity = parseInt(quantityInput.value);
+                        let inStock = parseInt(inStockInput.value);
+                        if (quantity < inStock) {
+                            quantity += 1;
+                            quantityInput.value = quantity;
+                            calculateTotalPrice();
                         }
+                    });
+                    minusButton.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        let quantity = parseInt(quantityInput.value);
+                        if (quantity > 1) {
+                            quantity -= 1;
+                            quantityInput.value = quantity;
+                            calculateTotalPrice();
+                        }
+                    });
+                    quantityInput.addEventListener('change', function() {
+                        calculateTotalPrice();
+                    });
+                } else {
+                    console.error('Не удалось найти необходимые элементы для обработки событий.');
                 }
 
-                calculateTotalPrice();
+                /*
+                // Обработчик события на отправку формы
+                const form_quantity = item.closest('.form_quantity'); // Получаем родительскую форму
+                form_quantity.addEventListener('submit', function(e) {
+                    e.preventDefault(); // Отменяем стандартное поведение формы
 
-               // Пересчёт итоговой цены при изменении количества
-               document.querySelectorAll('.quantity input[name="quantity"]').forEach(input => {
-                   input.addEventListener('change', calculateTotalPrice);
-               });
+                    // Создаем объект FormData из формы
+                    const formData = new FormData(form_quantity);
 
-               // Алгоритм для кнопок "+" и "-"
-               $('#plus-btn').click(function () {
-                   var $this = $(this);
-                   if (value < in_stock_value) {
-                       value = value + 1;
-                   }
-                   input.val(value);
-               });
-
-               $('#minus-btn').click(function () {
-                   var $this = $(this);
-                   if (value > in_stock_value) {
-                       value = value - 1;
-                   } else {
-                       value = 1;
-                   }
-                   input.val(value);
-               });
+                    // Выполняем AJAX-запрос с помощью fetch
+                    fetch('/in-cart', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Сетевая ошибка');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log("Данные успешно отправлены", data);
+                        calculateTotalPrice(); // Пересчитываем общую цену после успешной отправки данных
+                    })
+                    .catch(error => {
+                        console.error("Ошибка при отправке данных", error);
+                    });
+                });
+                */
             });
 
-    </script>
+            // Функция для расчета итоговой цены.
+            function calculateTotalPrice() {
+                let totalPrice = 0; // Сбрасываем общую цену перед расчетом.
+                const items = document.querySelectorAll('.item');
 
-</head>
+                items.forEach(item => {
+                    const price = parseFloat(item.querySelector('input[name="price"]').value); // Получаем цену из скрытого поля
+                    const quantity = parseInt(item.querySelector('.item_quantity').value);
+
+                    if (!isNaN(price) && !isNaN(quantity)) { // Проверяем, что цена и количество корректные числа
+                        totalPrice += price * quantity; // Суммируем цены
+                    }
+                });
+
+                document.getElementById('total-price').textContent = totalPrice.toFixed(2); // Обновляем итоговую цену
+            }
+        });
+    </script>
 
 <body>
 
@@ -641,7 +654,7 @@
                         <span th:text="${item.size != null} ? ${item.size}"></span>
                         <span th:text="${item.color}"></span>
                     </div>
-                <form class="quantity">
+                <form class="form_quantity">
                     <input type="hidden" name="id" th:value="${item.id}"/>
                     <input type="hidden" name="img" th:value="${item.img}"/>
                     <input type="hidden" name="name" th:value="${item.name}"/>
@@ -649,11 +662,11 @@
                     <input type="hidden" name="color" th:value="${item.color}"/>
                     <input type="hidden" name="price" th:value="${item.price}"/>
                     <input type="hidden" name="in_stock" id="in_stock" th:value="${item.in_stock}"/>
-                    <button id="plus-btn" type="submit">
+                    <button type="button" class="plus-btn">
                         <img class="plus" src="plus.svg" alt=""/>
                     </button>
-                    <input id="item_quantity" name="quantity" th:value="${item.quantity}"/>
-                    <button id="minus-btn" type="submit">
+                    <input class="item_quantity" name="quantity" th:value="${item.quantity}"/>
+                    <button type="button" class="minus-btn">
                         <img class="minus" src="minus.svg" alt=""/>
                     </button>
                 </form>
@@ -667,7 +680,7 @@
             </div>
 
             <div class="item-total" th:if="${session.cart != null}">
-            <div class="total">Итого: <span id="total-price" name="total_price"></span>pуб.</div>
+                <div class="total">Итого: <span id="total-price"></span>pуб.</div>
                 <input type="text" class="input_code" name="coupon_code" placeholder="Промо-код (если есть)" value="">
                 <a class="payment-btn" onclick="window.location.href = '/creating-order';">Оформить заказ</a>
             </div>
