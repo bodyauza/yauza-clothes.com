@@ -219,68 +219,88 @@
         itemSet.add(item);
     });
 
-    // Функция для сбора данных из формы и отправки на сервер
-    function submitOrder() {
-        // Собираем данные из формы
-        const FIO = document.querySelector('input[name="FIO"]').value;
-        const email = document.querySelector('input[name="email"]').value;
-        const tel = document.querySelector('input[name="tel"]').value;
-        const post = document.querySelector('input[name="post"]:checked').value; // Убедитесь, что выбирается отмеченное радио
-        const street = document.querySelector('input[name="street"]').value;
-        const home = document.querySelector('input[name="home"]').value;
-        const country = document.querySelector('select[name="country"]').value;
-        const city = document.querySelector('input[name="city"]').value;
-        const region = document.querySelector('input[name="region"]').value;
-        const index = document.querySelector('input[name="index"]').value;
+    // Преобразуем Set в массив
+    const itemArray = Array.from(itemSet);
 
-        // Преобразуем Set в массив
-        const itemArray = Array.from(itemSet);
+    // Собираем данные из формы
+    const FIO = document.querySelector('input[name="FIO"]').value;
+    const email = document.querySelector('input[name="email"]').value;
+    const tel = document.querySelector('input[name="tel"]').value;
+    const post = document.querySelector('input[name="post"]:checked').value; // Убедитесь, что выбирается отмеченное радио
+    const street = document.querySelector('input[name="street"]').value;
+    const home = document.querySelector('input[name="home"]').value;
+    const country = document.querySelector('select[name="country"]').value;
+    const city = document.querySelector('input[name="city"]').value;
+    const region = document.querySelector('input[name="region"]').value;
+    const index = document.querySelector('input[name="index"]').value;
 
-        // Создаем объект для отправки
-        const orderData = {
-            ordered_items: itemArray,
-            FIO,
-            email,
-            tel,
-            post,
-            street,
-            home,
-            country,
-            city,
-            region,
-            index
-        };
+    const orderData = {
+      ordered_items: itemArray,
+      FIO: 'Иванов Иван Иванович',
+      email: 'ivanov@example.com',
+      tel: '+79991234567',
+      post: 'Почтовый индекс',
+      street: 'Улица',
+      home: 'Дом',
+      country: 'Россия',
+      city: 'Москва',
+      region: 'Центральный',
+      index: '101000'
+    };
 
-        // Отправляем данные на сервер
-        fetch('/new-order', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(orderData)
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Success:', data);
-        })
-        .catch((error) => {
-            console.error('Error:', error);
+    // Функция для отправки данных на сервер
+    async function sendOrder(orderData) {
+      const formData = new URLSearchParams();
+
+      // Добавление массива ordered_items в formData
+      orderData.ordered_items.forEach((item, index) => {
+        formData.append(ordered_items[index].id, item.id);
+        formData.append(ordered_items[index].quantity, item.quantity);
+      });
+
+      // Добавление остальных полей
+      formData.append('FIO', orderData.FIO);
+      formData.append('email', orderData.email);
+      formData.append('tel', orderData.tel);
+      formData.append('post', orderData.post);
+      formData.append('street', orderData.street);
+      formData.append('home', orderData.home);
+      formData.append('country', orderData.country);
+      formData.append('city', orderData.city);
+      formData.append('region', orderData.region);
+      formData.append('index', orderData.index);
+
+      try {
+        const response = await fetch('/new-order', {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Accept': 'application/json'
+          }
         });
+
+        if (response.ok) {
+          // Обработка успешного ответа
+          console.log('Заказ успешно отправлен');
+          const result = await response.json(); // Если сервер возвращает JSON
+          console.log(result);
+        } else {
+          console.error('Ошибка при отправке заказа:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Ошибка сети:', error);
+      }
     }
 
     // Вызов функции при отправке формы.
     document.querySelector('form').addEventListener('submit', function(event) {
         event.preventDefault(); // Предотвращаем стандартное поведение формы
         if (isEmailValid(input.value) && isTelValid(input1.value)) {
-              submitOrder(); // Вызываем функцию отправки.
+          // Вызов функции отправки заказа
+          console.log(orderData['ordered_items']);
+          sendOrder(orderData);
         }
     });
-
 
   </script>
 

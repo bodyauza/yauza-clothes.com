@@ -1,8 +1,8 @@
 package com.hood.merch.controllers;
 
 
+import com.hood.merch.dto.OrderedItem;
 import com.hood.merch.dto.ProductDTO;
-import com.hood.merch.dto.OrderDTO;
 import com.hood.merch.models.Order;
 import com.hood.merch.models.Product;
 import com.hood.merch.models.repo.OrderRepository;
@@ -191,18 +191,20 @@ public class MainController {
     @RequestMapping(value = "/new-order", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public @ResponseBody String newOrder(HttpServletRequest request, OrderDTO orderDTO) {
-        String address = orderDTO.getCountry() + ", " + orderDTO.getRegion() + ", " + orderDTO.getCity() + ", " + orderDTO.getStreet()
-                + ", " + orderDTO.getHome() + ", " + orderDTO.getIndex();
+    public @ResponseBody String newOrder(HttpServletRequest request, ArrayList<OrderedItem> orderedItems, String FIO, String email, String tel,
+                                         String post, String street, String home, String country, String city,
+                                         String region, String index) {
+        String address = country + ", " + region + ", " + city + ", " + street
+                + ", " + home + ", " + index;
 
-        System.out.println(orderDTO.getOrdered_items());
-        System.out.println(orderDTO.getFIO());
+        System.out.println(orderedItems.toString());
+        System.out.println(FIO);
         HttpSession session = request.getSession();
 
         // Уменьшение кол-ва товаров на складе.
-        for (ProductDTO productDTO : orderDTO.getOrdered_items()) {
-            if (productDTO.getQuantity() <= 0 ||
-                    productService.purchaseProduct(productDTO.getId(), productDTO.getQuantity()).equals("Товар закончился")) {
+        for (OrderedItem orderedItem : orderedItems) {
+            if (orderedItem.getQuantity() <= 0 ||
+                    productService.purchaseProduct(orderedItem.getId(), orderedItem.getQuantity()).equals("Товар закончился")) {
                 return "redirect:/cart";
             }
         }
@@ -210,17 +212,17 @@ public class MainController {
         Integer total_price = null;
         StringBuilder products = new StringBuilder();
 
-        for (ProductDTO productDTO : orderDTO.getOrdered_items()) {
+        for (OrderedItem orderedItem : orderedItems) {
             // Количество единиц оформляемого товара и id товара возвращает браузер.
-            Product item = productRepository.findById(productDTO.getId()).orElseThrow(() -> new RuntimeException("Товар не найден"));
-            total_price += (productDTO.getQuantity() * item.getPrice());
-            products.append(item.getName() + ", " + item.getSize() + ", " + Integer.toString(productDTO.getQuantity())
+            Product item = productRepository.findById(orderedItem.getId()).orElseThrow(() -> new RuntimeException("Товар не найден"));
+            total_price += (orderedItem.getQuantity() * item.getPrice());
+            products.append(item.getName() + ", " + item.getSize() + ", " + Integer.toString(orderedItem.getQuantity())
                     + ", " + item.getColor() + ";");
         }
 
         Date date = new Date();
         String status = "не оплачено";
-        Order order = new Order(products.toString(), orderDTO.getFIO(), orderDTO.getEmail(), orderDTO.getTel(), orderDTO.getPost(),
+        Order order = new Order(products.toString(), FIO, email, tel, post,
                 address, status, total_price, date);
         //проблема с добавлением в репозиторий
         orderRepository.save(order);
@@ -228,7 +230,7 @@ public class MainController {
         System.out.println(address);
 
         try {
-            emailService.sendEmailWithAttachment(orderDTO.getEmail(), "Оформление заказа", "Спасибо, что выбрали нас \uD83E\uDD70 \n"
+            emailService.sendEmailWithAttachment(email, "Оформление заказа", "Спасибо, что выбрали нас \uD83E\uDD70 \n"
                             + products + address + "\nСкоро вам поступит звонок от менеджера",
                     "classpath:templates/post.html");
         } catch (MessagingException | FileNotFoundException mailException) {
