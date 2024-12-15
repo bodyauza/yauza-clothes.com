@@ -1,7 +1,7 @@
 package com.hood.merch.controllers;
 
 
-import com.hood.merch.dto.OrderedItem;
+import com.hood.merch.dto.OrderDTO;
 import com.hood.merch.dto.ProductDTO;
 import com.hood.merch.models.Order;
 import com.hood.merch.models.Product;
@@ -13,13 +13,17 @@ import jakarta.mail.MessagingException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URI;
 import java.util.*;
 
 
@@ -176,61 +180,81 @@ public class MainController {
     Параметр produces может также содержать перечисление значений.
 
     // Запрос на сервер.
-    fetch('/new-order', {
-            method: 'POST',
-            headers: {
-                'dataType': 'json'
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(orderData)
-    })
+    const response = await fetch('/new-order', {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Accept': 'application/json'
+          }
+    });
+
+    @RequestBody:
+
+    Полученное тело запроса: id=2&id=1&quantity=2&quantity=5&FIO=%D0%A8%D0%BF%D0%B0%D0%BA+%D0%91%D0%BE%D0%B3%D0%B4%
+    D0%B0%D0%BD+%D0%90%D0%BD%D0%B4%D1%80%D0%B5%D0%B5%D0%B2%D0%B8%D1%87+&email=bogdanazino777%40gmail.com&tel=%2B7+%28995%29
+    +788-81-59&post=%D0%A1%D0%B0%D0%BC%D0%BE%D0%B2%D1%8B%D0%B2%D0%BE%D0%B7&street=%D0%97%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%8
+    1%D0%BA%D0%B0%D1%8F+19&home=50&country=%D0%A0%D0%BE%D1%81%D1%81%D0%B8%D0%B9%D1%81%D0%BA%D0%B0%D1%8F+%D0%A4%D0%B5%D0%B4%
+    D0%B5%D1%80%D0%B0%D1%86%D0%B8%D1%8F&city=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&region=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%
+    B0&index=141103
+
+    ID: [2, 1]
+    Quantity: [2, 5]
+    FIO: Шпак Богдан Андреевич
+    Email: bogdanazino777@gmail.com
+    Телефон: +7 (995) 788-81-59
+    Почта: Самовывоз
+    Улица: Знаменская 19
+    Дом: 50
+    Страна: Российская Федерация
+    Город: Москва
+    Регион: Москва
+    Индекс: 141103
 
     */
 
     // Новый заказ.
     @RequestMapping(value = "/new-order", method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
-            produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public @ResponseBody String newOrder(HttpServletRequest request, ArrayList<OrderedItem> orderedItems, String FIO, String email, String tel,
-                                         String post, String street, String home, String country, String city,
-                                         String region, String index) {
-        String address = country + ", " + region + ", " + city + ", " + street
-                + ", " + home + ", " + index;
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public String newOrder(HttpServletRequest request, OrderDTO orderDTO) {
 
-        System.out.println(orderedItems.toString());
-        System.out.println(FIO);
+        String address = orderDTO.getCountry() + ", " + orderDTO.getRegion() + ", " + orderDTO.getCity() + ", " + orderDTO.getStreet()
+                + ", " + orderDTO.getHome() + ", " + orderDTO.getIndex();
+
         HttpSession session = request.getSession();
 
         // Уменьшение кол-ва товаров на складе.
-        for (OrderedItem orderedItem : orderedItems) {
-            if (orderedItem.getQuantity() <= 0 ||
-                    productService.purchaseProduct(orderedItem.getId(), orderedItem.getQuantity()).equals("Товар закончился")) {
+        for (int i = 0; i < orderDTO.getId().size(); i++) {
+            Long id = orderDTO.getId().get(i);
+            Integer quantity = orderDTO.getQuantity().get(i);
+
+            if (quantity <= 0 || productService.purchaseProduct(id, quantity).equals("Товар закончился")) {
                 return "redirect:/cart";
             }
         }
 
-        Integer total_price = null;
+        Integer total_price = 0;
         StringBuilder products = new StringBuilder();
 
-        for (OrderedItem orderedItem : orderedItems) {
-            // Количество единиц оформляемого товара и id товара возвращает браузер.
-            Product item = productRepository.findById(orderedItem.getId()).orElseThrow(() -> new RuntimeException("Товар не найден"));
-            total_price += (orderedItem.getQuantity() * item.getPrice());
-            products.append(item.getName() + ", " + item.getSize() + ", " + Integer.toString(orderedItem.getQuantity())
-                    + ", " + item.getColor() + ";");
+        for (int i = 0; i < orderDTO.getId().size(); i++) {
+            Long id = orderDTO.getId().get(i);
+            Integer quantity = orderDTO.getQuantity().get(i);
+
+            Product item = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Товар не найден"));
+            total_price += (quantity * item.getPrice());
+            products.append(item.getName()).append(", ").append(item.getSize().getSize()).append(", ")
+                    .append(quantity).append(", ").append(item.getColor()).append(";").append("\n");
         }
 
         Date date = new Date();
         String status = "не оплачено";
-        Order order = new Order(products.toString(), FIO, email, tel, post,
+        Order order = new Order(products.toString(), orderDTO.getFIO(), orderDTO.getEmail(), orderDTO.getTel(), orderDTO.getPost(),
                 address, status, total_price, date);
-        //проблема с добавлением в репозиторий
         orderRepository.save(order);
         System.out.println(products);
         System.out.println(address);
 
         try {
-            emailService.sendEmailWithAttachment(email, "Оформление заказа", "Спасибо, что выбрали нас \uD83E\uDD70 \n"
+            emailService.sendEmailWithAttachment(orderDTO.getEmail(), "Оформление заказа", "Спасибо, что выбрали нас \uD83E\uDD70 \n"
                             + products + address + "\nСкоро вам поступит звонок от менеджера",
                     "classpath:templates/post.html");
         } catch (MessagingException | FileNotFoundException mailException) {
@@ -239,6 +263,7 @@ public class MainController {
 
         session.removeAttribute("cart");
 
+        // Возвращаем ответ клиенту
         return "redirect:/pay";
     }
 

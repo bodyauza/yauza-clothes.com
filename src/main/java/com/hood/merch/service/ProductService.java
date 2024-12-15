@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -14,7 +13,7 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    public String purchaseProduct(int productId, int quantity) {
+    public String purchaseProduct(Long productId, int quantity) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Товар не найден"));
 
         product.setIn_stock(product.getIn_stock() - quantity);
