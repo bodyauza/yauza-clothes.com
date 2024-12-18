@@ -606,6 +606,9 @@
                 var newId = sizeIdMap[selectedSize];
                 $('input[name="id"]').val(newId);
 
+                // location.href = "/oversize/"+newId;
+                // Or:
+
                 async function sendOrder() {
                     try {
                         const response = await fetch("/size-update/"+newId, {
