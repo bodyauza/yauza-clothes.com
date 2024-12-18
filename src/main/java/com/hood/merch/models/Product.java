@@ -17,26 +17,28 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @Column
     private String name;
+
     @Column
     private String img;
+
     @Column
     private String color;
+
     @Column
     private int price;
+
     @Column
     private int quantity;
 
     @Column
-    @Version // Предотвращает потерю изменений при конкурентном доступе к данным.
+    @Version // Предотвращает потерю изменений при конкурентном доступе к данным
     private int in_stock;
 
-    // Значение поля size не будет загружено из базы в момент загрузки родительского объекта Product.
-    // Объект типа Sizes будет загружен при первом обращении к полю size.
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    @JoinColumn(name = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "size_id", nullable = false)
     private Sizes size;
 
 

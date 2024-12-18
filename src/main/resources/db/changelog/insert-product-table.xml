@@ -4,6 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd">
+
     <changeSet id="insert_product_data" author="bogda">
         <insert tableName="product">
             <column name="id" valueNumeric="1"/>
@@ -13,6 +14,7 @@
             <column name="price" valueNumeric="750"/>
             <column name="quantity" valueNumeric="1"/>
             <column name="in_stock" valueNumeric="15"/>
+            <column name="size_id" valueNumeric="1"/>
         </insert>
         <insert tableName="product">
             <column name="id" valueNumeric="2"/>
@@ -21,7 +23,8 @@
             <column name="color" value="white"/>
             <column name="price" valueNumeric="1500"/>
             <column name="quantity" valueNumeric="1"/>
-            <column name="in_stock" valueNumeric="15"/>
+            <column name="in_stock" valueNumeric="2"/>
+            <column name="size_id" valueNumeric="2"/>
         </insert>
         <insert tableName="product">
             <column name="id" valueNumeric="3"/>
@@ -31,6 +34,7 @@
             <column name="price" valueNumeric="1500"/>
             <column name="quantity" valueNumeric="1"/>
             <column name="in_stock" valueNumeric="15"/>
+            <column name="size_id" valueNumeric="3"/>
         </insert>
         <insert tableName="product">
             <column name="id" valueNumeric="4"/>
@@ -40,6 +44,7 @@
             <column name="price" valueNumeric="1500"/>
             <column name="quantity" valueNumeric="1"/>
             <column name="in_stock" valueNumeric="15"/>
+            <column name="size_id" valueNumeric="4"/>
         </insert>
         <insert tableName="product">
             <column name="id" valueNumeric="5"/>
@@ -49,6 +54,7 @@
             <column name="price" valueNumeric="1500"/>
             <column name="quantity" valueNumeric="1"/>
             <column name="in_stock" valueNumeric="15"/>
+            <column name="size_id" valueNumeric="5"/>
         </insert>
         <insert tableName="product">
             <column name="id" valueNumeric="6"/>
@@ -58,6 +64,7 @@
             <column name="price" valueNumeric="1500"/>
             <column name="quantity" valueNumeric="1"/>
             <column name="in_stock" valueNumeric="15"/>
+            <column name="size_id" valueNumeric="6"/>
         </insert>
     </changeSet>
 </databaseChangeLog>

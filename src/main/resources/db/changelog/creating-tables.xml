@@ -5,6 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd"
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+
     <changeSet id="create_order_table" author="bogda">
         <createTable tableName="order">
             <column autoIncrement="true" name="id" type="BIGINT">
@@ -21,43 +22,44 @@
             <column defaultValueComputed="NULL" name="total_price" type="INT"/>
         </createTable>
     </changeSet>
-    <changeSet id="create_product_table" author="bogda">
-        <createTable tableName="product">
-            <column name="id" type="int">
+
+    <changeSet id="create_sizes_table" author="bogda">
+        <createTable tableName="sizes">
+            <column name="id" type="BIGINT">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="name" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="img" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="color" type="varchar(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="price" type="int">
-                <constraints nullable="false"/>
-            </column>
-            <column name="quantity" type="int">
-                <constraints nullable="false"/>
-            </column>
-            <column name="in_stock" type="int">
+            <column name="size" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
 
-    <changeSet id="create_sizes_table" author="bogda">
-        <createTable tableName="sizes">
-            <column name="id" type="int">
+    <changeSet id="create_product_table" author="bogda">
+        <createTable tableName="product">
+            <column name="id" type="BIGINT">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="size" type="varchar(50)">
+            <column name="name" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="product_id" type="int">
-                <constraints unique="true" nullable="false" foreignKeyName="fk_product_sizes"
-                             references="product(id)"/>
+            <column name="img" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="color" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="in_stock" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="size_id" type="BIGINT">
+                <constraints foreignKeyName="fk_product_size"
+                             references="sizes(id)"/>
             </column>
         </createTable>
     </changeSet>
