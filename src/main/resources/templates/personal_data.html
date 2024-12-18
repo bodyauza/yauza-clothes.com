@@ -275,14 +275,14 @@
           method: 'POST',
           body: formData,
           headers: {
-            'Accept': 'application/json'
+            'Content-Type': 'application/x-www-form-urlencoded'
           }
         });
 
         if (response.ok) {
           // Обработка успешного ответа
           console.log('Заказ успешно отправлен');
-          const result = await response.json(); // Если сервер возвращает JSON
+          const result = await response; // Если сервер возвращает JSON
           console.log(result);
         } else {
           console.error('Ошибка при отправке заказа:', response.statusText);

@@ -1,6 +1,5 @@
 package com.hood.merch.controllers;
 
-
 import com.hood.merch.dto.OrderDTO;
 import com.hood.merch.dto.ProductDTO;
 import com.hood.merch.models.Order;
@@ -13,17 +12,13 @@ import jakarta.mail.MessagingException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URI;
 import java.util.*;
 
 
@@ -87,9 +82,9 @@ public class MainController {
         Product stock_check = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Товар не найден"));
 
-        ProductDTO added_item = new ProductDTO(id, name, price, size, quantity, img, color, in_stock);
+        ProductDTO added_item = new ProductDTO(id, name, price, size, quantity, img, color, stock_check.getIn_stock());
 
-        if (stock_check.getIn_stock() >= quantity) {
+        if (stock_check.getIn_stock() >= quantity && stock_check.getSize().getSize().equals(size)) {
             HttpSession session = request.getSession();
             session.setMaxInactiveInterval(-1);
 
@@ -113,7 +108,6 @@ public class MainController {
         } else {
             System.out.println("Недостаточно товара на складе для добавления в корзину.");
         }
-
         return "redirect:/cart";
     }
 
@@ -150,9 +144,9 @@ public class MainController {
         HttpSession session = request.getSession();
         String referrer = request.getHeader("referer");
         ArrayList<ProductDTO> item_in_cart = (ArrayList<ProductDTO>) session.getAttribute("cart");
+        ProductDTO added_item = new ProductDTO(id, name, price, item_size, quantity, img, color, in_stock);
 
-        if(stock_check.getIn_stock() >= quantity) {
-            ProductDTO added_item = new ProductDTO(id, name, price, item_size, quantity, img, color, in_stock);
+        if (stock_check.getIn_stock() >= quantity) {
             for (ProductDTO item : item_in_cart) {
                 if (item.equals(added_item)) {
                     item_in_cart.set(item_in_cart.indexOf(item), added_item);
@@ -161,8 +155,14 @@ public class MainController {
                 }
             }
         } else {
-            item_in_cart.removeIf(item -> item.getId() == stock_check.getId());
-            session.setAttribute("cart", item_in_cart);
+            for (ProductDTO item : item_in_cart) {
+                if (item.equals(added_item)) {
+                    added_item.setQuantity(stock_check.getIn_stock());
+                    item_in_cart.set(item_in_cart.indexOf(item), added_item);
+                    session.setAttribute("cart", item_in_cart);
+                    return "redirect:/cart";
+                }
+            }
         }
         return "redirect:/cart";
     }
@@ -278,37 +278,42 @@ public class MainController {
     @GetMapping("/scarf")
     public String scarf(Model model) {
         Product product = productRepository.findById(1).orElseThrow(() -> new RuntimeException("Товар не найден"));
-        ArrayList<Product> res = new ArrayList<>();  // зачем?
-        res.add(product);
         String size = product.getSize().getSize();
-        model.addAttribute("product", res);
+        model.addAttribute("product", Collections.singletonList(product));
         model.addAttribute("size", size);
         return "scarf";
     }
 
 
-//    @PostMapping("/oversize-size")
-//    public String oversizeSize(Model model, @RequestParam String size) {
-//        String str = "XS";
-//        if (size.equals(str)) {
-//            id = 2;
-//        }
-//        Optional<Product> products1 = productRepository.findById(id);
+//    @RequestMapping(value = "/updateSize", method = RequestMethod.POST,
+//            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+//    public String updateSize(HttpServletRequest request, Model model, @RequestParam Integer id, @RequestParam String model_name) {
+//        // Обновление размера продукта
+//        Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Товар не найден"));
+//
+//        HttpSession session = request.getSession();
+//        session.setAttribute("oversizeId", id);
+//
 //        ArrayList<Product> res = new ArrayList<>();
-//        products1.ifPresent(res::add);
-//        model.addAttribute("products1", res);
-//        return "oversize";
+//        res.add(product);
+//        model.addAttribute(model_name, res);
+//        return "redirect:/oversize";
 //    }
 
 
-    @GetMapping("/oversize")
-    public String oversize(Model model) {
-        Product product = productRepository.findById(2).orElseThrow(() -> new RuntimeException("Товар не найден"));
-        ArrayList<Product> res = new ArrayList<>();
-        res.add(product);
-        model.addAttribute("product1", res);
-        return "oversize";
-    }
+//    @GetMapping(value = "/oversize/{id}")
+//    public String oversize(Model model, @PathVariable("id") Integer id) {
+//
+//        if (id == null) {
+//            // Если ID не найден, можно вернуть ошибку или загрузить продукт по умолчанию
+//            id = 2; // Загрузка продукта по умолчанию, если ID не установлен
+//        }
+//
+//        Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Товар не найден"));
+//        model.addAttribute("product1", Collections.singletonList(product));
+//
+//        return "oversize";
+//    }
 
 
     @GetMapping("/contacts")

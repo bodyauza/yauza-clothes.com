@@ -571,9 +571,7 @@
 
     <script>
 
-        // Наличие товаров в корзине.
         $(document).ready(function () {
-
             var input = $('#not_empty_cart');
             var value = parseInt(input.val());
 
@@ -585,23 +583,54 @@
             var in_stock = $('#in_stock');
 
             if (in_stock.val() === "0") {
-                $('.btn-to_cart').css('background', '#999')
-                $('.btn-to_cart').html("Подписаться")
+                $('.btn-to_cart').css('background', '#999');
+                $('.btn-to_cart').html("Подписаться");
             }
 
-            //добавление размера
+            // Добавление размера
             $('.size').click(function () {
                 $(this).toggleClass('focus').siblings().removeClass('focus');
-                $('#item_size').val($(this).data('value'));
-            });
+                var selectedSize = $(this).data('value');
+                $('#item_size').val(selectedSize);
 
-            /*$('#size_ajx').on( "submit", function( event ) {
-                $.ajax({
-                    url: '/size',
-                    type: 'post',
-                    data: $(this).serialize()
-                })
-            });*/
+                // Изменение значения id в зависимости от выбранного размера
+                var sizeIdMap = {
+                    'XS': 2,
+                    'S': 3,
+                    'M': 4,
+                    'L': 5,
+                    'XL': 6
+                };
+
+                // Установка значения id
+                var newId = sizeIdMap[selectedSize];
+                $('input[name="id"]').val(newId);
+
+                async function sendOrder() {
+                    try {
+                        const response = await fetch("/size-update/"+newId, {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        });
+
+                        if (response.ok) {
+                            const productData = await response.json();
+                            // Обновление DOM с новыми данными о продукте
+                            $('#in_stock').val(productData.in_stock); // Обновляем значение скрытого поля in_stock
+                            $('#price').val(productData.price); // Обновляем значение скрытого поля price
+                            $('#price_display').text(productData.price);
+                            // Добавьте дополнительные обновления для других атрибутов товара
+                        } else {
+                            console.error('Ошибка при обновлении размера:', response.statusText);
+                        }
+                    } catch (error) {
+                        console.error('Ошибка сети:', error);
+                    }
+                }
+                sendOrder(); // Вызов функции отправки заказа
+            });
         });
 
     </script>
@@ -684,7 +713,7 @@
 
 <form action="/add-item" method="post">
     <div th:each="el : ${product1}">
-        <input type="hidden" name="id" th:value="${el.id}"/>
+        <input type="hidden" name="id" value=""/>
 
         <input type="hidden" name="img" th:value="${el.img}"/>
 
@@ -719,7 +748,7 @@
                     <input type="hidden" name="size" id="item_size" value=""/>
                 </div>
 
-                <h3 th:text="${el.price}"></h3>
+                <h3 id="price_display" th:text="${el.price}"></h3>
                 <input type="hidden" name="price" class="total-price" th:value="${el.price}"/>
                 <button type="submit" class="btn-to_cart">В корзину</button>
                 <input type="hidden" name="in_stock" id="in_stock" th:value="${el.in_stock}"/>
