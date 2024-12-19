@@ -537,9 +537,12 @@
     <script>
 
         $(document).ready(function() {
+
             // Проверка наличия товаров в корзине
             if ($(".previous").text().trim() === "") {
                 $('.previous').css('margin-top', '0px');
+                $('.circle').css('display', 'block');
+                $('.circle1').css('display', 'block');
             }
 
             // Инициализация общей цены

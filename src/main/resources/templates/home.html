@@ -412,12 +412,14 @@
 
     // Наличие товаров в корзине.
     $(document).ready(function () {
-      var input = $('#not_empty_cart');
-      var value = parseInt(input.val());
-      if (value > 0) {
-        $('.circle').css('display', 'block');
-        $('.circle1').css('display', 'block');
-      }
+        var input = $('#not_empty_cart');
+        var value = input.val();
+
+        // Проверяем, что value не пустое и не равно 'null'
+        if (value && value !== 'null') {
+            $('.circle').css('display', 'block');
+            $('.circle1').css('display', 'block');
+        }
     });
 
   </script>

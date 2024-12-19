@@ -573,9 +573,10 @@
 
         $(document).ready(function () {
             var input = $('#not_empty_cart');
-            var value = parseInt(input.val());
+            var value = input.val();
 
-            if (value > 0) {
+            // Проверяем, что value не пустое и не равно 'null'
+            if (value && value !== 'null') {
                 $('.circle').css('display', 'block');
                 $('.circle1').css('display', 'block');
             }
