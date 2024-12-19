@@ -612,7 +612,7 @@
                 // location.href = "/oversize/"+newId;
                 // Or:
 
-                async function sendOrder() {
+                async function gettingNewData() {
                     try {
                         const response = await fetch("/size-update/"+newId, {
                             method: 'GET',
@@ -623,11 +623,9 @@
 
                         if (response.ok) {
                             const productData = await response.json();
-                            // Обновление DOM с новыми данными о продукте
-                            $('#in_stock').val(productData.in_stock); // Обновляем значение скрытого поля in_stock
-                            $('#price').val(productData.price); // Обновляем значение скрытого поля price
+                            $('#in_stock').val(productData.in_stock);
+                            $('#price').val(productData.price);
                             $('#price_display').text(productData.price);
-                            // Добавьте дополнительные обновления для других атрибутов товара
                         } else {
                             console.error('Ошибка при обновлении размера:', response.statusText);
                         }
@@ -635,7 +633,7 @@
                         console.error('Ошибка сети:', error);
                     }
                 }
-                sendOrder(); // Вызов функции отправки заказа
+                gettingNewData();
             });
         });
 
