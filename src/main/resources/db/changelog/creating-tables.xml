@@ -6,6 +6,36 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd"
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
 
+    <changeSet id="create_users_table" author="bogda">
+        <createTable tableName="users">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="username" type="varchar(50)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="password" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(100)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!--    <changeSet id="user_registration" author="bogda">-->
+    <!--        <insert tableName="users">-->
+    <!--            <column name="id" valueNumeric="1"/>-->
+    <!--            <column name="username" value="new_user"/>-->
+    <!--            <column name="password" value="hashed_password"/> &lt;!&ndash; Убедитесь, что пароль захеширован &ndash;&gt;-->
+    <!--            <column name="email" value="new_user@example.com"/>-->
+    <!--            <column name="created_at" valueDate="${now}"/>-->
+    <!--        </insert>-->
+    <!--    </changeSet>-->
+
     <changeSet id="create_order_table" author="bogda">
         <createTable tableName="order">
             <column autoIncrement="true" name="id" type="BIGINT">

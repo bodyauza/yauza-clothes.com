@@ -29,8 +29,10 @@ public class DifferentSizesController {
 
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Товар не найден"));
+        String size = product.getSize().getSize();
 
         model.addAttribute("product1", Collections.singletonList(product));
+        model.addAttribute("size1", size);
 
         return "oversize";
     }

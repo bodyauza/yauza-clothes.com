@@ -587,6 +587,9 @@
                 $('.btn-to_cart').html("Подписаться");
             }
 
+            var selectedSizeValue = $('#item_size').val();
+            $('.size[data-value="' + selectedSizeValue + '"]').addClass('focus');
+
             // Добавление размера
             $('.size').click(function () {
                 $(this).toggleClass('focus').siblings().removeClass('focus');
@@ -748,7 +751,7 @@
 
                     <button type="button" class="size" data-value="L">L</button>
 
-                    <input type="hidden" name="size" id="item_size" value=""/>
+                    <input type="hidden" name="size" id="item_size" th:value="${size1}"/>
                 </div>
 
                 <h3 id="price_display" th:text="${el.price}"></h3>
