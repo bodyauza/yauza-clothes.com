@@ -1,8 +1,6 @@
 # yauza-clothes.com
 Интернет-магазин отечественного бренда одежды.
 
-# Yauza Clothes
-
 ## Screenshots
 
 ### Cart Page
