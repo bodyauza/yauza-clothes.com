@@ -3,26 +3,33 @@
 
 ## Screenshots
 
-### Home Site
-![Home Site](https://github.com/bodyauza/yauza-clothes.com/raw/master/home_pc.jpg)
+### Home Page
 
-### Oversize PC Site
-![Oversize PC Site](https://github.com/bodyauza/yauza-clothes.com/raw/master/oversize_pc.jpg)
+![Home Page](https://github.com/bodyauza/yauza-clothes.com/raw/master/home_pc.jpg)
 
-### Oversize Mobile Site
-![Oversize Mobile Site](https://github.com/bodyauza/yauza-clothes.com/raw/master/oversize_mobile_site.jpg)
+### Oversize PC Page
 
-### Scarf PC Site
-![Scarf PC Site](https://github.com/bodyauza/yauza-clothes.com/raw/master/scarf_pc.jpg)
+![Oversize PC Page](https://github.com/bodyauza/yauza-clothes.com/raw/master/oversize_pc.jpg)
 
-### Scarf Mobile Site
-![Scarf Mobile Site](https://github.com/bodyauza/yauza-clothes.com/raw/master/scarf_mobile_site.jpg)
+### Oversize Mobile Page
 
-### Cart Site
-![Cart Site](https://github.com/bodyauza/yauza-clothes.com/raw/master/cart_pc.jpg)
+![Oversize Mobile Page](https://github.com/bodyauza/yauza-clothes.com/raw/master/oversize_mobile_site.jpg)
 
-### Contacts Site
-![Contacts Site](https://github.com/bodyauza/yauza-clothes.com/raw/master/contacts_pc.jpg)
+### Scarf PC Page
+
+![Scarf PC Page](https://github.com/bodyauza/yauza-clothes.com/raw/master/scarf_pc.jpg)
+
+### Scarf Mobile Page
+
+![Scarf Mobile Page](https://github.com/bodyauza/yauza-clothes.com/raw/master/scarf_mobile_site.jpg)
+
+### Cart Page
+
+![Cart Page](https://github.com/bodyauza/yauza-clothes.com/raw/master/cart_pc.jpg)
+
+### Contacts Page
+
+![Contacts Page](https://github.com/bodyauza/yauza-clothes.com/raw/master/contacts_pc.jpg)
 
  ## ER-диаграмма сущностей в базе данных:
 
