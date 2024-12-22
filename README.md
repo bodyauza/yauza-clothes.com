@@ -13,7 +13,7 @@
 
 ### Oversize Mobile Page
 
-![Oversize Mobile Page](https://github.com/bodyauza/yauza-clothes.com/raw/master/oversize_mobile_site.jpg)
+![Oversize Mobile Page](https://github.com/bodyauza/yauza-clothes.com/raw/master/oversize_mobile_page.jpg)
 
 ### Scarf PC Page
 
@@ -21,7 +21,7 @@
 
 ### Scarf Mobile Page
 
-![Scarf Mobile Page](https://github.com/bodyauza/yauza-clothes.com/raw/master/scarf_mobile_site.jpg)
+![Scarf Mobile Page](https://github.com/bodyauza/yauza-clothes.com/raw/master/scarf_mobile_page.jpg)
 
 ### Cart Page
 
