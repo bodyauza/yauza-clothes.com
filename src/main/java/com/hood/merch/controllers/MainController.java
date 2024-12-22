@@ -45,13 +45,6 @@ public class MainController {
     }
 
 
-    @GetMapping("/pay")
-    public String pay(Model model) {
-        model.addAttribute("title", "Pay");
-        return "payment";
-    }
-
-
     @GetMapping("/creating-order")
     public String creatingOrder(Model model) {
         model.addAttribute("title", "Оформить заказ");
@@ -112,7 +105,7 @@ public class MainController {
     }
 
 
-    // Удаление из корзины единиц товара.
+    // Удаление товара из корзины.
     @PostMapping("/remove-item")
     public String removeItem(HttpServletRequest request, @RequestParam int id) {
         HttpSession session = request.getSession();
@@ -267,6 +260,12 @@ public class MainController {
         return "redirect:/pay";
     }
 
+    @GetMapping("/pay")
+    public String pay(Model model) {
+        model.addAttribute("title", "Pay");
+        return "payment";
+    }
+
 
     @GetMapping("/cart")
     public String cart(Model model) {
@@ -283,37 +282,6 @@ public class MainController {
         model.addAttribute("size", size);
         return "scarf";
     }
-
-
-//    @RequestMapping(value = "/updateSize", method = RequestMethod.POST,
-//            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-//    public String updateSize(HttpServletRequest request, Model model, @RequestParam Integer id, @RequestParam String model_name) {
-//        // Обновление размера продукта
-//        Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Товар не найден"));
-//
-//        HttpSession session = request.getSession();
-//        session.setAttribute("oversizeId", id);
-//
-//        ArrayList<Product> res = new ArrayList<>();
-//        res.add(product);
-//        model.addAttribute(model_name, res);
-//        return "redirect:/oversize";
-//    }
-
-
-//    @GetMapping(value = "/oversize/{id}")
-//    public String oversize(Model model, @PathVariable("id") Integer id) {
-//
-//        if (id == null) {
-//            // Если ID не найден, можно вернуть ошибку или загрузить продукт по умолчанию
-//            id = 2; // Загрузка продукта по умолчанию, если ID не установлен
-//        }
-//
-//        Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Товар не найден"));
-//        model.addAttribute("product1", Collections.singletonList(product));
-//
-//        return "oversize";
-//    }
 
 
     @GetMapping("/contacts")
