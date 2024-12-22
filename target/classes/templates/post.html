@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="UTF-8">
+
+</head>
+<body>
+
+<header style="display: block">
+    <div class="merch-container" style="text-align: center;
+            margin-top: -8px">
+        <div class="merch">
+            <img src="/logo.png" alt="">
+        </div>
+    </div>
+</header>
+
+<div class="shopping-productDTO-container">
+    <div class="shopping-productDTO" style="width: 750px; height: 423px;
+            margin: 80px auto;
+            background: #FFFFFF;
+            box-shadow: 1px 2px 3px 0px rgba(0,0,0,0.10);
+            border-radius: 6px;
+            overflow: scroll;
+            overflow-x:hidden;
+            display: flex;
+            flex-direction: column">
+        <!-- Title -->
+        <div class="title" style="height: 60px;
+            border-bottom: 1px solid #E1E8EE;
+            padding: 20px 30px;
+            color: #5E6977;
+            font-size: 18px;
+            font-weight: 400">
+            Ваш заказ
+        </div>
+
+
+        <div class="item" th:each="item : ${session.cart}" style="padding: 20px 30px;
+            height: 120px;
+            display: flex; border-top: 1px solid #E1E8EE">
+            <div class="image">
+                <img th:src="${item.img}" alt="" style="width: 100%;
+                text-align: center;
+                margin: 6px 0"/>
+            </div>
+            <div class="description" style="margin-left: 40px;
+            display: block;
+            color: #43484D;
+            font-weight: 400; width: 100%;
+                text-align: center">
+                <span th:text="${item.name}"></span>
+                <span th:text="${item.size != null} ? ${item.size}"></span>
+                <span th:text="${item.color}"></span>
+            </div>
+            <div class="quantity" style="padding-top: 20px;
+            margin-left: 400px;
+            position: absolute">
+                <input id="cart_quantity" name="quantity" style="-webkit-appearance: none;
+            border: none;
+            text-align: center;
+            width: 32px;
+            font-size: 16px;
+            color: #43484D;
+            font-weight: 300" th:value="${item.quantity}" readonly/>
+            </div>
+            <input type="number" id="price" style="position: absolute;
+            margin-left: 600px;
+            width: 83px;
+            text-align: center;
+            font-size: 16px;
+            color: #43484D;
+            font-weight: 300;
+            border: none;
+            padding-top: 30px" th:value="${item.price}" readonly/>
+        </div>
+
+        <div class="item-total" style="position: absolute;
+            margin-top: 305px;
+            padding: 20px 30px;
+            height: 120px;
+            display: flex;
+            border-bottom:  1px solid #E1E8EE">
+            <div class="total" style="font-size: 200%;
+            ">Итого: <span id="total-price" name="total_price"></span>pуб.</div>
+
+            <div class="status" style="position: absolute;
+            margin-top: 40px;
+            font-size: 200%">Статус: <span id="status"></span></div>
+        </div>
+
+    </div>
+</div>
+
+
+</body>
+</html>

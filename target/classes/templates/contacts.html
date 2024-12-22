@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title th:text="${title}"/>
+
+    <style>
+
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: normal;
+            align-items: normal;
+            background: url("/anime-back.jpg") ;
+            overflow: hidden;
+            flex-direction: column;
+        }
+
+        .support-container {
+            width: 100%;
+            height: 100%;
+            background: rgb(255 255 255 / 50%);
+            text-align: center;
+        }
+
+        .support {
+
+
+            margin-top: 250px;
+            font-family: "Poppins", sans-serif;
+            font-size: 35px;
+        }
+
+        .back {
+            position: absolute;
+            margin-left: 700px;
+            border: none;
+            width: 38px;
+            height: 37px;
+            background: url(delete-icn1.svg) no-repeat center;
+            margin-top: -635px;
+            cursor: pointer;
+        }
+
+        h1 {
+            margin-top: 30px;
+        }
+        .inn {
+            margin-top: 20px;
+            margin-left: -200px;
+        }
+        .const {
+            margin-left: -40px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="support-container">
+    <div class="support">
+        По всем возникающим вопросам, касающимся свойств и характеристик Товара,<br>
+        Покупатель может обратиться к Продавцу, посредством отправки сообщения<br>
+        менеджеру в Telegram, ВКонтакте или на почту:<br>
+        <a href="https://vk.com/">https://vk.com/</a><br>
+        <a href="https://t.me/">https://t.me/</a><br>
+        andreev@mail.ru</a><br>
+
+        <h1>ИП ФИО</h1>
+        <div class="inn">ИНН</div>
+        <div class="const">123456789012</div>
+
+    </div>
+    <button class="back" onclick="history.back();"></button>
+</div>
+
+</body>
+</html>

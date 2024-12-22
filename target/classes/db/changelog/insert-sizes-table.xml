@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd">
+    <changeSet id="insert_sizes_data" author="bogda">
+        <insert tableName="sizes">
+            <column name="id" valueNumeric="1"/>
+            <column name="size" value="OS"/>
+        </insert>
+        <insert tableName="sizes">
+            <column name="id" valueNumeric="2"/>
+            <column name="size" value="XS"/>
+        </insert>
+        <insert tableName="sizes">
+            <column name="id" valueNumeric="3"/>
+            <column name="size" value="S"/>
+        </insert>
+        <insert tableName="sizes">
+            <column name="id" valueNumeric="4"/>
+            <column name="size" value="M"/>
+        </insert>
+        <insert tableName="sizes">
+            <column name="id" valueNumeric="5"/>
+            <column name="size" value="L"/>
+        </insert>
+        <insert tableName="sizes">
+            <column name="id" valueNumeric="6"/>
+            <column name="size" value="XL"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

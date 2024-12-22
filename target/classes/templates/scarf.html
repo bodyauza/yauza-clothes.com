@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <title>Шарф SAKURA</title>
+
+  <style>
+
+      body{
+          width: 100%;
+          height: 100vh;
+          display: flex;
+          justify-content: normal;
+          align-items: normal;
+          overflow: scroll;
+          overflow-x:hidden;
+          flex-direction: column;
+          background:  #ffffff url("/header_sakur.png") no-repeat;
+
+      }
+
+      @import url('https://fonts.googleapis.com/css2?family=Nosifer&family=Pacifico&display=swap');
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+
+      .merch-container {
+          text-align: center;
+          margin-top: -8px;
+      }
+
+      .menu-container {
+          text-align: center;
+      }
+
+      .circle1 {
+          margin-top: 48px;
+          margin-left: 120px;
+          z-index: 9;
+          position: absolute;
+          display: none;
+          width: 0.5em;
+          height: 0.5em;
+          border: 4px solid red;
+          border-radius: 50%;
+          shape-inside: circle(50% at center center);
+          background: #ff1a00;
+          box-sizing: border-box;
+      }
+
+      .circle {
+          margin-top: -70px;
+          margin-left: 160px;
+          z-index: 9;
+          position: absolute;
+          display: none;
+          width: 1em;
+          height: 1em;
+          border: 2px solid red;
+          border-radius: 50%;
+          shape-inside: circle(50% at center center);
+          background: mistyrose;
+          box-sizing: border-box;
+      }
+
+      .buttonblue  {
+          margin-top: -50px;
+          top: 50%;
+          left: 50%;
+          border: none;
+          transform: translate(-50%, -50%);
+          padding: 10px 40px;
+          cursor: pointer;
+          border-radius: 10px;
+          margin-left: 120px;
+          font-family: 'Pacifico', cursive;
+          font-size: 2em;
+          color: white;
+          text-decoration: none;
+          background: #deaca5;
+          border-bottom: 5px solid #2980B9;
+          text-shadow: 0px -2px gray;
+      }
+
+      .buttonblue:active
+      {
+          border-bottom: 1px solid;
+      }
+      /* Dropdown button on hover & focus */
+      .buttonblue:hover, .buttonblue:focus {
+          background-color: #2980B9;
+      }
+
+      /* The container <div> - needed to position the dropdown content */
+      .dropdown {
+          font-family: "Poppins", sans-serif;
+          position: relative;
+          display: inline-block;
+      }
+
+      @media (max-width: 1000px) {
+
+          body {
+              background: url("/back_mob2.jpg") no-repeat;
+          }
+      }
+
+
+      /* Dropdown Content (Hidden by Default) */
+      .dropdown-content {
+          display: none;
+          position: absolute;
+          background-color: #f1f1f1;
+          min-width: 160px;
+          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+          z-index: 1;
+          margin-left: 60px;
+      }
+
+      /* Links inside the dropdown */
+      .dropdown-content a {
+          color: black;
+          padding: 12px 16px;
+          text-decoration: none;
+          display: block;
+      }
+
+      /* Change color of dropdown links on hover */
+      .dropdown-content a:hover {background-color: #ddd}
+
+      /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+      .show {
+          display: block;
+      }
+
+    .btn-to_cart{
+      width: 67%;
+      background: #deaca5;
+      padding: 10px;
+      display: inline-block;
+      outline: 0;
+      border: 0;
+      margin: -1px;
+      border-radius: 2px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #F5F5F5;
+      cursor: pointer;
+    }
+
+
+    .img-container {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      width: 900px;
+      height: 600px;
+      background: #fff;
+      margin-left: 400px;
+    }
+
+    .app {
+        margin-left: 250px;
+        margin-top: 10px;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+
+    .details-container {
+      position: absolute;
+      margin-top: -590px;
+      margin-left: 950px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+        width: 900px;
+        height: 600px;
+      box-sizing: border-box;
+      padding: 40px;
+    }
+
+    .details-container h2{
+      margin: 0;
+      padding: 0;
+      font-size: 2.4em;
+      line-height: 1em;
+      color: #444;
+    }
+
+    .details-container h2 span {
+      font-size: 0.4em;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #999;
+    }
+
+    .details-container p {
+      max-width: 85%;
+      color: #333;
+      font-size: 20px;
+      margin-bottom: 36px;
+    }
+
+    .details-container h3 {
+      font-size: 2.5em;
+      color: #a2a2a2;
+    }
+
+    /* responsive */
+    @media (max-width: 1000px) {
+        .details-container {
+            height: auto;
+        }
+
+        .buttonblue {
+            font-size: 2.5em;
+        }
+
+        .btn-to_cart {
+            height: 65px;
+            width: 500px;
+            font-size: 20px;
+            background: #deaca5;
+            padding: 10px;
+            display: inline-block;
+            outline: 0;
+            border: 0;
+            margin: -1px;
+            border-radius: 2px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #F5F5F5;
+            cursor: pointer;
+        }
+
+        .details-container {
+            margin-left: -10px;
+            margin-top: 80px;
+            width: 100% !important;
+            height: auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .img-container {
+            left: initial;
+            max-width: 200px;
+            transform: rotate(0deg);
+            justify-content: center;
+            margin-left: 260px;
+        }
+
+        .details-container {
+            width: 100% !important;
+            height: auto;
+            padding: 20px;
+        }
+
+        .details-container h2 {
+            margin: 0;
+            padding: 0;
+            font-size: 10.4em;
+            line-height: 1em;
+            color: #444;
+        }
+
+        .details-container h3 {
+            font-size: 5.5em;
+            color: #a2a2a2;
+        }
+
+        .details-container p {
+            margin-left: 0;
+            max-width: 100%;
+            font-size: 50px;
+        }
+    }
+
+
+        .cardList__btn {
+            border: none;
+            cursor: pointer;
+            background: none;
+        }
+
+        .cardList__btn:focus {
+            outline: none;
+            border: none;
+        }
+
+        .app {
+            position: relative;
+            margin-top: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .app__bg {
+            position: absolute;
+        }
+
+        .app__bg__image {
+            position: absolute;
+        }
+
+        .app__bg__image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .app__bg__image.current--image {
+            opacity: 1;
+            --image-translate-offset: 0;
+        }
+
+        .app__bg__image.previous--image, .app__bg__image.next--image {
+            opacity: 0;
+        }
+
+        .app__bg__image.previous--image {
+            --image-translate-offset: -25%;
+        }
+
+        .app__bg__image.next--image {
+            --image-translate-offset: 25%;
+        }
+
+        .cardList {
+            position: absolute;
+            width: calc(3 * var(--card-width));
+            height: auto;
+        }
+
+        .cardList__btn {
+            --btn-size: 65px;
+            width: var(--btn-size);
+            height: var(--btn-size);
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            background: lightgray;
+        }
+
+        .cardList__btn.btn--left {
+            left: -5%;
+        }
+
+        .cardList__btn.btn--right {
+            right: -5%;
+        }
+
+        .cardList__btn .icon {
+            width: 100%;
+            height: 100%;
+        }
+
+        .cardList__btn .icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .cardList .cards__wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            perspective: 1000px;
+        }
+
+        .card {
+            --card-translateY-offset: 0%;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) translateX(var(--card-translateX-offset)) translateY(var(--card-translateY-offset)) rotateY(var(--card-rotation-offset)) scale(var(--card-scale-offset));
+            display: inline-block;
+            width: var(--card-width);
+            height: var(--card-height);
+            transition: transform var(--card-transition-duration) var(--card-transition-easing);
+            user-select: none;
+        }
+
+        .card__image {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .card__image img {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card.current--card {
+            --current-card-rotation-offset: 0;
+            --card-translateX-offset: 0;
+            --card-rotation-offset: var(--current-card-rotation-offset);
+            --card-scale-offset: 1.2;
+            --opacity: 0.8;
+            width: 700px;
+            height: 700px;
+        }
+
+        .card.previous--card {
+            --card-translateX-offset: calc(-1 * var(--card-width) * 1.1);
+            --card-rotation-offset: 25deg;
+            width: 700px;
+            height: 700px;
+            display: none;
+        }
+
+        .card.next--card {
+            --card-translateX-offset: calc(var(--card-width) * 1.1);
+            --card-rotation-offset: -25deg;
+            width: 700px;
+            height: 700px;
+            display: none;
+        }
+
+        .card.previous--card, .card.next--card {
+            --card-scale-offset: 0.9;
+            --opacity: 0.4;
+        }
+
+        .infoList {
+            position: absolute;
+            width: calc(3 * var(--card-width));
+            height: var(--card-height);
+            pointer-events: none;
+        }
+
+        .infoList .info__wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-end;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+        }
+
+        .info {
+            margin-bottom: calc(var(--card-height) / 8);
+            margin-left: calc(var(--card-width) / 1.5);
+            transform: translateZ(2rem);
+            transition: transform var(--card-transition-duration) var(--card-transition-easing);
+        }
+
+        .info .text {
+            position: relative;
+            font-family: "Montserrat";
+            font-size: calc(var(--card-width) * var(--text-size-offset, 0.2));
+            white-space: nowrap;
+            color: #fff;
+            width: fit-content;
+            text-shadow: black 0 0 4px;
+        }
+
+        .info .name,
+        .info .location {
+            text-transform: uppercase;
+        }
+
+        .info .location {
+            font-weight: 800;
+        }
+
+        .info .location {
+            --mg-left: 70px;
+            --text-size-offset: 0.12;
+            font-weight: 600;
+            margin-left: var(--mg-left);
+            margin-bottom: calc(var(--mg-left) / 2);
+            padding-bottom: 0.8rem;
+        }
+
+        .info .description {
+            --text-size-offset: 0.065;
+            font-weight: 500;
+        }
+
+        .info.current--info {
+            opacity: 1;
+            display: block;
+        }
+
+        .info.previous--info, .info.next--info {
+            opacity: 0;
+            display: none;
+        }
+
+      @media only screen and (min-width: 800px) {
+          :root {
+              --card-width: 250px;
+              --card-height: 400px;
+          }
+      }
+
+  </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+    <script>
+        /* When the user clicks on the button,
+    toggle between hiding and showing the dropdown content */
+        function myFunction() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        // Close the dropdown menu if the user clicks outside of it
+        window.onclick = function(event) {
+            if (!event.target.matches('.buttonblue')) {
+
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+
+        //наличие товаров в корзине
+        $(document).ready(function () {
+            var input = $('#not_empty_cart');
+            var value = input.val();
+
+            // Проверяем, что value не пустое и не равно 'null'
+            if (value && value !== 'null') {
+                $('.circle').css('display', 'block');
+                $('.circle1').css('display', 'block');
+            }
+
+            var in_stock = $('#in_stock');
+            if (in_stock.val() === "0") {
+                $('.btn-to_cart').css('background', '#999')
+                $('.btn-to_cart').html("Подписаться")
+            }
+
+        });
+
+    </script>
+
+</head>
+
+<body>
+
+<header th:insert="~{/header :: header}"></header>
+
+<input type="hidden" id="not_empty_cart" th:value="${session.cart != null} ? ${session.cart}">
+
+<div class="img-container">
+
+    <div class="app">
+    <div class="cardList">
+        <button class="cardList__btn btn btn--left" style="opacity: 1; pointer-events: all;">
+            <div class="icon">
+                <svg>
+                    <use xlink:href="#arrow-left"></use>
+                </svg>
+            </div>
+        </button>
+
+        <div class="cards__wrapper">
+            <div class="card current--card" style="--card-translateY-offset:0%; --current-card-rotation-offset:0;">
+                <div class="card__image">
+                    <img src="/scarf.png" alt="">
+                </div>
+            </div>
+
+
+            <div class="card next--card" style="--card-translateY-offset:0%;">
+                <div class="card__image">
+                    <img src="/Футболка1.jpg" alt="">
+                </div>
+            </div>
+
+            <div class="card previous--card" style="--card-translateY-offset:0%;">
+                <div class="card__image">
+                    <img src="/oversize.png" alt="">
+                </div>
+            </div>
+        </div>
+
+        <button class="cardList__btn btn btn--right" style="opacity: 1; pointer-events: all;">
+            <div class="icon">
+                <svg>
+                    <use xlink:href="#arrow-right"></use>
+                </svg>
+            </div>
+        </button>
+    </div>
+
+        <div class="infoList">
+            <div class="info__wrapper">
+                <div class="info current--info" style="transform: translate3d(0px, 0px, 32px);">
+                    <h4 class="text location" style="opacity: 1; transform: translate(0px, 0px);"></h4>
+                </div>
+
+                <div class="info next--info">
+                    <h4 class="text location"></h4>
+                </div>
+
+                <div class="info previous--info">
+                    <h4 class="text location"></h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="app__bg">
+            <div class="app__bg__image current--image">
+            </div>
+            <div class="app__bg__image next--image">
+            </div>
+            <div class="app__bg__image previous--image">
+            </div>
+        </div>
+</div>
+</div>
+
+
+<svg class="icons" style="display: none;">
+    <symbol id="arrow-left" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <polyline points="328 112 184 256 328 400" style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:48px"></polyline>
+    </symbol>
+    <symbol id="arrow-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <polyline points="184 112 328 256 184 400" style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:48px"></polyline>
+    </symbol>
+</svg>
+</div>
+
+  <form action="/add-item" method="post">
+      <div th:each="el : ${product}">
+          <input type="hidden" name="id" th:value="${el.id}"/>
+
+          <input type="hidden" name="img" th:value="${el.img}"/>
+
+            <div class="details-container">
+        <div class="details">
+            <input type="hidden" name="name" th:value="${el.name}" class="hid_name" readonly/>
+            <h2><br>
+              <span>Sakura</span>
+            </h2>
+            <p>
+              Шарф цвета весенней сакуры.<br>
+                Хлопок - 50%<br>
+                Акрил - 50%
+            </p>
+
+            <input type="hidden" name="color" th:value="${el.color}"/>
+            <p class="product-colors">
+              <span class="color">
+                  <svg width="50px" height="50px" viewBox="0 0 72 72" id="emoji" xmlns="http://www.w3.org/2000/svg">
+                       <a href="/scarf">
+             <g id="color">
+             <circle cx="36" cy="36.0001" r="28" fill="#deaca5"/>
+             </g>
+             <g id="line">
+             <circle cx="36" cy="36.0001" r="28" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="2"/>
+             </g>
+                       </a>
+                  </svg>
+              </span>
+
+                <span class="black">
+                  <svg width="50px" height="50px" viewBox="0 0 72 72" id="emoji1" xmlns="http://www.w3.org/2000/svg">
+             <g id="color">
+             <circle cx="36" cy="36.0001" r="28" fill="#000000"/>
+             </g>
+             <g id="line">
+             <circle cx="36" cy="36.0001" r="28" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="2"/>
+             </g>
+                  </svg>
+              </span>
+            </p>
+            <input class="quantity_range" name="quantity" type="hidden" th:value="${el.quantity}"/>
+
+            <h3 th:text="${el.price}"></h3>
+            <input type="hidden" name="price" class="price" th:value="${el.price}"/>
+            <button type="submit" class="btn-to_cart">В корзину</button>
+            <input type="hidden" name="in_stock" id="in_stock" th:value="${el.in_stock}"/>
+          </div>
+        </div>
+      </div>
+      <input class="item_size" id="item_size" name="size" type="hidden" th:value="${size}"/>
+  </form>
+
+<script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-2c7831bb44f98c1391d6a4ffda0e1fd302503391ca806e7fcc7b9b87197aec26.js"></script>
+
+<script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.3.3/gsap.min.js"></script>
+<script>
+
+    const { gsap, imagesLoaded } = window;
+
+    const buttons = {
+        prev: document.querySelector(".btn--left"),
+        next: document.querySelector(".btn--right") };
+
+    const cardsContainerEl = document.querySelector(".cards__wrapper");
+    const appBgContainerEl = document.querySelector(".app__bg");
+
+    const cardInfosContainerEl = document.querySelector(".info__wrapper");
+
+    buttons.next.addEventListener("click", () => swapCards("right"));
+
+    buttons.prev.addEventListener("click", () => swapCards("left"));
+
+    function swapCards(direction) {
+        const currentCardEl = cardsContainerEl.querySelector(".current--card");
+        const previousCardEl = cardsContainerEl.querySelector(".previous--card");
+        const nextCardEl = cardsContainerEl.querySelector(".next--card");
+
+        const currentBgImageEl = appBgContainerEl.querySelector(".current--image");
+        const previousBgImageEl = appBgContainerEl.querySelector(".previous--image");
+        const nextBgImageEl = appBgContainerEl.querySelector(".next--image");
+
+        changeInfo(direction);
+        swapCardsClass();
+
+        removeCardEvents(currentCardEl);
+
+        function swapCardsClass() {
+            currentCardEl.classList.remove("current--card");
+            previousCardEl.classList.remove("previous--card");
+            nextCardEl.classList.remove("next--card");
+
+            currentBgImageEl.classList.remove("current--image");
+            previousBgImageEl.classList.remove("previous--image");
+            nextBgImageEl.classList.remove("next--image");
+
+            currentCardEl.style.zIndex = "50";
+            currentBgImageEl.style.zIndex = "-2";
+
+            if (direction === "right") {
+                previousCardEl.style.zIndex = "20";
+                nextCardEl.style.zIndex = "30";
+
+                nextBgImageEl.style.zIndex = "-1";
+
+                currentCardEl.classList.add("previous--card");
+                previousCardEl.classList.add("next--card");
+                nextCardEl.classList.add("current--card");
+
+                currentBgImageEl.classList.add("previous--image");
+                previousBgImageEl.classList.add("next--image");
+                nextBgImageEl.classList.add("current--image");
+            } else if (direction === "left") {
+                previousCardEl.style.zIndex = "30";
+                nextCardEl.style.zIndex = "20";
+
+                previousBgImageEl.style.zIndex = "-1";
+
+                currentCardEl.classList.add("next--card");
+                previousCardEl.classList.add("current--card");
+                nextCardEl.classList.add("previous--card");
+
+                currentBgImageEl.classList.add("next--image");
+                previousBgImageEl.classList.add("current--image");
+                nextBgImageEl.classList.add("previous--image");
+            }
+        }
+    }
+
+    function changeInfo(direction) {
+        let currentInfoEl = cardInfosContainerEl.querySelector(".current--info");
+        let previousInfoEl = cardInfosContainerEl.querySelector(".previous--info");
+        let nextInfoEl = cardInfosContainerEl.querySelector(".next--info");
+
+        gsap.timeline().
+        to([buttons.prev, buttons.next], {
+            duration: 0.2,
+            opacity: 0.5,
+            pointerEvents: "none" }).
+
+        to(
+            currentInfoEl.querySelectorAll(".text"),
+            {
+                duration: 0.4,
+                stagger: 0.1,
+                translateY: "-120px",
+                opacity: 0 },
+
+            "-=").
+
+        call(() => {
+            swapInfosClass(direction);
+        }).
+        call(() => initCardEvents()).
+        fromTo(
+            direction === "right" ?
+                nextInfoEl.querySelectorAll(".text") :
+                previousInfoEl.querySelectorAll(".text"),
+            {
+                opacity: 0,
+                translateY: "40px" },
+
+            {
+                duration: 0.4,
+                stagger: 0.1,
+                translateY: "0px",
+                opacity: 1 }).
+
+
+        to([buttons.prev, buttons.next], {
+            duration: 0.2,
+            opacity: 1,
+            pointerEvents: "all" });
+
+
+        function swapInfosClass() {
+            currentInfoEl.classList.remove("current--info");
+            previousInfoEl.classList.remove("previous--info");
+            nextInfoEl.classList.remove("next--info");
+
+            if (direction === "right") {
+                currentInfoEl.classList.add("previous--info");
+                nextInfoEl.classList.add("current--info");
+                previousInfoEl.classList.add("next--info");
+            } else if (direction === "left") {
+                currentInfoEl.classList.add("next--info");
+                nextInfoEl.classList.add("previous--info");
+                previousInfoEl.classList.add("current--info");
+            }
+        }
+    }
+
+    function updateCard(e) {
+        const card = e.currentTarget;
+        const box = card.getBoundingClientRect();
+        const centerPosition = {
+            x: box.left + box.width / 2,
+            y: box.top + box.height / 2 };
+    }
+
+    function resetCardTransforms(e) {
+        const card = e.currentTarget;
+        const currentInfoEl = cardInfosContainerEl.querySelector(".current--info");
+        gsap.set(card, {
+            "--current-card-rotation-offset": 0 });
+
+        gsap.set(currentInfoEl, {
+            rotateY: 0 });
+
+    }
+
+    function initCardEvents() {
+        const currentCardEl = cardsContainerEl.querySelector(".current--card");
+        currentCardEl.addEventListener("pointermove", updateCard);
+        currentCardEl.addEventListener("pointerout", e => {
+            resetCardTransforms(e);
+        });
+    }
+
+    initCardEvents();
+
+    function removeCardEvents(card) {
+        card.removeEventListener("pointermove", updateCard);
+    }
+
+</script>
+
+</body>
+
+</html>

@@ -1,6 +1,36 @@
 # yauza-clothes.com
 Интернет-магазин отечественного бренда одежды.
 
+## Screenshots
+
+### Home Page
+
+![Home Page](https://github.com/bodyauza/yauza-clothes.com/raw/master/home_pc.jpg)
+
+### Oversize PC Page
+
+![Oversize PC Page](https://github.com/bodyauza/yauza-clothes.com/raw/master/oversize_pc.jpg)
+
+### Oversize Mobile Page
+
+![Oversize Mobile Page](https://github.com/bodyauza/yauza-clothes.com/raw/master/oversize_mobile_site.jpg)
+
+### Scarf PC Page
+
+![Scarf PC Page](https://github.com/bodyauza/yauza-clothes.com/raw/master/scarf_pc.jpg)
+
+### Scarf Mobile Page
+
+![Scarf Mobile Page](https://github.com/bodyauza/yauza-clothes.com/raw/master/scarf_mobile_site.jpg)
+
+### Cart Page
+
+![Cart Page](https://github.com/bodyauza/yauza-clothes.com/raw/master/cart_pc.jpg)
+
+### Contacts Page
+
+![Contacts Page](https://github.com/bodyauza/yauza-clothes.com/raw/master/contacts_pc.jpg)
+
  ## ER-диаграмма сущностей в базе данных:
 
    ```mermaid
