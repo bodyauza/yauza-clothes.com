@@ -513,13 +513,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
     <script>
-        /* When the user clicks on the button,
-    toggle between hiding and showing the dropdown content */
+
         function myFunction() {
             document.getElementById("myDropdown").classList.toggle("show");
         }
 
-        // Close the dropdown menu if the user clicks outside of it
         window.onclick = function(event) {
             if (!event.target.matches('.buttonblue')) {
 
@@ -534,12 +532,11 @@
             }
         }
 
-        //наличие товаров в корзине
+        // Наличие товаров в корзине
         $(document).ready(function () {
             var input = $('#not_empty_cart');
             var value = input.val();
 
-            // Проверяем, что value не пустое и не равно 'null'
             if (value && value !== 'null') {
                 $('.circle').css('display', 'block');
                 $('.circle1').css('display', 'block');
