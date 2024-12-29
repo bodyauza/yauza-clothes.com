@@ -515,7 +515,6 @@
             document.getElementById("myDropdown").classList.toggle("show");
         }
 
-        // Close the dropdown menu if the user clicks outside of it
         window.onclick = function(event) {
             if (!event.target.matches('.buttonblue')) {
 
@@ -548,14 +547,14 @@
             // Инициализация общей цены
             calculateTotalPrice();
 
-            const items = $('.item'); // Используем jQuery для выбора элементов
+            const items = $('.item');
 
             items.each(function() {
                 const item = $(this);
                 const plusButton = item.find('.plus-btn');
                 const minusButton = item.find('.minus-btn');
                 const quantityInput = item.find('.item_quantity');
-                const priceInput = item.find('input[name="price"]'); // Получаем цену из скрытого поля
+                const priceInput = item.find('input[name="price"]');
                 const inStockInput = item.find('input[name="in_stock"]');
 
                 if (plusButton.length && minusButton.length && quantityInput.length) {
@@ -601,11 +600,11 @@
                 const items = document.querySelectorAll('.item');
 
                 items.forEach(item => {
-                    const price = parseFloat(item.querySelector('input[name="price"]').value); // Получаем цену из скрытого поля
+                    const price = parseFloat(item.querySelector('input[name="price"]').value);
                     const quantity = parseInt(item.querySelector('.item_quantity').value);
 
                     if (!isNaN(price) && !isNaN(quantity)) { // Проверяем, что цена и количество корректные числа
-                        totalPrice += price * quantity; // Суммируем цены
+                        totalPrice += price * quantity;
                     }
                 });
 

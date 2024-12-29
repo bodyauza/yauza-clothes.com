@@ -5,33 +5,21 @@
 
 ### Home Page
 
-![Home Page](https://github.com/bodyauza/yauza-clothes.com/raw/master/home_pc.jpg)
+![Home Page](https://github.com/bodyauza/yauza-clothes.com/raw/master/home_page.png)
 
-### Oversize PC Page
+### Oversize Page
 
-![Oversize PC Page](https://github.com/bodyauza/yauza-clothes.com/raw/master/oversize_pc.jpg)
-
-### Oversize Mobile Page
-
-![Oversize Mobile Page](https://github.com/bodyauza/yauza-clothes.com/raw/master/oversize_mobile_site.jpg)
-
-### Scarf PC Page
-
-![Scarf PC Page](https://github.com/bodyauza/yauza-clothes.com/raw/master/scarf_pc.jpg)
-
-### Scarf Mobile Page
-
-![Scarf Mobile Page](https://github.com/bodyauza/yauza-clothes.com/raw/master/scarf_mobile_site.jpg)
+![Oversize Page](https://github.com/bodyauza/yauza-clothes.com/raw/master/oversize_page.png)
 
 ### Cart Page
 
-![Cart Page](https://github.com/bodyauza/yauza-clothes.com/raw/master/cart_pc.jpg)
+![Cart Page](https://github.com/bodyauza/yauza-clothes.com/raw/master/cart_page.png)
 
 ### Contacts Page
 
-![Contacts Page](https://github.com/bodyauza/yauza-clothes.com/raw/master/contacts_pc.jpg)
+![Contacts Page](https://github.com/bodyauza/yauza-clothes.com/raw/master/contacts_page.png)
 
- ## ER-диаграмма сущностей в базе данных:
+## ER-диаграмма сущностей в базе данных:
 
    ```mermaid
    erDiagram
