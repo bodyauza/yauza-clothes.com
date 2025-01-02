@@ -12,7 +12,6 @@
         </preConditions>
         <sql endDelimiter=";" splitStatements="true" stripComments="true">
             CREATE USER 'user'@'localhost' IDENTIFIED BY 'password';
-            GRANT SELECT, INSERT, UPDATE ON *.* TO 'user'@'localhost';
         </sql>
     </changeSet>
 

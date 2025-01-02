@@ -19,7 +19,7 @@
 
 ![Contacts Page](https://github.com/bodyauza/yauza-clothes.com/raw/master/contacts_page.png)
 
-## ER-диаграмма сущностей в базе данных:
+## ER-diagram of entities in the database:
 
    ```mermaid
    erDiagram
@@ -54,3 +54,18 @@
 
     PRODUCT ||--o{ SIZES : "has"
    ```
+
+## Local development
+
+For local development and testing, open the file "creating-tables.xml" and create a new user:
+
+CREATE USER 'user'@'localhost' IDENTIFIED BY 'password';
+
+Duplicate the name and password in the "application.properties" file:
+
+spring.datasource.username=...
+spring.datasource.password=...
+
+When the program starts, migration occurs to the "yauza_clothes_db" database.
+
+## Technological stack
