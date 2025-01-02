@@ -6,54 +6,62 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd"
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
 
-    <changeSet id="create_users_table" author="bogda">
-        <createTable tableName="users">
-            <column name="id" type="BIGINT">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="username" type="varchar(50)">
-                <constraints unique="true" nullable="false"/>
-            </column>
-            <column name="password" type="varchar(100)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="email" type="varchar(100)">
-                <constraints unique="true" nullable="false"/>
-            </column>
-            <column name="created_at" type="timestamp">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
+    <changeSet id="create_user" author="bogda">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">SELECT EXISTS(SELECT 1 FROM mysql.user WHERE user = 'user')</sqlCheck>
+        </preConditions>
+        <sql endDelimiter=";" splitStatements="true" stripComments="true">
+            CREATE USER 'user'@'localhost' IDENTIFIED BY 'password';
+            GRANT SELECT, INSERT, UPDATE ON *.* TO 'user'@'localhost';
+        </sql>
     </changeSet>
 
-    <!--    <changeSet id="user_registration" author="bogda">-->
-    <!--        <insert tableName="users">-->
-    <!--            <column name="id" valueNumeric="1"/>-->
-    <!--            <column name="username" value="new_user"/>-->
-    <!--            <column name="password" value="hashed_password"/> &lt;!&ndash; Убедитесь, что пароль захеширован &ndash;&gt;-->
-    <!--            <column name="email" value="new_user@example.com"/>-->
-    <!--            <column name="created_at" valueDate="${now}"/>-->
-    <!--        </insert>-->
-    <!--    </changeSet>-->
-
     <changeSet id="create_order_table" author="bogda">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="order"/>
+            </not>
+        </preConditions>
         <createTable tableName="order">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="fio" type="VARCHAR(255)"/>
-            <column name="email" type="VARCHAR(255)"/>
-            <column name="tel" type="VARCHAR(255)"/>
-            <column name="address" type="VARCHAR(255)"/>
-            <column defaultValueComputed="NULL" name="date" type="datetime"/>
-            <column name="post" type="VARCHAR(255)"/>
-            <column name="products" type="VARCHAR(255)"/>
-            <column name="status" type="VARCHAR(255)"/>
-            <column defaultValueComputed="NULL" name="total_price" type="INT"/>
+            <column name="fio" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tel" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="post" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="products" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total_price" type="INT">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 
     <changeSet id="create_sizes_table" author="bogda">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="sizes"/>
+            </not>
+        </preConditions>
         <createTable tableName="sizes">
             <column name="id" type="BIGINT">
                 <constraints primaryKey="true" nullable="false"/>
@@ -65,6 +73,11 @@
     </changeSet>
 
     <changeSet id="create_product_table" author="bogda">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="product"/>
+            </not>
+        </preConditions>
         <createTable tableName="product">
             <column name="id" type="BIGINT">
                 <constraints primaryKey="true" nullable="false"/>
@@ -92,6 +105,60 @@
                              references="sizes(id)"/>
             </column>
         </createTable>
+    </changeSet>
+
+    <changeSet id="create_person_and_roles_tables" author="bogda">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="person"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="person">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="login" type="varchar(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="email" type="varchar(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone" type="varchar(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="first_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="roles"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="roles">
+            <column name="person_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="roles"
+                baseColumnNames="person_id"
+                referencedTableName="person"
+                referencedColumnNames="id"
+                constraintName="fk_person_roles"/>
     </changeSet>
 
 </databaseChangeLog>

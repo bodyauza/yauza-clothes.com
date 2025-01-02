@@ -14,22 +14,22 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column
+    @Column(nullable = false)
     private String name;
 
-    @Column
+    @Column(nullable = false)
     private String img;
 
-    @Column
+    @Column(nullable = false)
     private String color;
 
-    @Column
+    @Column(nullable = false)
     private int price;
 
-    @Column
+    @Column(nullable = false)
     private int quantity;
 
-    @Column
+    @Column(nullable = false)
     @Version // Предотвращает потерю изменений при конкурентном доступе к данным
     private int in_stock;
 

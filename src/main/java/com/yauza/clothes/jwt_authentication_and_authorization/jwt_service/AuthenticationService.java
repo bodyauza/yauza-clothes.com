@@ -8,7 +8,9 @@ import com.yauza.clothes.jwt_authentication_and_authorization.exception.AuthExce
 import io.jsonwebtoken.Claims;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -18,15 +20,16 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AuthenticationService {
 
-    private final UserService userService;
+    @Autowired
+    private UserRepository userRepository;
     // Хранилище refresh токенов каждого пользователя.
     private final Map<String, String> refreshStorage = new HashMap<>();
     private final JwtProvider jwtProvider;
 
     public JwtResponse login(@NonNull JwtRequest authRequest) {
-        final User user = userService.getByLogin(authRequest.getLogin())
+        final User user = userRepository.findByLogin(authRequest.getLogin())
                 .orElseThrow(() -> new AuthException("Пользователь не найден"));
-        if (user.getPassword().equals(authRequest.getPassword())) {
+        if (new BCryptPasswordEncoder().matches(authRequest.getPassword(), user.getPassword())) {
             final String accessToken = jwtProvider.generateAccessToken(user);
             final String refreshToken = jwtProvider.generateRefreshToken(user);
             refreshStorage.put(user.getLogin(), refreshToken);
@@ -42,7 +45,7 @@ public class AuthenticationService {
             final String login = claims.getSubject();
             final String saveRefreshToken = refreshStorage.get(login);
             if (saveRefreshToken != null && saveRefreshToken.equals(refreshToken)) {
-                final User user = userService.getByLogin(login)
+                final User user = userRepository.findByLogin(login)
                         .orElseThrow(() -> new AuthException("Пользователь не найден"));
                 final String accessToken = jwtProvider.generateAccessToken(user);
                 return new JwtResponse(accessToken, null);
@@ -57,7 +60,7 @@ public class AuthenticationService {
             final String login = claims.getSubject();
             final String saveRefreshToken = refreshStorage.get(login);
             if (saveRefreshToken != null && saveRefreshToken.equals(refreshToken)) {
-                final User user = userService.getByLogin(login)
+                final User user = userRepository.findByLogin(login)
                         .orElseThrow(() -> new AuthException("Пользователь не найден"));
                 final String accessToken = jwtProvider.generateAccessToken(user);
                 final String newRefreshToken = jwtProvider.generateRefreshToken(user);

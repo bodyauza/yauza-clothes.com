@@ -18,7 +18,7 @@ public class Sizes {
     @OneToMany(mappedBy = "size", cascade = CascadeType.ALL)
     private List<Product> products;
 
-    @Column
+    @Column(nullable = false)
     private String size;
 
     public Sizes() {

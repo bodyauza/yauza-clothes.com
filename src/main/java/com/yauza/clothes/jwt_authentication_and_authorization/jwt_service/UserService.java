@@ -4,6 +4,8 @@ import com.yauza.clothes.jwt_authentication_and_authorization.domain.Role;
 import com.yauza.clothes.jwt_authentication_and_authorization.domain.User;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -14,19 +16,20 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final List<User> users;
+    @Autowired
+    private UserRepository userRepository;
 
-    public UserService() {
-        this.users = List.of(
-                new User("anton", "1234", "Антон", "Иванов", Collections.singleton(Role.USER)),
-                new User("ivan", "12345", "Сергей", "Петров", Collections.singleton(Role.ADMIN))
-        );
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    public User registration(String login, String email, String password, String phone, String firstName, String lastName) {
+        User user = new User();
+        user.setLogin(login);
+        user.setEmail(email);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setPhone(phone);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setRoles(Collections.singleton(Role.USER));
+        return userRepository.save(user);
     }
-
-    public Optional<User> getByLogin(@NonNull String login) {
-        return users.stream()
-                .filter(user -> login.equals(user.getLogin()))
-                .findFirst();
-    }
-
 }

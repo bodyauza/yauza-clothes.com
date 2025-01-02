@@ -18,23 +18,23 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column
+    @Column(nullable = false)
     private String FIO;
-    @Column
+    @Column(nullable = false)
     private String email;
-    @Column
+    @Column(nullable = false)
     private String tel;
-    @Column
+    @Column(nullable = false)
     private String post;
-    @Column
+    @Column(nullable = false)
     private String address;
-    @Column
+    @Column(nullable = false)
     private String products;
-    @Column
+    @Column(nullable = false)
     private String status;
-    @Column
+    @Column(nullable = false)
     private int total_price;
-    @Column
+    @Column(nullable = false)
     private Date date;
 
     public Order(String products, String FIO, String email, String tel, String post, String address, String status, int total_price, Date date) {
