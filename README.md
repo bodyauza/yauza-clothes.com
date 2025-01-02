@@ -57,14 +57,18 @@
 
 ## Local development
 
-For local development and testing, open the file "creating-tables.xml" and create a new user:
+For local development and testing, open the file `creating-tables.xml` and create a new user:
 
-CREATE USER 'user'@'localhost' IDENTIFIED BY 'password';
+```sql
+    CREATE USER 'user'@'localhost' IDENTIFIED BY 'password';
+```
 
-Duplicate the name and password in the "application.properties" file:
+Duplicate the name and password in the `application.properties` file:
 
-spring.datasource.username=...
+```properties
+    spring.datasource.username=...
 spring.datasource.password=...
+```
 
 When the program starts, migration occurs to the "yauza_clothes_db" database.
 
