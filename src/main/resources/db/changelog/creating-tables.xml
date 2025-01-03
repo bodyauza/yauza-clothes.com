@@ -137,12 +137,6 @@
             </column>
         </createTable>
 
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <tableExists tableName="roles"/>
-            </not>
-        </preConditions>
-
         <createTable tableName="roles">
             <column name="person_id" type="bigint">
                 <constraints nullable="false"/>

@@ -1,0 +1,37 @@
+services:
+  mysql:
+    image: mysql:9.1.0
+    restart: "no"
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: yauza_clothes_db
+    healthcheck:
+      test: mysqladmin ping -u root -p $$MYSQL_ROOT_PASSWORD
+      interval: 10s
+      timeout: 5s
+      start_period: 10s
+      retries: 5
+  yauza-clothes:
+    image: yauza-clothes:latest
+    build:
+      context: .
+      args:
+        DOCKER_BUILDKIT: 1
+    restart: "no"
+    ports:
+      - "8081:8081"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:8081/ || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    depends_on:
+      - mysql
+volumes:
+  mysql_data:

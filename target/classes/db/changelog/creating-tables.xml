@@ -106,51 +106,52 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="create_person_table" author="bogda">
+    <changeSet id="create_person_and_roles_tables" author="bogda">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="person"/>
-                <tableExists tableName="roles"/>
             </not>
         </preConditions>
+
         <createTable tableName="person">
             <column name="id" type="bigint">
-                <constraints primaryKey="true" nullable="false" />
+                <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="login" type="varchar(255)">
-                <constraints nullable="false" unique="true" />
+                <constraints nullable="false" unique="true"/>
             </column>
             <column name="email" type="varchar(255)">
-                <constraints nullable="false" unique="true" />
+                <constraints nullable="false" unique="true"/>
             </column>
             <column name="password" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="phone" type="varchar(255)">
-                <constraints nullable="false" unique="true" />
+                <constraints nullable="false" unique="true"/>
             </column>
             <column name="first_name" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="last_name" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
         </createTable>
 
         <createTable tableName="roles">
             <column name="person_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="fk_person_roles" references="person(id)" />
+                <constraints nullable="false"/>
             </column>
             <column name="role" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="roles"
-                                 baseColumnNames="person_id"
-                                 referencedTableName="person"
-                                 referencedColumnNames="id"
-                                 constraintName="fk_person_roles"/>
+        <addForeignKeyConstraint
+                baseTableName="roles"
+                baseColumnNames="person_id"
+                referencedTableName="person"
+                referencedColumnNames="id"
+                constraintName="fk_person_roles"/>
     </changeSet>
 
 </databaseChangeLog>
