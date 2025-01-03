@@ -70,6 +70,14 @@ Duplicate the name and password in the `application.properties` file:
     spring.datasource.password=...
 ```
 
+Duplicate the name and password in the `docker-compose.yaml` file:
+
+```yaml
+    environment:
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+```
+
 When the program starts, migration occurs to the "yauza_clothes_db" database.
 
 ## Technological stack
