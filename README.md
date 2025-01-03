@@ -66,8 +66,8 @@ For local development and testing, open the file `creating-tables.xml` and creat
 Duplicate the name and password in the `application.properties` file:
 
 ```properties
-    spring.datasource.username=...
-    spring.datasource.password=...
+    spring.datasource.username=${MYSQL_USERNAME:user}
+spring.datasource.password=${MYSQL_PASSWORD:password}
 ```
 
 Duplicate the name and password in the `docker-compose.yaml` file:
