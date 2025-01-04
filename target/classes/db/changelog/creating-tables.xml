@@ -8,150 +8,151 @@
 
     <changeSet id="create_user" author="bogda">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0">SELECT EXISTS(SELECT 1 FROM mysql.user WHERE user = 'user')</sqlCheck>
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM mysql.user WHERE user = 'user'</sqlCheck>
         </preConditions>
         <sql endDelimiter=";" splitStatements="true" stripComments="true">
             CREATE USER 'user'@'localhost' IDENTIFIED BY 'password';
+            GRANT CREATE, INSERT ON yauza_clothes_db.* TO 'user'@'localhost';
         </sql>
     </changeSet>
 
-    <changeSet id="create_order_table" author="bogda">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <tableExists tableName="order"/>
-            </not>
-        </preConditions>
-        <createTable tableName="order">
-            <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints nullable="false" primaryKey="true"/>
-            </column>
-            <column name="fio" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="email" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="tel" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="address" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="date" type="datetime">
-                <constraints nullable="false"/>
-            </column>
-            <column name="post" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="products" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="status" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="total_price" type="INT">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
+<!--    <changeSet id="create_order_table" author="bogda">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <not>-->
+<!--                <tableExists tableName="order"/>-->
+<!--            </not>-->
+<!--        </preConditions>-->
+<!--        <createTable tableName="order">-->
+<!--            <column autoIncrement="true" name="id" type="BIGINT">-->
+<!--                <constraints nullable="false" primaryKey="true"/>-->
+<!--            </column>-->
+<!--            <column name="fio" type="VARCHAR(255)">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="email" type="VARCHAR(255)">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="tel" type="VARCHAR(255)">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="address" type="VARCHAR(255)">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="date" type="datetime">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="post" type="VARCHAR(255)">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="products" type="VARCHAR(255)">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="status" type="VARCHAR(255)">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="total_price" type="INT">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--        </createTable>-->
+<!--    </changeSet>-->
 
-    <changeSet id="create_sizes_table" author="bogda">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <tableExists tableName="sizes"/>
-            </not>
-        </preConditions>
-        <createTable tableName="sizes">
-            <column name="id" type="BIGINT">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="size" type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
+<!--    <changeSet id="create_sizes_table" author="bogda">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <not>-->
+<!--                <tableExists tableName="sizes"/>-->
+<!--            </not>-->
+<!--        </preConditions>-->
+<!--        <createTable tableName="sizes">-->
+<!--            <column name="id" type="BIGINT">-->
+<!--                <constraints primaryKey="true" nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="size" type="VARCHAR(50)">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--        </createTable>-->
+<!--    </changeSet>-->
 
-    <changeSet id="create_product_table" author="bogda">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <tableExists tableName="product"/>
-            </not>
-        </preConditions>
-        <createTable tableName="product">
-            <column name="id" type="BIGINT">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="name" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="img" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="color" type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="price" type="INT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="quantity" type="INT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="in_stock" type="INT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="size_id" type="BIGINT">
-                <constraints foreignKeyName="fk_product_size"
-                             references="sizes(id)"/>
-            </column>
-        </createTable>
-    </changeSet>
+<!--    <changeSet id="create_product_table" author="bogda">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <not>-->
+<!--                <tableExists tableName="product"/>-->
+<!--            </not>-->
+<!--        </preConditions>-->
+<!--        <createTable tableName="product">-->
+<!--            <column name="id" type="BIGINT">-->
+<!--                <constraints primaryKey="true" nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="name" type="VARCHAR(255)">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="img" type="VARCHAR(255)">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="color" type="VARCHAR(50)">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="price" type="INT">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="quantity" type="INT">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="in_stock" type="INT">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="size_id" type="BIGINT">-->
+<!--                <constraints foreignKeyName="fk_product_size"-->
+<!--                             references="sizes(id)"/>-->
+<!--            </column>-->
+<!--        </createTable>-->
+<!--    </changeSet>-->
 
-    <changeSet id="create_person_and_roles_tables" author="bogda">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <tableExists tableName="person"/>
-            </not>
-        </preConditions>
+<!--    <changeSet id="create_person_and_roles_tables" author="bogda">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <not>-->
+<!--                <tableExists tableName="person"/>-->
+<!--            </not>-->
+<!--        </preConditions>-->
 
-        <createTable tableName="person">
-            <column name="id" type="bigint">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="login" type="varchar(255)">
-                <constraints nullable="false" unique="true"/>
-            </column>
-            <column name="email" type="varchar(255)">
-                <constraints nullable="false" unique="true"/>
-            </column>
-            <column name="password" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="phone" type="varchar(255)">
-                <constraints nullable="false" unique="true"/>
-            </column>
-            <column name="first_name" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="last_name" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
+<!--        <createTable tableName="person">-->
+<!--            <column name="id" type="bigint">-->
+<!--                <constraints primaryKey="true" nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="login" type="varchar(255)">-->
+<!--                <constraints nullable="false" unique="true"/>-->
+<!--            </column>-->
+<!--            <column name="email" type="varchar(255)">-->
+<!--                <constraints nullable="false" unique="true"/>-->
+<!--            </column>-->
+<!--            <column name="password" type="varchar(255)">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="phone" type="varchar(255)">-->
+<!--                <constraints nullable="false" unique="true"/>-->
+<!--            </column>-->
+<!--            <column name="first_name" type="varchar(255)">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="last_name" type="varchar(255)">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--        </createTable>-->
 
-        <createTable tableName="roles">
-            <column name="person_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-            <column name="role" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
+<!--        <createTable tableName="roles">-->
+<!--            <column name="person_id" type="bigint">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="role" type="varchar(255)">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--        </createTable>-->
 
-        <addForeignKeyConstraint
-                baseTableName="roles"
-                baseColumnNames="person_id"
-                referencedTableName="person"
-                referencedColumnNames="id"
-                constraintName="fk_person_roles"/>
-    </changeSet>
+<!--        <addForeignKeyConstraint-->
+<!--                baseTableName="roles"-->
+<!--                baseColumnNames="person_id"-->
+<!--                referencedTableName="person"-->
+<!--                referencedColumnNames="id"-->
+<!--                constraintName="fk_person_roles"/>-->
+<!--    </changeSet>-->
 
 </databaseChangeLog>

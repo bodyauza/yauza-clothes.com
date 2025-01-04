@@ -67,7 +67,7 @@ Duplicate the name and password in the `application.properties` file:
 
 ```properties
     spring.datasource.username=${MYSQL_USERNAME:user}
-spring.datasource.password=${MYSQL_PASSWORD:password}
+    spring.datasource.password=${MYSQL_PASSWORD:password}
 ```
 
 Duplicate the name and password in the `docker-compose.yaml` file:
