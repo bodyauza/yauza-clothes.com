@@ -99,5 +99,11 @@ Duplicate the name and password in the `docker-compose.yaml` file:
       MYSQL_PASSWORD: password
 ```
 
+And run command:
+
+```bash
+    docker-compose up --build
+```
+
 When the program starts, migration occurs to the "yauza_clothes_db" database.
 
