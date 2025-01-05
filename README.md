@@ -55,6 +55,27 @@
     PRODUCT ||--o{ SIZES : "has"
    ```
 
+## Authentication Process
+
+1. **Login and Password Request**  
+   The client sends a request to the server with an object containing the user's login and password.
+
+2. **Token Generation**  
+   If the entered password is correct, the server generates access and refresh tokens and returns them to the client.
+
+3. **Using the Access Token**  
+   The client uses the received access token to interact with the API. All subsequent requests to protected routes must
+   include this token in the authorization header.
+
+4. **Access Token Renewal**  
+   The access token has a validity period, usually 5 minutes. When the validity of this token expires, the client sends
+   the refresh token to the server and receives a new access token. This process is repeated until the refresh token
+   expires.
+
+5. **Extending the Refresh Token**  
+   The refresh token is issued for 30 days. Approximately 1-5 days before the expiration of the refresh token, the
+   client sends a request with valid access and refresh tokens to obtain a new pair of tokens.
+
 ## Local development
 
 For local development and testing, open the file `creating-tables.xml` and create a new user:
@@ -79,25 +100,4 @@ Duplicate the name and password in the `docker-compose.yaml` file:
 ```
 
 When the program starts, migration occurs to the "yauza_clothes_db" database.
-
-## Authentication Process
-
-1. **Login and Password Request**  
-   The client sends a request to the server with an object containing the user's login and password.
-
-2. **Token Generation**  
-   If the entered password is correct, the server generates access and refresh tokens and returns them to the client.
-
-3. **Using the Access Token**  
-   The client uses the received access token to interact with the API. All subsequent requests to protected routes must
-   include this token in the authorization header.
-
-4. **Access Token Renewal**  
-   The access token has a validity period, usually 5 minutes. When the validity of this token expires, the client sends
-   the refresh token to the server and receives a new access token. This process is repeated until the refresh token
-   expires.
-
-5. **Extending the Refresh Token**  
-   The refresh token is issued for 30 days. Approximately 1-5 days before the expiration of the refresh token, the
-   client sends a request with valid access and refresh tokens to obtain a new pair of tokens.
 
