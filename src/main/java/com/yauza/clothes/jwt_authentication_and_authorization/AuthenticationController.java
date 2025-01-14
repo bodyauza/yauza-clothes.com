@@ -60,7 +60,7 @@ public class AuthenticationController {
             }
             return ResponseEntity.ok(token.getAccessToken());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid refresh token");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Пройдите авторизацию повторно");
         }
     }
 
