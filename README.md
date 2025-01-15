@@ -19,6 +19,31 @@
 
 ![Contacts Page](https://github.com/bodyauza/yauza-clothes.com/raw/master/contacts_page.png)
 
+## Technological Stack
+
+### Backend
+- **Java**: 22
+- **Spring**: Boot, Data, Security, Mail, MockMVC
+- **JJWT API**
+- **Lombok**: 1.18.30
+
+### Build Tools
+- **Maven**: 3.9.8
+
+### Database
+- **MySQL**: 9.1.0
+- **Liquibase**: 4.17.2
+
+### Testing Tools
+- **Postman**: 11.27.3
+
+### Frontend
+- **HTML5**, **CSS3**, **JavaScript**
+- **Thymeleaf**: 3.1.3
+
+### Other Tools
+- **Amplicode**: 2024.3
+
 ## ER-diagram of entities in the database:
 
    ```mermaid
