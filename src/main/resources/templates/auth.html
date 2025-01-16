@@ -41,7 +41,7 @@
             }
 
             $.ajax({
-                url: 'http://localhost:8081/token',
+                url: 'http://localhost:8081/login',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({ login: login, password: password }),
@@ -57,29 +57,29 @@
 
         function sendPostRequest(url, body, accessToken) {
             return new Promise((resolve, reject) => {
-            $.ajax({
-            url: url,
-            method: 'POST',
-            contentType: 'application/json',
-            headers: {
-            'Authorization': accessToken ? Bearer ${accessToken} : undefined
-        },
-        data: JSON.stringify(body),
-        xhrFields: {
-        withCredentials: true
-        },
-        success: function(response) {
-        resolve(response);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-        reject({ jqXHR, textStatus, errorThrown });
-        }
-        });
-        });
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    contentType: 'application/json',
+                    headers: {
+                        'Authorization': accessToken ? Bearer ${accessToken} : undefined
+                    },
+                    data: JSON.stringify(body),
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    success: function(response) {
+                        resolve(response);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        reject({ jqXHR, textStatus, errorThrown });
+                    }
+                });
+            });
         }
 
         (async () => {
-        await authManager.sendTokenRequest();
+            await authManager.sendTokenRequest();
         })();
 
         // Каждые 5 минут обновляем accessToken
