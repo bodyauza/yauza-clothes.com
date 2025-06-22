@@ -48,36 +48,60 @@
 
    ```mermaid
    erDiagram
-    ORDER {
-        BIGINT id PK "AUTO_INCREMENT"
-        VARCHAR fio
-        VARCHAR email
-        VARCHAR tel
-        VARCHAR address
-        DATETIME date
-        VARCHAR post
-        VARCHAR products
-        VARCHAR status
+    person {
+        BIGSERIAL id PK
+        VARCHAR login "UNIQUE"
+        VARCHAR email "UNIQUE"
+        VARCHAR password
+        VARCHAR phone "UNIQUE"
+        VARCHAR first_name
+        VARCHAR last_name
+    }
+
+    roles {
+        BIGINT person_id FK
+        VARCHAR role
+    }
+
+    refresh_tokens {
+        BIGSERIAL id PK
+        VARCHAR token "UNIQUE"
+        BIGINT user_id FK
+        TIMESTAMP expiry_date
+    }
+
+    orders {
+        BIGSERIAL id PK
+        VARCHAR(255) fio
+        VARCHAR(255) email
+        VARCHAR(255) tel
+        VARCHAR(255) address
+        TIMESTAMP date
+        VARCHAR(255) post
+        VARCHAR(255) products
+        VARCHAR(255) status
         INT total_price
     }
 
-    SIZES {
-        BIGINT id PK
-        VARCHAR size
+    sizes {
+        BIGSERIAL id PK
+        VARCHAR(50) size
     }
 
-    PRODUCT {
-        BIGINT id PK
+    product {
+        BIGSERIAL id PK
         VARCHAR name
         VARCHAR img
-        VARCHAR color
+        VARCHAR(50) color
         INT price
         INT quantity
         INT in_stock
         BIGINT size_id FK
     }
 
-    PRODUCT ||--o{ SIZES : "has"
+    person ||--o{ roles : "has"
+    person ||--o{ refresh_tokens : "has"
+    product }o--|| sizes : "references"
    ```
 
 ## Authentication Process
