@@ -71,7 +71,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"refreshToken\": \"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbnRvbiIsImV4cCI6MTY1ODM4NTcwMH0.35Xfw495acquYKcHKK2MrRU_dPlNqPQC7N3-vxA2d0zayWD1Ify6J-xYl5tWkm-8qdyXqPCri3uEfpzx1Lc7WA\"\n}",
+              "raw": "{\n    \"refreshToken\": \"...\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -87,44 +87,6 @@
               "port": "8081",
               "path": [
                 "token"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Get new access and refresh tokens",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbnRvbiIsImV4cCI6MTY1NTc5NDE2NCwicm9sZXMiOlsiVVNFUiJdLCJmaXJzdE5hbWUiOiLQkNC90YLQvtC9In0.hJ_j6BjysvP2Qv2Lt06m8FwE-U4AHRjVQ9BpBy6fJIycUDZxBSAhoeFucaOGFgukTMfICZbgEvna9OuwqYzzwQ",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"refreshToken\": \"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbnRvbiIsImV4cCI6MTY1ODM4NTg2NH0.gfE8Gr_1Sp_Um3vXG2EaDgqz6p9iLo1_wZgKksme13pg2q4cXVyShBtMTZ0ApfdcGzXcJ2MUoFHtTJCMj8ROUQ\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "http://localhost:8081/refresh",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "8081",
-              "path": [
-                "refresh"
               ]
             }
           },
@@ -146,7 +108,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbnRvbiIsImV4cCI6MTY1NTc5NTEyMCwicm9sZXMiOlsiVVNFUiJdLCJmaXJzdE5hbWUiOiLQkNC90YLQvtC9In0.tLFtJ0oPLq493u7EJe2Tb4kLxAFGCYgIWrmMq1XiHNhihbh2sV9-yVQyXOFwIpArw4ReAuUoP-6F2B_6YYzx4Q",
+                  "value": "",
                   "type": "string"
                 }
               ]
@@ -188,7 +150,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbnRvbiIsImV4cCI6MTY1NTc5MzYxNiwicm9sZXMiOlsiVVNFUiJdLCJmaXJzdE5hbWUiOiLQkNC90YLQvtC9In0.2JBqOWBOmO9a93nwiBgFvf6LvATMw-DALRlSwjFbshhu5RP110NIg5Aod_V0r1WtNDAbuzsHFxk7N-chy4sHQg",
+                  "value": "",
                   "type": "string"
                 }
               ]

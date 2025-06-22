@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Личный кабинет администратора</title>
+
+    <style>
+
+        .logout-btn{
+            width: 180px;
+            position: absolute;
+            height: 55px;
+            display: inline-block;
+            vertical-align: middle;
+            background: #000;
+            border: none;
+            color: #fff;
+            text-align: center;
+            padding: 13px 17px 11px;
+            transition: color .2s ease, background-color .2s ease;
+            box-sizing: border-box;
+            margin-left: 500px;
+        }
+
+    </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script>
+
+        const createAuthManager = () => {
+            let accessToken = '';
+
+            const manager = {
+                setAccessToken: (token) => {
+                    accessToken = token;
+                },
+                sendTokenRequest: async () => {
+                    try {
+                        const response = await sendPostRequest('http://localhost:8081/token', {});
+                        if (response.accessToken) {
+                            manager.setAccessToken(response.accessToken);
+                        }
+                        return response;
+                    } catch (error) {
+                        console.error('Ошибка при обновлении токена:', error);
+                    }
+                }
+            };
+
+            return manager;
+        };
+
+        const authManager = createAuthManager();
+
+        function sendPostRequest(url, body, accessToken) {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    contentType: 'application/json',
+                    //                    headers: {
+                    //                        'Authorization': accessToken ? `Bearer ${accessToken}` : undefined
+                    //                    },
+                    data: JSON.stringify(body),
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    success: function(response) {
+                        resolve(response);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        reject({ jqXHR, textStatus, errorThrown });
+                    }
+                });
+            });
+        }
+
+        $(document).ready(function() {
+            // Обновление accessToken при загрузке страницы
+            (async () => {
+                try {
+                    await authManager.sendTokenRequest();
+                } catch (e) {
+                    console.error('Не удалось получить токен доступа при обновлении страницы:', e);
+                    window.location.href = '/auth';
+                }
+            })();
+
+            // Каждые 4 минуты обновляем accessToken
+            setInterval(async () => {
+                try {
+                    await authManager.sendTokenRequest();
+                } catch (e) {
+                    console.error('Не удалось получить токен доступа:', e);
+                    window.location.href = '/auth';
+                }
+            }, 4 * 60 * 1000);
+        });
+
+    </script>
+</head>
+<body>
+
+<h1>Привет, [[${username}]]!</h1>
+<form action="/logout" method="POST" style="display: inline;">
+    <button type="submit" class="logout-btn">Выйти из аккаунта</button>
+</form>
+
+</body>
+</html>

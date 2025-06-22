@@ -63,7 +63,7 @@ public class JwtProvider {
                 .setExpiration(accessExpiration)
                 // Подписываем токен с использованием секретного ключа для доступа
                 .signWith(jwtAccessSecret)
-                // Добавляем дополнительные данные (claims) в токен
+                // Claims — набор утверждений, обычно в формате key-value, которые содержат информацию о пользователе.
                 .claim("roles", user.getRoles())
                 .claim("firstName", user.getFirstName())
                 // Завершаем создание токена и возвращаем его как строку
@@ -92,36 +92,30 @@ public class JwtProvider {
     private boolean validateToken(@NonNull String token, @NonNull Key secret) {
         try {
             Jwts.parserBuilder()
-                    .setSigningKey(secret)
                     // Создает парсер JWT и устанавливает секретный ключ для подписи.
+                    .setSigningKey(secret)
                     .build()
+                    // Парсит токен, проверяя его подпись и извлекая утверждения (claims).
                     .parseClaimsJws(token);
-            // Парсит токен, проверяя его подпись и извлекая утверждения (claims).
-            return true;
             // Если парсинг прошел успешно, возвращает true (токен валиден).
+            return true;
         } catch (ExpiredJwtException expEx) {
             // Обрабатывает исключение, если токен истек.
             log.error("Token expired", expEx);
-            // Логирует ошибку с сообщением о том, что токен истек.
         } catch (UnsupportedJwtException unsEx) {
             // Обрабатывает исключение, если токен не поддерживается.
             log.error("Unsupported jwt", unsEx);
-            // Логирует ошибку с сообщением о неподдерживаемом токене.
         } catch (MalformedJwtException mjEx) {
             // Обрабатывает исключение, если токен имеет неправильный формат.
             log.error("Malformed jwt", mjEx);
-            // Логирует ошибку с сообщением о неправильно сформированном токене.
         } catch (SignatureException sEx) {
             // Обрабатывает исключение, если подпись токена недействительна.
             log.error("Invalid signature", sEx);
-            // Логирует ошибку с сообщением о недействительной подписи.
         } catch (Exception e) {
             // Обрабатывает любые другие исключения, которые могут возникнуть.
             log.error("invalid token", e);
-            // Логирует ошибку с сообщением о недействительном токене.
         }
         return false;
-        // Если произошла ошибка, возвращает false (токен недействителен).
     }
 
     public Claims getAccessClaims(@NonNull String token) {
@@ -138,8 +132,8 @@ public class JwtProvider {
                 // Создает парсер JWT и устанавливает секретный ключ для подписи.
                 .build()
                 .parseClaimsJws(token)
+                // Парсит токен и возвращает его тело (набор утверждений).
                 .getBody();
-        // Парсит токен и возвращает его тело (утверждения).
     }
 
 }

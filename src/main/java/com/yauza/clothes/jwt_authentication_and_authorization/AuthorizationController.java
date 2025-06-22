@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
@@ -16,16 +17,19 @@ public class AuthorizationController {
 
     @PreAuthorize("hasAuthority('USER')")
     @GetMapping("/hello/user")
-    public ResponseEntity<String> helloUser() {
+    public String helloUser(Model model) {
         final JwtAuthentication authInfo = authService.getAuthInfo();
-        return ResponseEntity.ok("Hello user " + authInfo.getPrincipal() + "!");
+        model.addAttribute("username", authInfo.getPrincipal());
+        return "private_office";
     }
+
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/hello/admin")
-    public ResponseEntity<String> helloAdmin() {
+    public String helloAdmin(Model model) {
         final JwtAuthentication authInfo = authService.getAuthInfo();
-        return ResponseEntity.ok("Hello admin " + authInfo.getPrincipal() + "!");
+        model.addAttribute("username", authInfo.getPrincipal());
+        return "private_office_admin";
     }
 
 }

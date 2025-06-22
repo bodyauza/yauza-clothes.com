@@ -2,91 +2,36 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-
+    <title>Вход в аккаунт</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script>
 
-        const createAuthManager = () => {
-            let accessToken = '';
+        $(document).ready(function() {
+            $('#loginButton').click(function() {
+                const login = $('#login').val();
+                const password = $('#password').val();
 
-            return {
-                setAccessToken: (token) => {
-                    accessToken = token;
-                },
-                getAccessToken: () => accessToken,
-                sendTokenRequest: async () => {
-                    try {
-                        const response = await sendPostRequest('http://localhost:8081/token', {});
-                        if (response.accessToken) {
-                            this.setAccessToken(response.accessToken);
-                        }
-                        return response;
-                    } catch (error) {
-                        console.error('Ошибка при обновлении токена:', error);
+                if (!login || !password) {
+                    alert("Пожалуйста, заполните все поля.");
+                    return;
+                }
+
+                $.ajax({
+                    url: 'http://localhost:8081/login',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ login: login, password: password }),
+                    success: function(response) {
+                        window.location.href = response.redirectUrl;
+                    },
+                    error: function(jqXHR) {
+                        alert(jqXHR.responseJSON?.message || "Ошибка сервера");
                     }
-                }
-            };
-        };
-
-        const authManager = createAuthManager();
-
-        $('#loginButton').click(function() {
-            const login = $('#login').val();
-            const password = $('#password').val();
-
-            if (!login || !password) {
-                alert("Пожалуйста, заполните все поля.");
-                return;
-            }
-
-            $.ajax({
-                url: 'http://localhost:8081/token',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({ login: login, password: password }),
-                success: function(response) {
-                    authManager.setAccessToken(response.accessToken);
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.error('Ошибка:', textStatus, errorThrown);
-                    alert('Ошибка авторизации. Попробуйте еще раз.');
-                }
+                });
             });
         });
 
-        function sendPostRequest(url, body, accessToken) {
-            return new Promise((resolve, reject) => {
-            $.ajax({
-            url: url,
-            method: 'POST',
-            contentType: 'application/json',
-            headers: {
-            'Authorization': accessToken ? Bearer ${accessToken} : undefined
-        },
-        data: JSON.stringify(body),
-        xhrFields: {
-        withCredentials: true
-        },
-        success: function(response) {
-        resolve(response);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-        reject({ jqXHR, textStatus, errorThrown });
-        }
-        });
-        });
-        }
-
-        (async () => {
-        await authManager.sendTokenRequest();
-        })();
-
-        // Каждые 5 минут обновляем accessToken
-        setInterval(() => authManager.sendTokenRequest(), 5 * 60 * 1000);
-
     </script>
-
 </head>
 <body>
 

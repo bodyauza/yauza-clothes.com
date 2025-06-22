@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.HeaderWriter;
@@ -25,19 +27,19 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .httpBasic().disable()
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+                .csrf(csrf -> csrf.disable())  // Новый стиль для отключения CSRF
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/hello/user", "/hello/admin").authenticated()
                         .anyRequest().permitAll()
-                        .and()
-                        .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 )
+                .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .headers(headers -> headers
                         .addHeaderWriter(new CustomHeaderWriter())
-                ).build();
+                )
+                .build();
     }
 
     private static class CustomHeaderWriter implements HeaderWriter {
@@ -69,8 +71,12 @@ public class SecurityConfig {
 
             response.setHeader("Content-Security-Policy", "default-src 'self';");
 
-//            response.setHeader("Set-Cookie", "HttpOnly; SameSite=Strict");
         }
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(12); // Сложность хеширования по умолчанию = 10
     }
 
 }
