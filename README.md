@@ -103,7 +103,28 @@
 
 ## Local development
 
-For local development and testing, open the file `creating-tables.xml` and create a new user:
+1. Create a system variable `JAVA_HOME`, the value of the variable is the path to the JDK installation directory, for example `C:\Program Files\Java\jdk-XX`.
+
+2. Add the new path `%JAVA_HOME%\bin` to the end of the value of the `Path` variable.
+
+3. Download the `Apache Maven` binary distribution archive.
+
+4. Extract the distribution archive in any directory. Use `unzip apache-maven-3.9.10-bin.zip` or `tar xzvf apache-maven-3.9.10-bin.tar.gz` depending on the archive.
+
+5. Add the `bin` directory of the created directory `apache-maven-3.9.10` to the `Path` environment variable
+
+6. Confirm with `mvn -v` in a new shell. The result should look similar to:
+
+```
+Apache Maven 3.9.10 (5f519b97e944483d878815739f519b2eade0a91d)
+Maven home: /opt/apache-maven-3.9.10
+Java version: 1.8.0_45, vendor: Oracle Corporation
+Java home: /Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home/jre
+Default locale: en_US, platform encoding: UTF-8
+OS name: "mac os x", version: "10.8.5", arch: "x86_64", family: "mac"
+```
+
+7. Open the file `creating-tables.xml` and create a new user:
 
 ```sql
     CREATE ROLE "user" WITH LOGIN PASSWORD 'password';
