@@ -31,7 +31,7 @@
 - **Maven**: 3.9.8
 
 ### Database
-- **MySQL**: 9.1.0
+- **PostgreSQL**: 17.5
 - **Liquibase**: 4.17.2
 
 ### Testing Tools
@@ -42,7 +42,7 @@
 - **Thymeleaf**: 3.1.3
 
 ### Other Tools
-- **Amplicode**: 2024.3
+- **Amplicode**: 2025.1
 
 ## ER-diagram of entities in the database:
 
@@ -99,35 +99,27 @@
 
 5. **Extending the Refresh Token**  
    The refresh token is issued for 30 days. Approximately 1-5 days before the expiration of the refresh token, the
-   client sends a request with valid access and refresh tokens to obtain a new pair of tokens.
+   client sends a request with valid refresh token to obtain a new pair of tokens.
 
 ## Local development
 
 For local development and testing, open the file `creating-tables.xml` and create a new user:
 
 ```sql
-    CREATE USER 'user'@'localhost' IDENTIFIED BY 'password';
+    CREATE ROLE "user" WITH LOGIN PASSWORD 'password';
 ```
 
 Duplicate the name and password in the `application.properties` file:
 
 ```properties
-    spring.datasource.username=${MYSQL_USERNAME:user}
-    spring.datasource.password=${MYSQL_PASSWORD:password}
-```
-
-Duplicate the name and password in the `docker-compose.yaml` file:
-
-```yaml
-    environment:
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+    spring.datasource.username=
+    spring.datasource.password=
 ```
 
 And run command:
 
 ```bash
-    docker-compose up --build
+    mvn spring-boot:run
 ```
 
 When the program starts, migration occurs to the "yauza_clothes_db" database.
