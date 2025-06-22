@@ -107,11 +107,11 @@
 
 2. Add the new path `%JAVA_HOME%\bin` to the end of the value of the `Path` variable.
 
-3. Download the `Apache Maven` binary distribution archive.
+3. Download the `Apache Maven` binary distribution archive from [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi).
 
 4. Extract the distribution archive in any directory. Use `unzip apache-maven-3.9.10-bin.zip` or `tar xzvf apache-maven-3.9.10-bin.tar.gz` depending on the archive.
 
-5. Add the `bin` directory of the created directory `apache-maven-3.9.10` to the `Path` environment variable
+5. Add the `bin` directory of the created directory `apache-maven-3.9.10` to the `Path` environment variable.
 
 6. Confirm with `mvn -v` in a new shell. The result should look similar to:
 
