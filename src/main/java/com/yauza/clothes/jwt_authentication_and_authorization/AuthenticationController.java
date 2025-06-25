@@ -84,21 +84,9 @@ public class AuthenticationController {
                 .body(Map.of("redirectUrl", redirectEndpoint));
     }
 
-    // Метод для создания HTTP-сущности (при авторизации без хранения access-токена в JS).
-    @NotNull
-    private static HttpEntity<String> getStringHttpEntity(String redirectEndpoint, JwtResponse token) {
-        if (!redirectEndpoint.matches("^/hello/(admin|user)$")) {
-            throw new AuthException("Invalid endpoint");
-        }
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(token.getAccessToken());
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        return entity;
-    }
 
     @PostMapping("/token")
-    public ResponseEntity<String> getNewAccessToken(HttpServletResponse response,
+    public ResponseEntity<?> getNewAccessToken(HttpServletResponse response,
                                                     @CookieValue(value = "refreshToken") String refreshToken) {  // @CookieValue(value = "refreshToken", defaultValue = "")
         Date expirationDate = getExpirationDateFromRefreshToken(refreshToken);
         long daysLeft = daysUntilExpiration(expirationDate);
@@ -118,12 +106,50 @@ public class AuthenticationController {
                 // Если осталось больше 5 дней, получаем новый accessToken
                 token = authService.getAccessToken(refreshToken);
             }
-            return ResponseEntity.ok(token.getAccessToken());
+            Claims claims = jwtProvider.getAccessClaims(token.getAccessToken());
+            Collection<? extends GrantedAuthority> authorities =
+                    Arrays.stream(claims.get("roles").toString().split(","))
+                            .map(SimpleGrantedAuthority::new)
+                            .toList(); // collect(Collectors.toList())
+
+            String redirectEndpoint;
+            if (authorities.contains(new SimpleGrantedAuthority(Role.ADMIN.getAuthority()))) {
+                redirectEndpoint = "/hello/admin";
+            } else {
+                redirectEndpoint = "/hello/user";
+            }
+
+            RestTemplate restTemplate = new RestTemplateBuilder()
+                    .setConnectTimeout(Duration.ofSeconds(5))
+                    .setReadTimeout(Duration.ofSeconds(5))
+                    .build();
+
+            HttpEntity<String> entity = getStringHttpEntity(redirectEndpoint, token);
+            ResponseEntity<String> serviceResponse = restTemplate.exchange(
+                    "http://localhost:8081" + redirectEndpoint,
+                    HttpMethod.GET,
+                    entity,
+                    String.class
+            );
+            return ResponseEntity.ok()
+                    .body("Токен доступа успешно обновлён");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Пройдите авторизацию повторно");
         }
     }
 
+    // Метод для создания HTTP-сущности (при авторизации без хранения access-токена в JS).
+    @NotNull
+    private static HttpEntity<String> getStringHttpEntity(String redirectEndpoint, JwtResponse token) {
+        if (!redirectEndpoint.matches("^/hello/(admin|user)$")) {
+            throw new AuthException("Invalid endpoint");
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token.getAccessToken());
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        return entity;
+    }
 
     // Метод для декодирования JWT и получения даты истечения
     private Date getExpirationDateFromRefreshToken(String refreshToken) {

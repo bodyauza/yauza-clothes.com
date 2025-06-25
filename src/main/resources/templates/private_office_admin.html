@@ -27,31 +27,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script>
 
-        const createAuthManager = () => {
-            let accessToken = '';
-
-            const manager = {
-                setAccessToken: (token) => {
-                    accessToken = token;
-                },
-                sendTokenRequest: async () => {
-                    try {
-                        const response = await sendPostRequest('http://localhost:8081/token', {});
-                        if (response.accessToken) {
-                            manager.setAccessToken(response.accessToken);
-                        }
-                        return response;
-                    } catch (error) {
-                        console.error('Ошибка при обновлении токена:', error);
-                    }
-                }
-            };
-
-            return manager;
-        };
-
-        const authManager = createAuthManager();
-
         function sendPostRequest(url, body, accessToken) {
             return new Promise((resolve, reject) => {
                 $.ajax({
@@ -79,7 +54,7 @@
             // Обновление accessToken при загрузке страницы
             (async () => {
                 try {
-                    await authManager.sendTokenRequest();
+                    await sendPostRequest('http://localhost:8081/token', {});
                 } catch (e) {
                     console.error('Не удалось получить токен доступа при обновлении страницы:', e);
                     window.location.href = '/auth';
@@ -89,7 +64,7 @@
             // Каждые 4 минуты обновляем accessToken
             setInterval(async () => {
                 try {
-                    await authManager.sendTokenRequest();
+                    await sendPostRequest('http://localhost:8081/token', {});
                 } catch (e) {
                     console.error('Не удалось получить токен доступа:', e);
                     window.location.href = '/auth';
