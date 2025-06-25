@@ -7,7 +7,6 @@ import com.yauza.clothes.jwt_authentication_and_authorization.exception.AuthExce
 import com.yauza.clothes.jwt_authentication_and_authorization.jwt_service.AuthenticationService;
 import com.yauza.clothes.jwt_authentication_and_authorization.jwt_service.JwtProvider;
 import io.jsonwebtoken.Claims;
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -44,44 +44,35 @@ public class AuthenticationController {
         final JwtResponse token;
         try {
             token = authService.login(authRequest);
+
+            Cookie cookie = new Cookie("refreshToken", token.getRefreshToken());
+            cookie.setPath("/");  // Доступ для всех путей
+            cookie.setHttpOnly(true);  // Запрет доступа из JavaScript
+            //        cookie.setSecure(true);  // Только для HTTPS
+            cookie.setAttribute("SameSite", "Strict");
+            cookie.setMaxAge(REFRESH_TOKEN_VALIDITY);
+            response.addCookie(cookie);  // Браузер автоматически сохраняет cookie.
+
+            Claims claims = jwtProvider.getAccessClaims(token.getAccessToken());
+            Collection<? extends GrantedAuthority> authorities =
+                    Arrays.stream(claims.get("roles").toString().split(","))
+                            .map(SimpleGrantedAuthority::new)
+                            .toList(); // collect(Collectors.toList())
+
+            String redirectEndpoint;
+            if (authorities.contains(new SimpleGrantedAuthority(Role.ADMIN.getAuthority()))) {
+                redirectEndpoint = "/hello/admin";
+            } else {
+                redirectEndpoint = "/hello/user";
+            }
+
+            sendTokenToSecureEndpoint(redirectEndpoint, token);
+
+            return ResponseEntity.ok()
+                    .body(Map.of("redirectUrl", redirectEndpoint));
         } catch (AuthException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Ошибка входа: " + e.getMessage());
         }
-        Cookie cookie = new Cookie("refreshToken", token.getRefreshToken());
-        cookie.setPath("/");  // Доступ для всех путей
-        cookie.setHttpOnly(true);  // Запрет доступа из JavaScript
-//        cookie.setSecure(true);  // Только для HTTPS
-        cookie.setAttribute("SameSite", "Strict");
-        cookie.setMaxAge(REFRESH_TOKEN_VALIDITY);
-        response.addCookie(cookie);  // Браузер автоматически сохраняет cookie.
-
-        Claims claims = jwtProvider.getAccessClaims(token.getAccessToken());
-        Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get("roles").toString().split(","))
-                        .map(SimpleGrantedAuthority::new)
-                        .toList(); // collect(Collectors.toList())
-
-        String redirectEndpoint;
-        if (authorities.contains(new SimpleGrantedAuthority(Role.ADMIN.getAuthority()))) {
-            redirectEndpoint = "/hello/admin";
-        } else {
-            redirectEndpoint = "/hello/user";
-        }
-
-        RestTemplate restTemplate = new RestTemplateBuilder()
-                .setConnectTimeout(Duration.ofSeconds(5))
-                .setReadTimeout(Duration.ofSeconds(5))
-                .build();
-
-        HttpEntity<String> entity = getStringHttpEntity(redirectEndpoint, token);
-        ResponseEntity<String> serviceResponse = restTemplate.exchange(
-                "http://localhost:8081" + redirectEndpoint,
-                HttpMethod.GET,
-                entity,
-                String.class
-        );
-        return ResponseEntity.ok()
-                .body(Map.of("redirectUrl", redirectEndpoint));
     }
 
 
@@ -119,36 +110,37 @@ public class AuthenticationController {
                 redirectEndpoint = "/hello/user";
             }
 
-            RestTemplate restTemplate = new RestTemplateBuilder()
-                    .setConnectTimeout(Duration.ofSeconds(5))
-                    .setReadTimeout(Duration.ofSeconds(5))
-                    .build();
+            sendTokenToSecureEndpoint(redirectEndpoint, token);
 
-            HttpEntity<String> entity = getStringHttpEntity(redirectEndpoint, token);
+            return ResponseEntity.ok()
+                    .body("Токен доступа успешно обновлён");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Пройдите авторизацию повторно: " + e.getMessage());
+        }
+    }
+
+    // Метод для создания HTTP-сущности и отправки GET-запроса на защищенный эндпоинт (при авторизации без хранения access-токена в JS).
+    private static void sendTokenToSecureEndpoint(String redirectEndpoint, JwtResponse token) {
+
+        RestTemplate restTemplate = new RestTemplateBuilder()
+                .setConnectTimeout(Duration.ofSeconds(5))
+                .setReadTimeout(Duration.ofSeconds(5))
+                .build();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token.getAccessToken());
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        try {
             ResponseEntity<String> serviceResponse = restTemplate.exchange(
                     "http://localhost:8081" + redirectEndpoint,
                     HttpMethod.GET,
                     entity,
                     String.class
             );
-            return ResponseEntity.ok()
-                    .body("Токен доступа успешно обновлён");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Пройдите авторизацию повторно");
+        } catch (RestClientException e) {
+            throw new AuthException("Ошибка при проверке токена: " + e.getMessage());
         }
-    }
-
-    // Метод для создания HTTP-сущности (при авторизации без хранения access-токена в JS).
-    @NotNull
-    private static HttpEntity<String> getStringHttpEntity(String redirectEndpoint, JwtResponse token) {
-        if (!redirectEndpoint.matches("^/hello/(admin|user)$")) {
-            throw new AuthException("Invalid endpoint");
-        }
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(token.getAccessToken());
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        return entity;
     }
 
     // Метод для декодирования JWT и получения даты истечения
