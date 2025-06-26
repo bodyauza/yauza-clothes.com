@@ -71,7 +71,7 @@ public class AuthenticationController {
             return ResponseEntity.ok()
                     .body(Map.of("redirectUrl", redirectEndpoint));
         } catch (AuthException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Ошибка входа: " + e.getMessage());
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Ошибка входа. " + e.getMessage());
         }
     }
 
@@ -114,8 +114,8 @@ public class AuthenticationController {
 
             return ResponseEntity.ok()
                     .body("Токен доступа успешно обновлён");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Пройдите авторизацию повторно: " + e.getMessage());
+        } catch (AuthException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Пройдите авторизацию повторно. " + e.getMessage());
         }
     }
 

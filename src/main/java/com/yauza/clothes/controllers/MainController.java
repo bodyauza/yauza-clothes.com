@@ -60,6 +60,7 @@ public class MainController {
 
 
     // Добавление товара в корзину.
+    // Необходимо добавить логгирование (SLF4J + Logback)
     @PostMapping("/add-item")
     protected String addItem(HttpServletRequest request,
                              @RequestParam String img,
