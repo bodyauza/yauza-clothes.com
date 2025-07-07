@@ -27,6 +27,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -53,20 +54,7 @@ public class AuthenticationController {
             cookie.setMaxAge(REFRESH_TOKEN_VALIDITY);
             response.addCookie(cookie);  // Браузер автоматически сохраняет cookie.
 
-            Claims claims = jwtProvider.getAccessClaims(token.getAccessToken());
-            Collection<? extends GrantedAuthority> authorities =
-                    Arrays.stream(claims.get("roles").toString().split(","))
-                            .map(SimpleGrantedAuthority::new)
-                            .toList(); // collect(Collectors.toList())
-
-            String redirectEndpoint;
-            if (authorities.contains(new SimpleGrantedAuthority(Role.ADMIN.getAuthority()))) {
-                redirectEndpoint = "/hello/admin";
-            } else {
-                redirectEndpoint = "/hello/user";
-            }
-
-            sendTokenToSecureEndpoint(redirectEndpoint, token);
+            String redirectEndpoint = sendTokenToSecureEndpoint(token);
 
             return ResponseEntity.ok()
                     .body(Map.of("redirectUrl", redirectEndpoint));
@@ -97,20 +85,8 @@ public class AuthenticationController {
                 // Если осталось больше 5 дней, получаем новый accessToken
                 token = authService.getAccessToken(refreshToken);
             }
-            Claims claims = jwtProvider.getAccessClaims(token.getAccessToken());
-            Collection<? extends GrantedAuthority> authorities =
-                    Arrays.stream(claims.get("roles").toString().split(","))
-                            .map(SimpleGrantedAuthority::new)
-                            .toList(); // collect(Collectors.toList())
 
-            String redirectEndpoint;
-            if (authorities.contains(new SimpleGrantedAuthority(Role.ADMIN.getAuthority()))) {
-                redirectEndpoint = "/hello/admin";
-            } else {
-                redirectEndpoint = "/hello/user";
-            }
-
-            sendTokenToSecureEndpoint(redirectEndpoint, token);
+            sendTokenToSecureEndpoint(token);
 
             return ResponseEntity.ok()
                     .body("Токен доступа успешно обновлён");
@@ -120,7 +96,18 @@ public class AuthenticationController {
     }
 
     // Метод для создания HTTP-сущности и отправки GET-запроса на защищенный эндпоинт (при авторизации без хранения access-токена в JS).
-    private static void sendTokenToSecureEndpoint(String redirectEndpoint, JwtResponse token) {
+    private String sendTokenToSecureEndpoint(JwtResponse token) {
+
+        Claims claims = jwtProvider.getAccessClaims(token.getAccessToken());
+        Set<String> roles = Arrays.stream(claims.get("roles").toString().split(","))
+                .collect(Collectors.toSet());
+
+        String redirectEndpoint;
+        if (roles.contains(Role.ADMIN.getAuthority())) {
+            redirectEndpoint = "/hello/admin";
+        } else {
+            redirectEndpoint = "/hello/user";
+        }
 
         RestTemplate restTemplate = new RestTemplateBuilder()
                 .setConnectTimeout(Duration.ofSeconds(5))
@@ -138,6 +125,7 @@ public class AuthenticationController {
                     entity,
                     String.class
             );
+            return redirectEndpoint;
         } catch (RestClientException e) {
             throw new AuthException("Ошибка при проверке токена: " + e.getMessage());
         }
