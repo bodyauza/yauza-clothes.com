@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <style>
+        .error { color: red; }
+        .valid { border-color: green; }
+        .invalid { border-color: red; }
+    </style>
+    <script>
+        const patterns = {
+            login: /^[a-zA-Z0-9_-]{3,20}$/,
+            email: /^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$/,
+            password: /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
+            phone: /^\+?[0-9]{10,15}$/,
+            name: /^[A-Za-zА-Яа-яЁё\- ]{2,50}$/
+        };
+
+        const errorMessages = {
+            login: "Логин должен содержать 3-20 символов (a-z, A-Z, 0-9, _, -)",
+            email: "Введите корректный email",
+            password: "Пароль должен содержать минимум 8 символов, цифры, заглавные и строчные буквы",
+            phone: "Введите корректный номер телефона (10-15 цифр)",
+            name: "Имя должно содержать 2-50 букв"
+        };
+
+        $(document).ready(function() {
+            // Валидация при вводе
+            $('input').on('input', function() {
+                validateField($(this));
+            });
+
+            // Обработка регистрации
+            $('#registerButton').click(function() {
+                let isValid = true;
+                $('input[required]').each(function() {
+                    if (!validateField($(this))) {
+                        isValid = false;
+                    }
+                });
+
+                if (!isValid) {
+                    alert("Пожалуйста, исправьте ошибки в форме");
+                    return;
+                }
+
+                const userData = {
+                    login: $('#login').val(),
+                    email: $('#email').val(),
+                    password: $('#password').val(),
+                    phone: $('#phone').val(),
+                    firstName: $('#firstName').val(),
+                    lastName: $('#lastName').val()
+                };
+
+                $.ajax({
+                    url: '/registration',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(userData),
+                    success: function(response) {
+                        window.location.href = '/profile';
+                    },
+                    error: function(jqXHR) {
+                        alert(jqXHR.responseJSON?.message || "Ошибка регистрации");
+                    }
+                });
+            });
+        });
+
+        function validateField(input) {
+            const fieldName = input.attr('name');
+            const value = input.val();
+            const errorElement = $(`#${fieldName}Error`);
+
+            if (input.prop('required') && !value) {
+                input.addClass('invalid');
+                errorElement.text("Это поле обязательно для заполнения");
+                return false;
+            }
+
+            if (value && patterns[fieldName] && !patterns[fieldName].test(value)) {
+                input.addClass('invalid');
+                errorElement.text(errorMessages[fieldName]);
+                return false;
+            }
+
+            input.removeClass('invalid').addClass('valid');
+            errorElement.text("");
+            return true;
+        }
+    </script>
+</head>
+<body>
+
+<form id="registrationForm">
+    <div>
+        <label>Логин*</label>
+        <input type="text" id="login" name="login" required>
+        <span id="loginError" class="error"></span>
+    </div>
+
+    <div>
+        <label>Email*</label>
+        <input type="email" id="email" name="email" required>
+        <span id="emailError" class="error"></span>
+    </div>
+
+    <div>
+        <label>Пароль*</label>
+        <input type="password" id="password" name="password" required>
+        <span id="passwordError" class="error"></span>
+    </div>
+
+    <div>
+        <label>Телефон</label>
+        <input type="tel" id="phone" name="phone" required>
+        <span id="phoneError" class="error"></span>
+    </div>
+
+    <div>
+        <label>Имя</label>
+        <input type="text" id="firstName" name="firstName" required>
+        <span id="firstNameError" class="error"></span>
+    </div>
+
+    <div>
+        <label>Фамилия</label>
+        <input type="text" id="lastName" name="lastName" required>
+        <span id="lastNameError" class="error"></span>
+    </div>
+
+    <button id="registerButton" type="button">Зарегистрироваться</button>
+</form>
+
+</body>
+</html>

@@ -1,18 +1,15 @@
 package com.yauza.clothes.jwt_authentication_and_authorization;
 
-import com.yauza.clothes.jwt_authentication_and_authorization.domain.JwtRequest;
-import com.yauza.clothes.jwt_authentication_and_authorization.domain.JwtResponse;
-import com.yauza.clothes.jwt_authentication_and_authorization.domain.Role;
+import com.yauza.clothes.jwt_authentication_and_authorization.domain.*;
 import com.yauza.clothes.jwt_authentication_and_authorization.exception.AuthException;
 import com.yauza.clothes.jwt_authentication_and_authorization.jwt_service.AuthenticationService;
 import com.yauza.clothes.jwt_authentication_and_authorization.jwt_service.JwtProvider;
+import com.yauza.clothes.jwt_authentication_and_authorization.jwt_service.UserService;
 import io.jsonwebtoken.Claims;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,8 +34,29 @@ public class AuthenticationController {
     private AuthenticationService authService;
     @Autowired
     private JwtProvider jwtProvider;
+    @Autowired
+    private UserService userService;
 
     private final int REFRESH_TOKEN_VALIDITY = 60 * 60 * 24 * 30; // 30 дней
+
+
+    @PostMapping("/registration")
+    public ResponseEntity<?> registerUser(@RequestBody RegistrationRequest request) {
+        try {
+            User user = userService.registration(
+                    request.getLogin(),
+                    request.getEmail(),
+                    request.getPassword(),
+                    request.getPhone(),
+                    request.getFirstName(),
+                    request.getLastName()
+            );
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
+        }
+    }
+
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody JwtRequest authRequest, HttpServletResponse response) {
