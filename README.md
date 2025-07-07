@@ -127,17 +127,17 @@
 
 ## Local development
 
-1. Create a system variable `JAVA_HOME`, the value of the variable is the path to the JDK installation directory, for example `C:\Program Files\Java\jdk-XX`.
+### 1. Create a system variable `JAVA_HOME`, the value of the variable is the path to the JDK installation directory, for example `C:\Program Files\Java\jdk-XX`.
 
-2. Add the new path `%JAVA_HOME%\bin` to the end of the value of the `Path` variable.
+### 2. Add the new path `%JAVA_HOME%\bin` to the end of the value of the `Path` variable.
 
-3. Download the `Apache Maven` binary distribution archive from [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi).
+### 3. Download the `Apache Maven` binary distribution archive from [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi).
 
-4. Extract the distribution archive in any directory. Use `unzip apache-maven-3.9.10-bin.zip` or `tar xzvf apache-maven-3.9.10-bin.tar.gz` depending on the archive.
+### 4. Extract the distribution archive in any directory. Use `unzip apache-maven-3.9.10-bin.zip` or `tar xzvf apache-maven-3.9.10-bin.tar.gz` depending on the archive.
 
-5. Add the `bin` directory of the created directory `apache-maven-3.9.10` to the `Path` environment variable.
+### 5. Add the `bin` directory of the created directory `apache-maven-3.9.10` to the `Path` environment variable.
 
-6. Confirm with `mvn -v` in a new shell. The result should look similar to:
+### 6. Confirm with `mvn -v` in a new shell. The result should look similar to:
 
 ```
 Apache Maven 3.9.10 (5f519b97e944483d878815739f519b2eade0a91d)
@@ -148,7 +148,7 @@ Default locale: en_US, platform encoding: UTF-8
 OS name: "mac os x", version: "10.8.5", arch: "x86_64", family: "mac"
 ```
 
-7. Open the file `creating-tables.xml` and create a new user:
+### 7. Open the file `creating-tables.xml` and create a new user:
 
 ```sql
     CREATE ROLE "user" WITH LOGIN PASSWORD 'password';
@@ -161,7 +161,7 @@ Duplicate the name and password in the `application.properties` file:
     spring.datasource.password=
 ```
 
-And run command:
+And run the command in the root directory of the project:
 
 ```bash
     mvn spring-boot:run
