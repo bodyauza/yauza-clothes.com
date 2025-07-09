@@ -161,7 +161,7 @@ Duplicate the name and password in the `application.properties` file:
     spring.datasource.password=
 ```
 
-And run the command in the root directory of the project:
+### 8. Run the command in the root directory of the project:
 
 ```bash
     mvn spring-boot:run
@@ -169,3 +169,20 @@ And run the command in the root directory of the project:
 
 When the program starts, migration occurs to the "yauza_clothes_db" database.
 
+### 9. To run all test classes, run the command:
+
+```bash
+mvn test
+```
+
+To run all tests for a specified class, run the command:
+
+```bash
+mvn test -Dtest=ClassNameTest
+```
+
+If you need to run a specific method, use:
+
+```bash
+mvn test -Dtest=ClassNameTest#methodName
+```
