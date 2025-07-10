@@ -7,27 +7,33 @@ import com.yauza.clothes.jwt_authentication_and_authorization.exception.AuthExce
 import com.yauza.clothes.jwt_authentication_and_authorization.jwt_service.AuthenticationService;
 import com.yauza.clothes.jwt_authentication_and_authorization.jwt_service.JwtProvider;
 import io.jsonwebtoken.Claims;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Import;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.Matchers.containsString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import jakarta.servlet.http.Cookie;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * Test class for the {@link AuthenticationController}
@@ -38,6 +44,9 @@ import jakarta.servlet.http.Cookie;
 @WebMvcTest({AuthenticationController.class})
 @AutoConfigureMockMvc(addFilters = false) // Отключаем фильтры безопасности для тестов
 class AuthenticationControllerTest {
+
+    private static final String USER_URL = "http://localhost:8081/hello/user";
+    private static final String ADMIN_URL = "http://localhost:8081/hello/admin";
 
     // Внедряем MockMvc для выполнения HTTP-запросов
     @Autowired
@@ -55,6 +64,15 @@ class AuthenticationControllerTest {
     // ObjectMapper для преобразования объектов в JSON
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    private RestTemplate restTemplateMock;
+
+    // Метод будет вызван перед каждым тестом
+    @BeforeEach
+    void setUp() {
+        restTemplateMock = mock(RestTemplate.class);
+        when(restTemplateBuilder.build()).thenReturn(restTemplateMock);
+    }
+
     // Тест успешного входа для пользователя с ролью USER
     @Test
     void login_Success_UserRole() throws Exception {
@@ -66,9 +84,15 @@ class AuthenticationControllerTest {
         JwtResponse jwtResponse = new JwtResponse("accessToken", "refreshToken");
         when(authService.login(any(JwtRequest.class))).thenReturn(jwtResponse);
 
-        Claims claims = mock(Claims.class);
-        when(jwtProvider.getAccessClaims("accessToken")).thenReturn(claims);
-        when(claims.get("roles", List.class)).thenReturn(List.of("USER"));
+        mockJwtProvider(List.of("USER"));
+
+        ResponseEntity<String> mockResponse = ResponseEntity.ok("Hello, User!");
+        when(restTemplateMock.exchange(
+                eq(USER_URL), // Ожидаемый URL
+                eq(HttpMethod.GET),
+                any(HttpEntity.class), // Проверяем, что заголовок содержит токен
+                eq(String.class)
+        )).thenReturn(mockResponse);
 
         mockMvc.perform(post("/login")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -80,12 +104,13 @@ class AuthenticationControllerTest {
                 .andExpect(cookie().httpOnly("refreshToken", true))
                 .andExpect(cookie().path("refreshToken", "/")) // Проверяем путь cookie
                 .andExpect(cookie().maxAge("refreshToken", 60 * 60 * 24 * 30));
+
+        verifySecureEndpointCall(USER_URL, jwtResponse.getAccessToken());
     }
 
     // Тест успешного входа для администратора
     @Test
-    void login_Success_AdminRole() throws Exception {
-
+    void login_Success_AdminRole_WithTokenForwarding() throws Exception {
         JwtRequest request = new JwtRequest();
         request.setLogin("admin");
         request.setPassword("admin");
@@ -93,15 +118,23 @@ class AuthenticationControllerTest {
         JwtResponse jwtResponse = new JwtResponse("accessToken", "refreshToken");
         when(authService.login(any(JwtRequest.class))).thenReturn(jwtResponse);
 
-        Claims claims = mock(Claims.class);
-        when(jwtProvider.getAccessClaims("accessToken")).thenReturn(claims);
-        when(claims.get("roles", List.class)).thenReturn(List.of("ADMIN"));
+        mockJwtProvider(List.of("ADMIN"));
+
+        ResponseEntity<String> mockResponse = ResponseEntity.ok("Hello, Admin!");
+        when(restTemplateMock.exchange(
+                eq(ADMIN_URL),
+                eq(HttpMethod.GET),
+                any(HttpEntity.class),
+                eq(String.class)
+        )).thenReturn(mockResponse);
 
         mockMvc.perform(post("/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.redirectUrl").value("/hello/admin"));
+
+        verifySecureEndpointCall(ADMIN_URL, jwtResponse.getAccessToken());
     }
 
     // Тест неудачного входа
@@ -119,6 +152,41 @@ class AuthenticationControllerTest {
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isUnauthorized()) // Ожидаем статус 401
                 .andExpect(content().string(containsString("Ошибка входа")));
+    }
+
+    @Test
+    void login_Success_ButSecureEndpointFails() throws Exception {
+        JwtRequest request = new JwtRequest();
+        request.setLogin("user");
+        request.setPassword("password");
+
+        JwtResponse jwtResponse = new JwtResponse("accessToken", "refreshToken");
+        when(authService.login(any(JwtRequest.class))).thenReturn(jwtResponse);
+
+        mockJwtProvider(List.of("USER"));
+
+        // Эмулируем ошибку при вызове защищенного эндпоинта
+        when(restTemplateMock.exchange(
+                anyString(),
+                any(HttpMethod.class),
+                any(HttpEntity.class),
+                any(Class.class)
+        )).thenThrow(new RestClientException("Connection refused"));
+
+        // Ожидаем, что контроллер вернет 200, но выбросит AuthException
+        mockMvc.perform(post("/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk()) // /login отработал успешно
+                .andExpect(jsonPath("$.redirectUrl").value("/hello/user"));
+
+        // Проверяем, что RestTemplate был вызван
+        verify(restTemplateMock).exchange(
+                eq(USER_URL),
+                eq(HttpMethod.GET),
+                any(HttpEntity.class),
+                eq(String.class)
+        );
     }
 
     // Тест обновления пары токенов, когда срок действия refreshToken скоро истекает
@@ -159,6 +227,15 @@ class AuthenticationControllerTest {
                 .andExpect(cookie().doesNotExist("refreshToken"));
     }
 
+    /*
+
+    Как работает cookie().doesNotExist("refreshToken") ?
+    1. Проверяет, что в ответе нет cookie с именем "refreshToken"
+       (т.е. сервер не отправил новый refresh-токен в заголовках `Set-Cookie`);
+    2. Если такой cookie есть — тест упадёт с ошибкой.
+
+     */
+
     // Тест с невалидным токеном
     @Test
     void getNewAccessToken_InvalidToken() throws Exception {
@@ -191,6 +268,23 @@ class AuthenticationControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/auth"))
                 .andExpect(cookie().maxAge("refreshToken", 0)); // Проверяем удаление cookie
+    }
+
+    private void mockJwtProvider(List<String> roles) {
+        Claims claims = mock(Claims.class);
+        when(jwtProvider.getAccessClaims(anyString())).thenReturn(claims);
+        when(claims.get("roles", List.class)).thenReturn(roles);
+    }
+
+    private void verifySecureEndpointCall(String expectedUrl, String expectedToken) {
+        ArgumentCaptor<HttpEntity<?>> captor = ArgumentCaptor.forClass(HttpEntity.class);
+        verify(restTemplateMock).exchange(
+                eq(expectedUrl), eq(HttpMethod.GET), captor.capture(), eq(String.class)
+        );
+
+        HttpHeaders headers = captor.getValue().getHeaders();
+        assertEquals("Bearer " + expectedToken,
+                headers.getFirst(HttpHeaders.AUTHORIZATION));
     }
 
     // Вспомогательный метод для создания тестового JWT токена

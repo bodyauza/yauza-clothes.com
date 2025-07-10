@@ -117,11 +117,10 @@ public class AuthenticationController {
     private String sendTokenToSecureEndpoint(JwtResponse token) {
 
         Claims claims = jwtProvider.getAccessClaims(token.getAccessToken());
-        Set<String> roles = Arrays.stream(claims.get("roles").toString().split(","))
-                .collect(Collectors.toSet());
+        Set<Role> roles = getRoles(claims);
 
         String redirectEndpoint;
-        if (roles.contains(Role.ADMIN.getAuthority())) {
+        if (roles.contains(Role.ADMIN)) {
             redirectEndpoint = "/hello/admin";
         } else {
             redirectEndpoint = "/hello/user";
@@ -147,6 +146,13 @@ public class AuthenticationController {
         } catch (RestClientException e) {
             throw new AuthException("Ошибка при проверке токена: " + e.getMessage());
         }
+    }
+
+    private static Set<Role> getRoles(Claims claims) {
+        final List<String> roles = claims.get("roles", List.class);
+        return roles.stream()
+                .map(Role::valueOf)
+                .collect(Collectors.toSet());
     }
 
     // Метод для декодирования JWT и получения даты истечения

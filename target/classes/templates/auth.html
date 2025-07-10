@@ -4,23 +4,48 @@
     <meta charset="UTF-8">
     <title>Вход в аккаунт</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <style>
+        .error {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        .valid {
+            border: 1px solid green;
+        }
+        .invalid {
+            border: 1px solid red;
+        }
+    </style>
     <script>
+        // Регулярные выражения для валидации
+        const EMAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        const LOGIN_REGEX = /^[a-zA-Z0-9_-]{3,20}$/;
 
         $(document).ready(function() {
-            $('#loginButton').click(function() {
-                const login = $('#login').val();
-                const password = $('#password').val();
+            // Валидация при вводе
+            $('#login').on('input', validateLogin);
+            $('#password').on('input', validatePassword);
 
-                if (!login || !password) {
-                    alert("Пожалуйста, заполните все поля.");
+            $('#loginButton').click(function() {
+                const loginValid = validateLogin();
+                const passwordValid = validatePassword();
+
+                if (!loginValid || !passwordValid) {
                     return;
                 }
+
+                const login = $('#login').val();
+                const password = $('#password').val();
 
                 $.ajax({
                     url: 'http://localhost:8081/login',
                     type: 'POST',
                     contentType: 'application/json',
-                    data: JSON.stringify({ login: login, password: password }),
+                    data: JSON.stringify({
+                        login: login,
+                        password: password
+                    }),
                     success: function(response) {
                         window.location.href = response.redirectUrl;
                     },
@@ -29,14 +54,70 @@
                     }
                 });
             });
-        });
 
+            function validateLogin() {
+                const login = $('#login').val();
+                const isEmail = login.includes('@');
+                const isValid = isEmail ? EMAIL_REGEX.test(login) : LOGIN_REGEX.test(login);
+
+                if (!login) {
+                    showError('login', 'Поле обязательно для заполнения');
+                    return false;
+                }
+
+                if (!isValid) {
+                    const message = isEmail
+                    ? 'Введите корректный email (example@domain.com)'
+                    : 'Логин должен содержать 3-20 символов (a-z, 0-9, _, -)';
+                    showError('login', message);
+                    return false;
+                }
+
+                clearError('login');
+                return true;
+            }
+
+            function validatePassword() {
+                const password = $('#password').val();
+
+                if (!password) {
+                    showError('password', 'Поле обязательно для заполнения');
+                    return false;
+                }
+
+                if (password.length < 6) {
+                    showError('password', 'Пароль должен содержать минимум 6 символов');
+                    return false;
+                }
+
+                clearError('password');
+                return true;
+            }
+
+            function showError(field, message) {
+                $(`#${field}`).addClass('invalid').removeClass('valid');
+                $(`#${field}Error`).text(message).show();
+            }
+
+            function clearError(field) {
+                $(`#${field}`).addClass('valid').removeClass('invalid');
+                $(`#${field}Error`).text('').hide();
+            }
+        });
     </script>
 </head>
 <body>
 
-<input type="text" id="login" name="login" placeholder="Логин">
-<input type="password" id="password" name="password" placeholder="Пароль">
+<div class="form-group">
+    <input type="text" id="login" name="login" placeholder="Email или логин">
+    <div id="loginError" class="error"></div>
+</div>
+
+<div class="form-group">
+    <input type="password" id="password" name="password" placeholder="Пароль">
+    <div id="passwordError" class="error"></div>
+</div>
+
 <button id="loginButton" type="button">Авторизоваться</button>
 
 </body>
